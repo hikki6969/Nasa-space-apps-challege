@@ -30,6 +30,10 @@ venv/
 env/
 ENV/
 
+# Frontend React source library is NOT Python build output; track it.
+!frontend/src/lib/
+!frontend/src/lib/**
+
 # IDE / Editor artifacts
 .vscode/
 .idea/
