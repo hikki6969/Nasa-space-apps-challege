@@ -55,13 +55,15 @@
 
 ## B4. Compare
 
-- [ ] Allow selection of two to four records.
-- [ ] Build side-by-side matrix of comparable fields.
-- [ ] List shared and different hardware, fuels, phases, themes, and measurements.
-- [ ] Add Plotly parallel coordinates only for fields with compatible units.
-- [ ] Do not force missing or incompatible values onto a shared axis.
+- [x] Allow selection of two to four records.
+- [x] Build side-by-side matrix of comparable fields.
+- [x] List shared and different hardware, fuels, phases, themes, and measurements.
+- [x] Add Plotly parallel coordinates only for fields with compatible units.
+- [x] Do not force missing or incompatible values onto a shared axis.
 
 **Done when:** comparison works for same-theme and cross-theme records without implying equivalent evidence classes.
+
+**Verification (2026-11-14):** `npm run check` passes — typecheck, lint, 48/48 Vitest (compare suite in `frontend/src/features/investigations/CatalogExplorer.test.tsx`), production build; `python scripts/check_docs.py` reports 0 failures. The comparison matrix covers physical scores, coverage, approach, key findings, and field-level provenance; non-ranked records render `Not ranked` badges instead of numeric scores. Parallel coordinates render only numeric fields present for every selection. Compare remains fixture-backed under H1 and unverified against real annotations. Evidence in `docs/03_CHANGELOG.md`.
 
 **Dependencies:** B1, H2.
 
