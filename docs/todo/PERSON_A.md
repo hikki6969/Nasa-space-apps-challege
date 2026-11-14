@@ -38,17 +38,21 @@
 
 ## A2. Experimental tables and annotations
 
-- [ ] Ingest visible public tables without committing signed URLs.
-- [ ] Curate PSI-159, PSI-10, PSI-101, PSI-98, PSI-25, PSI-69, and PSI-68.
-- [ ] Add field-level provenance for every curated numeric value and observed-level list.
-- [ ] Verify BASS-II initial O₂ as 0.136–0.222 and preserve final outliers separately.
-- [ ] Verify CFI-G and Flame Design high-O₂ values against their exact columns.
-- [ ] Classify SAFFIRE-I as large-scale demonstration, not bench flammability.
-- [ ] Classify SAME-R as detection instrumentation.
-- [ ] Classify FLEX/FLEX-2 as droplet/suppression evidence.
-- [ ] Keep PSI-117 metadata-only/contextual and confirm it has no measured table.
-- [ ] Record any annotation disagreement as a Problem Log entry; do not average conflicting values.
-- [ ] Provide H1 to Person B: exact snapshot fixture, seven annotations, and table previews with the validation command output.
+- [x] Ingest visible public tables without committing signed URLs.
+- [x] Curate PSI-159, PSI-10, PSI-101, PSI-98, PSI-25, PSI-69, and PSI-68.
+- [x] Add field-level provenance for every curated numeric value and observed-level list.
+- [x] Verify BASS-II initial O₂ as 0.136–0.222 and preserve final outliers separately.
+- [x] Verify CFI-G and Flame Design high-O₂ values against their exact columns.
+- [x] Classify SAFFIRE-I as large-scale demonstration, not bench flammability.
+- [x] Classify SAME-R as detection instrumentation.
+- [x] Classify FLEX/FLEX-2 as droplet/suppression evidence.
+- [x] Keep PSI-117 metadata-only/contextual and confirm it has no measured table.
+- [x] Record any annotation disagreement as a Problem Log entry; do not average conflicting values.
+- [ ] Have a named human reviewer confirm all seven numeric annotations and their field-level provenance; only then set `annotation_status = verified`.
+- [x] Human-review worksheet: [`docs/ANNOTATION_REVIEW_WORKSHEET.md`](../ANNOTATION_REVIEW_WORKSHEET.md) — 70 field-level checks, 7 evidence classifications, and 4 scenario rulings.
+- [x] Provide H1 to Person B: exact snapshot fixture, seven annotations, and table previews with the validation command output (delivered with records maintained as `metadata_only` pending human review).
+
+**Status (2026-11-14):** H1 delivery completed — 7 records curated with complete provenance in `data/annotations.json`, maintained as `annotation_status = metadata_only` and `_human_review.status = pending` under Data Safety §9 pending out-of-band human review. Scenario A flow remains null (P-017), Scenario B numeric inputs remain unruled, and Scenario D numeric inputs are excluded (T-025). Raw CSVs are gitignored local scratch; PSI-10 rows are not redistributed. Downstream A3 (derived index/embeddings) is unblocked for textual corpus metadata.
 
 **Done when:** the data acceptance gate in the Verification Plan passes.
 
@@ -69,18 +73,20 @@
 
 ## A4. Similarity and ranking
 
-- [ ] Implement the frozen oxygen and pressure tolerance-overlap formulas.
-- [ ] Implement exact/bracket/disjoint gravity scoring over explicit recorded levels.
-- [ ] Implement flow exact/bracket/tolerance/disjoint scoring.
-- [ ] Implement phase and primary/secondary theme similarity.
-- [ ] Implement fixed-weight scoring with coverage^0.5 and no redistribution.
-- [ ] Implement direct/partial/contextual/anticipated match classification.
-- [ ] Add hand-computed unit tests from the Verification Plan.
+- [x] Implement the frozen oxygen and pressure tolerance-overlap formulas.
+- [x] Implement exact/bracket/disjoint gravity scoring over explicit recorded levels.
+- [x] Implement flow exact/bracket/tolerance/disjoint scoring.
+- [x] Implement phase and primary/secondary theme similarity.
+- [x] Implement fixed-weight scoring with coverage^0.5 and no redistribution.
+- [x] Implement direct/partial/contextual/anticipated match classification.
+- [x] Add hand-computed unit tests from the Verification Plan.
 - [ ] Measure ranking p95 over the four canonical scenarios.
 
 **Done when:** T-011 through T-020 and the performance target pass.
 
-**Dependencies:** A0, A2.
+**Evidence (2026-11-14):** `backend/app/ranking.py` and `tests/backend/test_ranking.py` cover T-011 through T-016, T-017 (Scenario A partial-gravity direct gap verified passing against canonical annotations and ranking rules with zero direct matches), T-018 through T-020, and T-045 (29 tests passing). The p95 target remains pending live scenario benchmark suite.
+
+**Dependencies:** A0 for the pure functions; A2 for canonical scenario scoring and p95 (A2 H1 delivered).
 
 ## A5. Templates, retrieval, and API
 
@@ -144,6 +150,6 @@
 | Date | Handoff | Recipient | Evidence | Notes |
 |---|---|---|---|---|
 | 2026-11-14 | H0 schema/OpenAPI/mock | Person B | `backend/app/models.py`, `backend/openapi.json`, `backend/mocks/`, 91 tests passing | Mock only; canonical data begins with H1 |
-| — | H1 snapshot/annotations | Person B | Snapshot built; seven annotations pending A2 | — |
+| 2026-11-14 | H1 snapshot/annotations | Person B | `data/psi_snapshot.json`, `data/annotations.json` (7 curated records, 51 provenance items), `data/snapshot.sha256`, `tests/backend/test_ranking.py` (T-017 passed), `scripts/check_data.py` (0 failures) | Delivered with 7 records maintained as `annotation_status = metadata_only` and `_human_review.status = pending` under Data Safety §9; downstream A3 unblocked for text indexing and embeddings |
 | — | H2 API/search/ranking | Person B | — | — |
 | — | H3 defect reports | Person A from Person B | — | — |

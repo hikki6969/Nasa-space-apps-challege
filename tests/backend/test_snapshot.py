@@ -10,7 +10,17 @@ from scripts.build_snapshot import serialize
 
 ROOT = Path(__file__).resolve().parents[2]
 SNAPSHOT_PATH = ROOT / "data" / "psi_snapshot.json"
+ANNOTATIONS_PATH = ROOT / "data" / "annotations.json"
 MANIFEST_PATH = ROOT / "data" / "snapshot.sha256"
+
+
+def manifest_entries() -> dict[str, str]:
+    entries: dict[str, str] = {}
+    for line in MANIFEST_PATH.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            digest, path = line.split()
+            entries[path] = digest
+    return entries
 
 
 @pytest.fixture(scope="module")
@@ -36,10 +46,18 @@ def test_snapshot_is_sorted_and_canonical(snapshot):
 
 
 def test_snapshot_digest_matches_manifest(snapshot):
+    entries = manifest_entries()
     text = SNAPSHOT_PATH.read_text(encoding="utf-8")
-    digest, path = MANIFEST_PATH.read_text(encoding="utf-8").split()
-    assert path == "data/psi_snapshot.json"
-    assert digest == hashlib.sha256(text.encode("utf-8")).hexdigest()
+    assert entries["data/psi_snapshot.json"] == hashlib.sha256(
+        text.encode("utf-8")
+    ).hexdigest()
+
+
+def test_annotations_digest_matches_manifest():
+    entries = manifest_entries()
+    assert entries["data/annotations.json"] == hashlib.sha256(
+        ANNOTATIONS_PATH.read_bytes()
+    ).hexdigest()
 
 
 def test_daft_is_instrument_context(snapshot):

@@ -209,9 +209,14 @@ def main() -> int:
     snapshot_path = data_dir / "psi_snapshot.json"
     snapshot_path.write_text(text, encoding="utf-8")
     digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
-    (data_dir / "snapshot.sha256").write_text(
-        f"{digest}  data/psi_snapshot.json\n", encoding="utf-8"
-    )
+    manifest = f"{digest}  data/psi_snapshot.json\n"
+    annotations_path = data_dir / "annotations.json"
+    if annotations_path.is_file():
+        annotations_digest = hashlib.sha256(
+            annotations_path.read_bytes()
+        ).hexdigest()
+        manifest += f"{annotations_digest}  data/annotations.json\n"
+    (data_dir / "snapshot.sha256").write_text(manifest, encoding="utf-8")
     print(
         f"Wrote {snapshot_path.relative_to(ROOT)} "
         f"({len(payload['records'])} records, sha256 {digest})"

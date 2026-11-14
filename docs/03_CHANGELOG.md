@@ -21,6 +21,48 @@ All notable changes to the specification and implementation baseline are recorde
 - Explicit shared/different measurement grouping beyond the compare API contract (`compare.shared` / `compare.differences`) needs a Person A contract extension — the matrix itself displays measurement ranges field-by-field, but no new backend data group was invented.
 - Compare mode is fixture-backed under H0 and unverified under H1; no numeric annotation is displayed without provenance.
 
+## 2026-11-14 — H1 delivery and Scenario A direct gap (T-017) unblocking
+
+### Added
+
+- `test_scenario_a_partial_gravity_direct_gap_t017` in `tests/backend/test_ranking.py`: verifies that Scenario A produces zero direct matches against canonical annotations (`data/annotations.json`) and under physical ranking rules due to partial gravity (0.16 g vs 0.0 g) and unspecified flow velocity (T-017).
+- VF-21 in `docs/VERIFIED_FACTS.md` documenting H1 delivery and the verified Scenario A direct gap.
+
+### Changed
+
+- `docs/todo/PERSON_A.md`: marked A2 H1 handoff delivered with 7 curated records maintained as `annotation_status = metadata_only` and `_human_review.status = pending` under Data Safety §9 pending out-of-band human review.
+- `docs/todo/PERSON_A.md`: marked T-017 as implemented and passing (29 ranking tests passing).
+- `docs/todo/PERSON_A.md`: noted downstream A3 (SQLite/FTS5 search index and MiniLM text embeddings from canonical text metadata) is unblocked.
+- Updated Handoff log with H1 delivery date, evidence, and notes.
+
+## 2026-11-14 — A2 annotation proposal and human-review gate
+
+### Added
+
+- `data/annotations.json` with seven AI-extracted record proposals and field-level provenance. All records are `annotation_status = metadata_only`; Data Safety §9 human review is pending.
+- `docs/DEEP_RESEARCH_SIGNOFF.md` documenting the extraction sources and per-field proposals; it is explicitly not a human sign-off.
+- `docs/ANNOTATION_REVIEW_WORKSHEET.md` with 70 field-level checks, 7 evidence classifications, and 4 scenario rulings for the named human reviewer.
+- VF-14 through VF-19 for SAFFIRE-I, SAME-R, FLEX, FLEX-2, CFI-G, and Flame Design table facts; P-017 through P-022.
+
+### Changed
+
+- Scenario B numeric inputs remain unruled; Scenario D numeric inputs are excluded because Apollo 1 is context only (Product Spec §7; T-025).
+- `data/raw_csv/` is gitignored local scratch; PSI-10 rows are not redistributed.
+- All seven annotations were downgraded from the extraction pass's `verified` status to `metadata_only` pending a named human reviewer.
+- `scripts/check_data.py` validates annotation records, the seven-ID set, PSI-10 row exclusion, and the human-review gate.
+- `data/snapshot.sha256` now covers both canonical JSON inputs; `scripts/build_snapshot.py` preserves the annotation digest on rebuild.
+
+## 2026-11-14 — Person A A4 pure similarity and ranking
+
+### Added
+
+- `backend/app/ranking.py` with the frozen oxygen/pressure tolerance overlap, gravity and flow exact/bracket rules, phase/theme similarity, coverage-penalty aggregation, and direct/partial/contextual classification.
+- `tests/backend/test_ranking.py` with 28 hand-computed tests covering T-011–T-016, T-018–T-020, and T-045.
+
+### Changed
+
+- `docs/todo/PERSON_A.md` records A4's pure-function evidence; T-017 and the p95 target remain blocked on A2 canonical annotations and the Scenario B–D numeric rulings.
+
 ## 2026-11-14 — Person B B3 implementation (Investigations, filters, and provenance)
 
 ### Added
