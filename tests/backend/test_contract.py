@@ -55,7 +55,7 @@ def test_catalog_counts_are_consistent():
     assert counts.total == 24
     assert counts.evidence == 23
     assert counts.instrument_context == 1
-    assert counts.verified == 7
+    assert counts.source_cited == 7
     assert counts.metadata_only == 17
     assert sum(counts.by_evidence_class.values()) == 9
 
@@ -67,7 +67,8 @@ def test_curated_records_are_verified_and_rank_eligible():
     }
     assert set(curated) == EXPECTED_CURATED
     for record in curated.values():
-        assert record.annotation_status == "verified"
+        assert record.annotation_status == "source_cited"
+        assert record.extraction_method == "script"
         assert record.catalog_role == "evidence"
         assert record.rank_eligible is True
 
@@ -94,7 +95,7 @@ def test_bass_ii_initial_oxygen_range_and_provenance():
     assert record.oxygen_fraction is not None
     assert record.oxygen_fraction.min == pytest.approx(0.136)
     assert record.oxygen_fraction.max == pytest.approx(0.222)
-    excerpt = record.provenance["oxygen_fraction"].excerpt
+    excerpt = record.provenance["oxygen_fraction"].excerpt_or_table_ref
     assert "13.6%" in excerpt
     assert "22.2%" in excerpt
     assert "30" not in excerpt

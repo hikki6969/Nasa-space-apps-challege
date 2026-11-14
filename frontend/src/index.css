@@ -3,7 +3,7 @@
 /* --------------------------------------------------------------------------
    FireSight design tokens — NASA-inspired dark space
    Blue = metadata/navigation, amber = flame/hazard, cyan = comparison/coverage,
-   red = evidence gap/mismatch, green = verified/direct.
+   red = evidence gap/mismatch, green = direct match.
    -------------------------------------------------------------------------- */
 :root {
   color-scheme: dark;

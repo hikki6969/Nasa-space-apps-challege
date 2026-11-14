@@ -7,7 +7,7 @@ This project handles scientific evidence, not production records. The primary sa
 | Class | Examples | Treatment |
 |---|---|---|
 | Canonical evidence | PSI metadata, public experimental tables, publications | Versioned, hashed, field-level provenance |
-| Human annotation | Normalized ranges, phases, themes, evidence classes | Human-verified; every numeric value linked to source evidence |
+| Curated annotation | Normalized ranges, phases, themes, evidence classes | Source-cited; every numeric value linked to source evidence with provenance |
 | Derived index | SQLite/FTS5 database, BM25 results | Regenerable; never authoritative |
 | Derived semantic data | MiniLM embedding matrix | Regenerable from pinned model and canonical text; hash recorded |
 | Context | Apollo 1, Mir, Apollo 13, Spinoff, FM2/SoFIE program pages | Separate from measured evidence and ranking inputs |
@@ -21,7 +21,7 @@ When sources conflict, use this order:
 1. Direct PSI experimental table or PSI detail field for the specific record.
 2. PSI narrative with a verbatim excerpt.
 3. Linked official NASA publication or program page.
-4. Field-level human annotation with an explicit safe derivation.
+4. Field-level script annotation with an explicit safe derivation.
 5. No value — store `null` and record the gap.
 
 A lower-ranked source must not overwrite a higher-ranked source without an explicit correction entry in [Verified Facts](VERIFIED_FACTS.md).
@@ -94,12 +94,26 @@ Do not delete, overwrite, or rewrite a canonical snapshot or annotations file in
 
 No production database or cloud resource is in scope.
 
-## 9. Human review
+## 9. Annotation extraction and provenance
 
-- Every numeric annotation is confirmed by a human reviewer.
-- The reviewer checks source semantics, units, and scope against the source row or excerpt.
-- LLM-assisted extraction may propose a value but cannot commit it without confirmation.
-- The optional LLM cannot alter canonical annotations or ranking.
+Numeric annotations are produced by deterministic scripts that read PSI
+experimental tables and PSI narrative endpoints. Every numeric value must carry
+field-level provenance before it enters the canonical snapshot:
+
+- `source_url` — the PSI detail or table URL.
+- `source_kind` — `psi_narrative` | `psi_table` | `publication` | `nasa_program`.
+- `excerpt_or_table_ref` — verbatim excerpt, or table file name + row/column.
+- `value_kind` — `reported` | `safely_derived`.
+- `extraction_method` — `script` | `manual` | `script_assisted_manual`.
+
+A value without provenance is `null`. Missing provenance blocks snapshot
+inclusion; it is not a warning. `scripts/check_data.py` enforces this on every
+run and fails the build if any populated physical field lacks provenance.
+
+Provenance is auditable by any third party using only the source URL and the
+excerpt/table reference. No attestation of reviewer identity is recorded,
+because no human review is claimed. The audit surface is the source, not a
+signature.
 
 ## 10. Incident response for a bad annotation
 

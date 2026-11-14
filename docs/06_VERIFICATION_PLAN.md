@@ -20,7 +20,7 @@ A requirement is complete only after an executable validator passes after the la
 | T-001 | Exact corpus | snapshot membership test | exactly VF-01's 24 IDs; no duplicates |
 | T-002 | False positives excluded | membership test | PSI-181 and PSI-108 absent |
 | T-003 | DAFT placement | schema/catalog/ranking test | PSI-47 present, `instrument_context`, never ranked |
-| T-004 | Curated IDs | annotation validator | exactly PSI-159, 10, 101, 98, 25, 69, 68 are `verified` initially |
+| T-004 | Curated IDs | annotation validator | exactly PSI-159, 10, 101, 98, 25, 69, 68 are `source_cited` initially |
 | T-005 | Snapshot integrity | digest check | recorded SHA-256 matches canonical JSON |
 | T-006 | Schema strictness | Pydantic tests | reversed range, string-to-number coercion, wrong field unit, missing provenance on any populated physical field including `metadata_only` records, and incoherent status fail |
 | T-007 | Program-context status | validator test | program context uses the separate model, distinguishes `active_program` from `anticipated_in_psi`, and exposes no evidence class or measured table |

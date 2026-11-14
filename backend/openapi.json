@@ -86,12 +86,12 @@
             "title": "Metadata Only",
             "type": "integer"
           },
-          "total": {
-            "title": "Total",
+          "source_cited": {
+            "title": "Source Cited",
             "type": "integer"
           },
-          "verified": {
-            "title": "Verified",
+          "total": {
+            "title": "Total",
             "type": "integer"
           }
         },
@@ -99,7 +99,7 @@
           "total",
           "evidence",
           "instrument_context",
-          "verified",
+          "source_cited",
           "metadata_only",
           "by_evidence_class"
         ],
@@ -122,7 +122,7 @@
           },
           "annotation_status": {
             "enum": [
-              "verified",
+              "source_cited",
               "metadata_only"
             ],
             "title": "Annotation Status",
@@ -683,7 +683,7 @@
           },
           "annotation_status": {
             "enum": [
-              "verified",
+              "source_cited",
               "metadata_only"
             ],
             "title": "Annotation Status",
@@ -740,6 +740,22 @@
             },
             "title": "Experimental Tables",
             "type": "array"
+          },
+          "extraction_method": {
+            "anyOf": [
+              {
+                "enum": [
+                  "script",
+                  "manual",
+                  "script_assisted_manual"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extraction Method"
           },
           "flow_velocity": {
             "anyOf": [
@@ -1121,9 +1137,25 @@
       "Provenance": {
         "additionalProperties": false,
         "properties": {
-          "excerpt": {
-            "title": "Excerpt",
+          "excerpt_or_table_ref": {
+            "title": "Excerpt Or Table Ref",
             "type": "string"
+          },
+          "extraction_method": {
+            "anyOf": [
+              {
+                "enum": [
+                  "script",
+                  "manual",
+                  "script_assisted_manual"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extraction Method"
           },
           "note": {
             "anyOf": [
@@ -1163,7 +1195,7 @@
         "required": [
           "source_url",
           "source_kind",
-          "excerpt"
+          "excerpt_or_table_ref"
         ],
         "title": "Provenance",
         "type": "object"
@@ -1303,6 +1335,15 @@
               }
             ],
             "title": "Acronym"
+          },
+          "annotation_status": {
+            "default": "source_cited",
+            "enum": [
+              "source_cited",
+              "metadata_only"
+            ],
+            "title": "Annotation Status",
+            "type": "string"
           },
           "coverage": {
             "title": "Coverage",
@@ -1649,7 +1690,7 @@
     }
   },
   "info": {
-    "description": "NASA PSI fire-safety evidence synthesizer. This version is the H0 mock contract; canonical snapshot endpoints arrive in H1/H2.",
+    "description": "NASA PSI fire-safety evidence synthesizer. Wired to canonical 24-record snapshot, SQLite FTS5 index, and MiniLM embeddings.",
     "title": "FireSight API",
     "version": "0.1.0"
   },

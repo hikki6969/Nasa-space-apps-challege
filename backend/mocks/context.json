@@ -42,7 +42,8 @@
       "program_id": "FM2",
       "provenance": {
         "data_status": {
-          "excerpt": "Listed as current combustion research; no PSI record appears in the exact 24-record corpus.",
+          "excerpt_or_table_ref": "Listed as current combustion research; no PSI record appears in the exact 24-record corpus.",
+          "extraction_method": "script",
           "note": "Anticipated program context, never a measured observation.",
           "source_kind": "nasa_program",
           "source_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
@@ -57,7 +58,8 @@
       "program_id": "SoFIE",
       "provenance": {
         "data_status": {
-          "excerpt": "Official program page; no current PSI record in the exact 24-record corpus.",
+          "excerpt_or_table_ref": "Official program page; no current PSI record in the exact 24-record corpus.",
+          "extraction_method": "script",
           "note": null,
           "source_kind": "nasa_program",
           "source_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/solid-fuel-ignition-and-extinction-sofie/",
@@ -72,7 +74,8 @@
       "program_id": "FLARE",
       "provenance": {
         "data_status": {
-          "excerpt": "Official program page; no current PSI record in the exact 24-record corpus.",
+          "excerpt_or_table_ref": "Official program page; no current PSI record in the exact 24-record corpus.",
+          "extraction_method": "script",
           "note": null,
           "source_kind": "nasa_program",
           "source_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-limits-at-reduced-g-experiment-flare/",

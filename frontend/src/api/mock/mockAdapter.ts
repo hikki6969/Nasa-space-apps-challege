@@ -92,7 +92,7 @@ function buildCatalog(): CatalogResponse {
       partial: MOCK_RECORDS.filter((record) => record.data_status === 'partial')
         .length,
       curated: MOCK_RECORDS.filter(
-        (record) => record.annotation_status === 'verified',
+        (record) => record.annotation_status === 'source_cited',
       ).length,
       metadata_only: MOCK_RECORDS.filter(
         (record) => record.annotation_status === 'metadata_only',
@@ -423,7 +423,7 @@ function buildAskAnswer(question: string): AskResponse {
   const normalized = question.toLowerCase()
 
   if (
-    /rocket|propellant|engine|nozzle|thrust|combustion instability/.test(
+    /rocket|propellant|engine|nozzle|thrust|combustion instability|rp-1|lox|turbopump|combustion chamber/.test(
       normalized,
     )
   ) {

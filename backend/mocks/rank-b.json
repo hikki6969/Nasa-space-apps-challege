@@ -6,6 +6,7 @@
   "results": [
     {
       "acronym": "SAME-R",
+      "annotation_status": "source_cited",
       "coverage": 1.0,
       "data_status": "complete",
       "dimensions": [
@@ -69,7 +70,8 @@
           "name": "safety_theme",
           "present": true,
           "provenance": {
-            "excerpt": "Quantify the sizes that the liquid smoke particulate achieves in low gravity.",
+            "excerpt_or_table_ref": "Quantify the sizes that the liquid smoke particulate achieves in low gravity.",
+            "extraction_method": "script",
             "note": "Primary safety theme curated as detection instrumentation.",
             "source_kind": "psi_narrative",
             "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-101",
@@ -95,7 +97,8 @@
       "missing_dimensions": [],
       "provenance": {
         "safety_theme": {
-          "excerpt": "Quantify the sizes that the liquid smoke particulate achieves in low gravity.",
+          "excerpt_or_table_ref": "Quantify the sizes that the liquid smoke particulate achieves in low gravity.",
+          "extraction_method": "script",
           "note": "Primary safety theme curated as detection instrumentation.",
           "source_kind": "psi_narrative",
           "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-101",

@@ -53,7 +53,7 @@ The canonical source is a git-tracked, hash-pinned JSON snapshot:
 ```text
 data/
   psi_snapshot.json       # exactly the 24 VF-01 records
-  annotations.json        # field-level human-verified annotations
+  annotations.json        # field-level source-cited annotations
   program_context.json     # non-measured program context such as FM2/SoFIE/FLARE
   embeddings.npy          # build-time MiniLM embeddings
   snapshot.sha256         # SHA-256 of canonical JSON inputs
@@ -91,7 +91,7 @@ PSI-117 remains in the 24-record catalog as FLEX-derived modeling context. It is
 - `data_status = partial`: completed but metadata or accessible evidence is incomplete.
 - `data_status = anticipated_in_psi`: expected program, represented by the separate `ProgramContext` model rather than the measured 24-record catalog.
 - `data_status = active_program`: current official program context without a current PSI record, also represented by `ProgramContext`.
-- `annotation_status = verified`: physical fields have been human checked.
+- `annotation_status = source_cited`: physical fields carry field-level provenance.
 - `annotation_status = metadata_only`: catalog-visible but excluded from physical ranking.
 
 ## 4. Frozen data contract
@@ -119,7 +119,8 @@ ProjectType = Literal["microgravity", "ground"]
 CatalogRole = Literal["evidence", "instrument_context"]
 DataStatus = Literal["complete", "partial"]
 ProgramContextStatus = Literal["active_program", "anticipated_in_psi"]
-AnnotationStatus = Literal["verified", "metadata_only"]
+AnnotationStatus = Literal["source_cited", "metadata_only"]
+ExtractionMethod = Literal["script", "manual", "script_assisted_manual"]
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(strict=True, extra="forbid")
@@ -139,9 +140,10 @@ class Range(StrictModel):
 class Provenance(StrictModel):
     source_url: str
     source_kind: Literal["psi_narrative", "psi_table", "publication", "nasa_program"]
-    excerpt: str
+    excerpt_or_table_ref: str
     note: str | None = None
     value_kind: Literal["reported", "safely_derived"] = "reported"
+    extraction_method: ExtractionMethod | None = None
 
 class ExperimentalTable(StrictModel):
     psi_id: str
@@ -182,6 +184,7 @@ class InvestigationRecord(StrictModel):
     experimental_tables: list[ExperimentalTable] = []
     data_status: DataStatus
     annotation_status: AnnotationStatus
+    extraction_method: ExtractionMethod | None = None
 
     doi: str | None = None
     license: str | None = None
@@ -271,7 +274,7 @@ A derived value must preserve the source values and transformation. A value with
 3. Use NumPy cosine over committed MiniLM embeddings for investigation-to-investigation similarity and Compare.
 4. Fuse ranked lists with Reciprocal Rank Fusion when both FTS and semantic similarity are applicable.
 5. Forward at most 10 candidates to physical scoring.
-6. Score only `annotation_status = verified`, `catalog_role = evidence` records.
+6. Score only `annotation_status = source_cited`, `catalog_role = evidence` records.
 
 Runtime arbitrary-text dense encoding is not part of the committed path. FTS5/BM25 handles free text. A pinned ONNX encoder may be proposed later as a separately gated enhancement.
 

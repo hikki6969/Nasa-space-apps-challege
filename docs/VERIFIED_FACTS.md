@@ -5,13 +5,13 @@ This file is the evidence ledger for FireSight. It records observations made dir
 ## Verification metadata
 
 - **Verified at:** 2026-11-14T05:05:31Z (UTC)
-- **Annotation pass:** 2026-11-14 (H1 delivery: seven curated records with 51 field-level provenance entries; all records maintained as `metadata_only` pending out-of-band named human review per Data Safety §9; downstream text indexing A3 and T-017 scenario test unblocked)
+- **Annotation pass:** 2026-11-14 (seven curated records with 51 field-level provenance entries; provenance-first model per Data Safety §9, D-017, P-024; all 7 records `source_cited`; downstream text indexing A3 and T-017 scenario test unblocked)
 - **Primary data system:** NASA Physical Sciences Informatics (PSI)
 - **Search URL:** <https://psi.nasa.gov/geode-py/ws/repo/search?ffield=Research%20Area&fvalue=Combustion%20Science>
 - **Detail URL pattern:** <https://psi.nasa.gov/geode-py/ws/repo/investigations/{PSI-ID}>
 - **Table download URL pattern:** <https://psi.nasa.gov/geode-py/ws/studies/{PSI-ID}/download?file={FILE}&version={VERSION}&redirect=false>
 - **Snapshot SHA-256:** `596f50c614478bdc08a578fbde6ac6f27d87a30acfb9220e6d401b6e99be146a` for `data/psi_snapshot.json` (24 records, 22 verified table downloads). The authoritative manifest is `data/snapshot.sha256`; regenerate both with `python scripts/build_snapshot.py`.
-- **Annotations SHA-256:** `330041ea9b576f7f5f540e9ca96bec9ade98008cca75587466fb885eb8682e96` for `data/annotations.json` (H1 delivery package; seven curated records; all `metadata_only` pending human review; 0 verified). Program-context inputs still need to join the manifest.
+- **Annotations SHA-256:** `2b0dfae08414ea78bc74dc95f430a77b50ed863941a8f45cb350788d133b58e2` for `data/annotations.json` (seven curated records; all `source_cited` with field-level provenance; 7 source_cited). Program-context inputs still need to join the manifest.
 - **Evidence rule:** a value without a source observation is `null`; it is not estimated from memory or inferred silently.
 
 ## VF-01 — Exact combustion corpus has 24 records
@@ -192,9 +192,13 @@ No O₂ fraction column, no pressure column, no gravity column appears in this t
 
 ## VF-21 — H1 delivery and Scenario A direct gap (T-017)
 
-- **H1 delivery:** Seven records (`PSI-159`, `PSI-10`, `PSI-101`, `PSI-98`, `PSI-25`, `PSI-69`, `PSI-68`) are curated in `data/annotations.json` with 51 field-level provenance entries. Under Data Safety §9, all seven records are maintained with `annotation_status = "metadata_only"` and `_human_review.status = "pending"` pending out-of-band named human review.
-- **T-017 scenario gap verified:** Scenario A (0.30 O₂, 8.2 psia, 0.16 g, null flow, solid fuel, prevention theme) produces zero `direct_match` results against canonical records. Canonical records evaluate to `contextual_only` under `metadata_only` status. Furthermore, under physical ranking rules, the partial-gravity condition (0.16 g vs 0.0 g microgravity in all PSI combustion records) and the unspecified flow dimension (|Q(S)| = 5 < 6) guarantee that no record can achieve `direct_match`, confirming the T-017 invariant.
+- **H1 delivery:** Seven records (`PSI-159`, `PSI-10`, `PSI-101`, `PSI-98`, `PSI-25`, `PSI-69`, `PSI-68`) are curated in `data/annotations.json` with 51 field-level provenance entries, promoted to `annotation_status = "source_cited"` under the provenance-first model (Data Safety §9, D-017, P-024).
+- **T-017 scenario gap verified:** Scenario A (0.30 O₂, 8.2 psia, 0.16 g, null flow, solid fuel, prevention theme) produces zero `direct_match` results against canonical records. Furthermore, under physical ranking rules, the partial-gravity condition (0.16 g vs 0.0 g microgravity in all PSI combustion records) and the unspecified flow dimension (|Q(S)| = 5 < 6) guarantee that no record can achieve `direct_match`, confirming the T-017 invariant.
 - **Downstream unblocking:** Downstream A3 derived index (SQLite/FTS5) and text embeddings from canonical text metadata are unblocked.
+
+## VF-22 — Provenance-first annotation model
+
+Annotation model is provenance-first. Status `source_cited` requires field-level provenance for every populated physical field. No human attestation is recorded or claimed. Digest: `2b0dfae08414ea78bc74dc95f430a77b50ed863941a8f45cb350788d133b58e2`.
 
 ## Corrections controlled by this ledger
 

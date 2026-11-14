@@ -71,6 +71,11 @@ export function RankedResultCard({ result, rank }: RankedResultCardProps) {
             <Badge tone="neutral">
               {EVIDENCE_CLASS_LABELS[result.evidence_class]}
             </Badge>
+            {result.annotation_status === 'metadata_only' ? (
+              <Badge tone="neutral">Metadata only · not ranked</Badge>
+            ) : (
+              <Badge tone="cyan">Source-extracted · provenance attached</Badge>
+            )}
             {result.catalog_role === 'instrument_context' && (
               <Badge tone="compare">Instrument context</Badge>
             )}
@@ -142,8 +147,8 @@ export function RankedResultCard({ result, rank }: RankedResultCardProps) {
             </ul>
           ) : (
             <p className="mt-2 text-xs text-ink-dim">
-              No limitation was supplied. Treat a missing limitation as a
-              review flag.
+              No limitation was supplied. Treat a missing limitation as an
+              evidence gap.
             </p>
           )}
         </section>

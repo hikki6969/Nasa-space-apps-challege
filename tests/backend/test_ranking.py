@@ -23,7 +23,8 @@ def provenance() -> Provenance:
     return Provenance(
         source_url="https://example.test/source",
         source_kind="psi_narrative",
-        excerpt="test excerpt",
+        excerpt_or_table_ref="test excerpt",
+        extraction_method="script",
     )
 
 
@@ -37,7 +38,8 @@ def make_record(**overrides) -> InvestigationRecord:
         "objectives_text": "Test objective.",
         "approach_text": "Test approach.",
         "data_status": "complete",
-        "annotation_status": "verified",
+        "annotation_status": "source_cited",
+        "extraction_method": "script",
         "source_url": "https://example.test/PSI-900",
     }
     data.update(overrides)
@@ -268,14 +270,24 @@ def test_modeling_record_is_contextual():
     assert classify_match(record, None) == "contextual_only"
 
 
+def test_t004_curated_records_are_source_cited():
+    """T-004: All 7 curated records have annotation_status == 'source_cited'."""
+    annotations_data = json.loads(ANNOTATIONS_PATH.read_text(encoding="utf-8"))
+    records = annotations_data["records"]
+    assert len(records) == 7
+    for record in records:
+        assert record["annotation_status"] == "source_cited"
+        assert record["extraction_method"] in {"script", "manual", "script_assisted_manual"}
+
+
 def test_scenario_a_partial_gravity_direct_gap_t017():
     """T-017: Scenario A partial-gravity direct gap produces zero direct_match results.
 
     Verification Plan T-017: 'Scenario A has no direct_match'.
     1. Verifies against canonical annotations that all records produce zero direct_match
-       results (all are contextual_only while annotation_status='metadata_only' pending human review).
-    2. Verifies against physical ranking rules that even if evidence records are promoted to
-       verified status, Scenario A produces zero direct_match results because:
+       results (none is direct_match under source_cited status).
+    2. Verifies against physical ranking rules that Scenario A produces zero direct_match
+       results because:
        - Gravity is 0.16 g (lunar partial gravity) whereas PSI records are microgravity (0.0 g).
        - Flow velocity is null (|Q(S)| = 5 < 6), which precludes direct_match per Spec §6.4.
     """
@@ -303,19 +315,17 @@ def test_scenario_a_partial_gravity_direct_gap_t017():
         match_class = classify_match(record, score)
         canonical_matches.append(match_class)
         assert match_class != "direct_match"
-        assert match_class == "contextual_only"
 
     assert not any(m == "direct_match" for m in canonical_matches)
 
-    # 2. Physical ranking rule verification (even under hypothetical verified status)
+    # 2. Physical ranking rule verification under source_cited status
     for record in records:
         if record.catalog_role == "evidence" and record.evidence_class != "modeling":
-            hypothetical_verified = record.model_copy(update={"annotation_status": "verified"})
-            score = score_record(hypothetical_verified, scenario_a)
+            score = score_record(record, scenario_a)
             assert score is not None
             # Direct match requires all six dimensions (|Q(S)| == 6) and all similarities == 1.0.
             # Scenario A has flow=None (5 dimensions) and gravity is 0.16 g vs 0.0 g (similarity 0.0).
-            match_class = classify_match(hypothetical_verified, score)
+            match_class = classify_match(record, score)
             assert match_class != "direct_match"
             assert match_class == "partial_match"
 

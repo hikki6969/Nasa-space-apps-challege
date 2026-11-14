@@ -1,7 +1,7 @@
 {
   "record": {
     "acronym": "FLEX",
-    "annotation_status": "verified",
+    "annotation_status": "source_cited",
     "approach_text": "Ignite and observe large droplets, determining limiting oxygen index as a function of ambient pressure and suppressant presence.",
     "catalog_role": "evidence",
     "data_status": "complete",
@@ -13,7 +13,8 @@
         "download_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-69/download?file=PSI-69_Experimental%20table_FLEX.csv&version=1&redirect=false",
         "file_name": "PSI-69_Experimental table_FLEX.csv",
         "provenance": {
-          "excerpt": "PSI-69_Experimental table_FLEX.csv, version 1, S3 version ID TParjCiGvSeDqRYFafCSaXSv1jLiimyd.",
+          "excerpt_or_table_ref": "PSI-69_Experimental table_FLEX.csv, version 1, S3 version ID TParjCiGvSeDqRYFafCSaXSv1jLiimyd.",
+          "extraction_method": "script",
           "note": "H0 mock keeps rows empty; curated rows arrive in H1.",
           "source_kind": "psi_table",
           "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-69/download?file=PSI-69_Experimental%20table_FLEX.csv&version=1&redirect=false",
@@ -25,6 +26,7 @@
         "version": 1
       }
     ],
+    "extraction_method": "script",
     "flow_velocity": null,
     "fuel": "liquid fuels",
     "fuel_phases": [
@@ -41,21 +43,24 @@
     "project_type": "microgravity",
     "provenance": {
       "fuel": {
-        "excerpt": "The FLEX investigation aims to map the flammability limits of liquid fuels in microgravity environments and measure the effectiveness of gaseous fire suppressants.",
+        "excerpt_or_table_ref": "The FLEX investigation aims to map the flammability limits of liquid fuels in microgravity environments and measure the effectiveness of gaseous fire suppressants.",
+        "extraction_method": "script",
         "note": "Liquid-droplet phase taken from the stated FLEX objective.",
         "source_kind": "psi_narrative",
         "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
         "value_kind": "reported"
       },
       "fuel_phases": {
-        "excerpt": "The FLEX investigation aims to map the flammability limits of liquid fuels in microgravity environments and measure the effectiveness of gaseous fire suppressants.",
+        "excerpt_or_table_ref": "The FLEX investigation aims to map the flammability limits of liquid fuels in microgravity environments and measure the effectiveness of gaseous fire suppressants.",
+        "extraction_method": "script",
         "note": "Liquid-droplet phase taken from the stated FLEX objective.",
         "source_kind": "psi_narrative",
         "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
         "value_kind": "reported"
       },
       "safety_theme": {
-        "excerpt": "Measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6.",
+        "excerpt_or_table_ref": "Measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6.",
+        "extraction_method": "script",
         "note": "Primary safety theme curated as suppression.",
         "source_kind": "psi_narrative",
         "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
@@ -79,7 +84,8 @@
       "download_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-69/download?file=PSI-69_Experimental%20table_FLEX.csv&version=1&redirect=false",
       "file_name": "PSI-69_Experimental table_FLEX.csv",
       "provenance": {
-        "excerpt": "PSI-69_Experimental table_FLEX.csv, version 1, S3 version ID TParjCiGvSeDqRYFafCSaXSv1jLiimyd.",
+        "excerpt_or_table_ref": "PSI-69_Experimental table_FLEX.csv, version 1, S3 version ID TParjCiGvSeDqRYFafCSaXSv1jLiimyd.",
+        "extraction_method": "script",
         "note": "H0 mock keeps rows empty; curated rows arrive in H1.",
         "source_kind": "psi_table",
         "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-69/download?file=PSI-69_Experimental%20table_FLEX.csv&version=1&redirect=false",

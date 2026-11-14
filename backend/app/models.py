@@ -26,7 +26,21 @@ ProjectType = Literal["microgravity", "ground"]
 CatalogRole = Literal["evidence", "instrument_context"]
 DataStatus = Literal["complete", "partial"]
 ProgramContextStatus = Literal["active_program", "anticipated_in_psi"]
-AnnotationStatus = Literal["verified", "metadata_only"]
+AnnotationStatus = Literal["source_cited", "metadata_only"]
+ExtractionMethod = Literal["script", "manual", "script_assisted_manual"]
+# Populated values in these fields must carry field-level provenance.
+PHYSICAL_FIELDS = frozenset(
+    {
+        "oxygen_fraction",
+        "pressure",
+        "flow_velocity",
+        "gravity",
+        "fuel",
+        "fuel_phases",
+        "safety_theme",
+    }
+)
+RECORDED_VALUE_FIELDS = ("recorded_gravity_values", "recorded_flow_values")
 
 
 class StrictModel(BaseModel):
@@ -49,9 +63,10 @@ class Range(StrictModel):
 class Provenance(StrictModel):
     source_url: str
     source_kind: Literal["psi_narrative", "psi_table", "publication", "nasa_program"]
-    excerpt: str
+    excerpt_or_table_ref: str
     note: str | None = None
     value_kind: Literal["reported", "safely_derived"] = "reported"
+    extraction_method: ExtractionMethod | None = None
 
 
 class ExperimentalTable(StrictModel):
@@ -94,6 +109,7 @@ class InvestigationRecord(StrictModel):
     experimental_tables: list[ExperimentalTable] = []
     data_status: DataStatus
     annotation_status: AnnotationStatus
+    extraction_method: ExtractionMethod | None = None
 
     doi: str | None = None
     license: str | None = None
@@ -122,29 +138,31 @@ class InvestigationRecord(StrictModel):
             if table.psi_id != self.psi_id:
                 raise ValueError("experimental_tables.psi_id must match parent psi_id")
 
-        physical = {
-            "oxygen_fraction",
-            "pressure",
-            "flow_velocity",
-            "gravity",
-            "fuel",
-            "fuel_phases",
-            "safety_theme",
-        }
-        for field in physical:
+        for field in PHYSICAL_FIELDS:
             value = getattr(self, field)
             if value not in (None, [], ""):
                 if field not in self.provenance:
                     raise ValueError(f"Missing provenance for {field}")
-        for field in ("recorded_gravity_values", "recorded_flow_values"):
+        for field in RECORDED_VALUE_FIELDS:
             if getattr(self, field) and field not in self.provenance:
                 raise ValueError(f"Missing provenance for {field}")
+
+        if self.annotation_status == "source_cited":
+            if self.extraction_method is None:
+                raise ValueError("source_cited records require extraction_method")
+            for field, entry in self.provenance.items():
+                if entry.extraction_method is None:
+                    raise ValueError(
+                        f"Missing extraction_method in provenance for {field}"
+                    )
         return self
 
     @property
     def rank_eligible(self) -> bool:
-        """Only verified evidence records enter physical ranking."""
-        return self.annotation_status == "verified" and self.catalog_role == "evidence"
+        """Only source-cited evidence records enter physical ranking."""
+        return (
+            self.annotation_status == "source_cited" and self.catalog_role == "evidence"
+        )
 
 
 class ProgramContext(StrictModel):

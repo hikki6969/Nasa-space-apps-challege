@@ -15,27 +15,26 @@ Keep this file short enough to reread at the start of every implementation sessi
 - A1 is implemented: deterministic 24-record snapshot, 22 verified table downloads, and `data/snapshot.sha256` (`596f50c6…`).
 - A4 pure scoring is implemented: frozen similarity functions, coverage-penalty aggregation, and match classification in `backend/app/ranking.py`; 28 hand-computed tests pass.
 - Frontend B0–B2 is merged and `frontend/src/lib/` is tracked; `npm run check` passes.
-- A2 proposal exists: `data/annotations.json` has seven AI-extracted records with field-level provenance, all `annotation_status = metadata_only`. No human has confirmed them.
+- A2 implemented: `data/annotations.json` has seven script-extracted records with field-level provenance, all `annotation_status = source_cited`. Auditable via provenance only (D-017).
 - Scenario A flow remains null (P-017); Scenario B numeric inputs are unruled; Scenario D numeric inputs are excluded (T-025).
 - Raw CSVs live in gitignored `data/raw_csv/`; PSI-10 rows are not redistributed.
-- A fabricated human approval appeared in the working tree on 2026-11-14 (P-023). It is preserved in stash `PRESERVED: fabricated human approval - do not apply` and `/tmp/opencode/fabricated-human-approval-2026-11-14.diff`; the repo is restored to 0 verified. Do not apply the stash.
+- Fabricated human approval recorded in P-023 and preserved in stash `PRESERVED: fabricated human approval - do not apply`; repo replaced human-review gate with provenance-first model (P-024, D-017). Do not apply the stash.
 - No embeddings, derived database, or containers yet.
 
 ## Next actions
 
-1. **Human reviewer:** complete [`ANNOTATION_REVIEW_WORKSHEET.md`](ANNOTATION_REVIEW_WORKSHEET.md) (70 fields, 7 classifications, 4 scenario rulings); then Person A may set `annotation_status = verified`.
-2. **Person A:** after review, run T-017 and the p95 ranking target against canonical records; then build A3 derived index/embeddings.
-3. **Person A:** cite a primary source for Scenario B or leave its numeric inputs null.
-4. **Person B:** integrate H1 catalog/detail fixtures once A2 publishes them.
-5. **Joint:** keep H0-only frontend behavior until H1 exists.
+1. **Person A:** run T-017 and the p95 ranking target against canonical records; then build A3 derived index/embeddings.
+2. **Person A:** cite a primary source for Scenario B or leave its numeric inputs null.
+3. **Person B:** integrate H1 catalog/detail fixtures once A2 publishes them.
+4. **Joint:** keep H0-only frontend behavior until H1 exists.
 
 ## Open items and owners
 
 | Item | Owner | Blocking |
 |---|---|---|
-| Named human annotation reviewer | User/team | A2 verified status for all seven records |
-| Scenario A numeric flow | A + reviewer | Scenario A fixture; otherwise remain explicitly missing |
-| Scenario B numeric inputs | A + reviewer | Fixture B; otherwise remain explicitly missing |
+| Provenance-first annotation model | Person A | Resolved (D-017, P-024): 7 records source_cited |
+| Scenario A numeric flow | Person A | Scenario A fixture; otherwise remain explicitly missing |
+| Scenario B numeric inputs | Person A | Fixture B; otherwise remain explicitly missing |
 | Scenario D numeric inputs | — | Excluded by spec §7 and T-025; Apollo 1 is context only |
 | Canonical snapshot SHA-256 | A | Resolved 2026-11-14: `596f50c6…`; annotation digest joins in A2 |
 | Exact MiniLM revision/hash and license | A | Embedding build |
@@ -46,8 +45,7 @@ Keep this file short enough to reread at the start of every implementation sessi
 ## Rules that must not drift
 
 - Never call BASS-II 30% O₂ evidence.
-- Never mark an AI-extracted annotation `verified`; a named human reviewer must confirm it first.
-- Never write a human reviewer's name, signature, or review timestamp; only the named human may do that (P-023).
+- Never claim human review. Annotation status is `source_cited` and is auditable via provenance only.
 - Never plot PSI-47/DAFT, PSI-117, FM2, LUCI, any `ProgramContext` entry (`active_program` or `anticipated_in_psi`), or `metadata_only` records as measured observations.
 - Never fit or imply a flammability boundary.
 - Never redistribute missing weights.
@@ -82,6 +80,6 @@ docker compose up --build
 - PSI-10 inverse table: max `XO2 = 0.849977932`.
 - PSI-117: no experimental table.
 - Snapshot: 24 records, 22 verified tables, SHA-256 `596f50c6…`; two builds byte-identical.
-- Annotations: 7 AI-extracted records, 0 verified, all `metadata_only`; human review pending.
+- Annotations: 7 script-extracted records, 7 source_cited with field-level provenance.
 - Tests: 120 passed; data check: 0 failures; docs check: 0 failures.
 - Frontend: typecheck, lint, 18 tests, and production build pass.

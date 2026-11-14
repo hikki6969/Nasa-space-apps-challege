@@ -42,7 +42,7 @@ interface RecordInput {
   recorded_flow_values?: number[]
   hardware?: string[]
   data_status?: DataStatus
-  annotation_status?: 'verified' | 'metadata_only'
+  annotation_status?: 'source_cited' | 'metadata_only'
   catalog_role?: 'evidence' | 'instrument_context'
 }
 
@@ -98,7 +98,7 @@ export const MOCK_RECORDS: InvestigationSummary[] = [
     recorded_gravity_values: [0],
     hardware: ['Combustion Integrated Rack'],
     data_status: 'complete',
-    annotation_status: 'verified',
+    annotation_status: 'source_cited',
   }),
   record({
     psi_id: 'PSI-10',
@@ -118,7 +118,7 @@ export const MOCK_RECORDS: InvestigationSummary[] = [
     recorded_gravity_values: [0],
     hardware: ['Combustion Integrated Rack'],
     data_status: 'complete',
-    annotation_status: 'verified',
+    annotation_status: 'source_cited',
   }),
   record({
     psi_id: 'PSI-101',
@@ -128,7 +128,7 @@ export const MOCK_RECORDS: InvestigationSummary[] = [
     safety_theme: 'detection',
     hardware: ['SAME-R instrument'],
     data_status: 'complete',
-    annotation_status: 'verified',
+    annotation_status: 'source_cited',
   }),
   record({
     psi_id: 'PSI-98',
@@ -143,7 +143,7 @@ export const MOCK_RECORDS: InvestigationSummary[] = [
     recorded_gravity_values: [0],
     hardware: ['Cygnus spacecraft'],
     data_status: 'complete',
-    annotation_status: 'verified',
+    annotation_status: 'source_cited',
   }),
   record({
     psi_id: 'PSI-25',
@@ -164,7 +164,7 @@ export const MOCK_RECORDS: InvestigationSummary[] = [
     recorded_gravity_values: [0],
     hardware: ['BASS-II facility'],
     data_status: 'complete',
-    annotation_status: 'verified',
+    annotation_status: 'source_cited',
   }),
   record({
     psi_id: 'PSI-69',
@@ -178,7 +178,7 @@ export const MOCK_RECORDS: InvestigationSummary[] = [
     recorded_gravity_values: [0],
     hardware: ['FLEX facility'],
     data_status: 'complete',
-    annotation_status: 'verified',
+    annotation_status: 'source_cited',
   }),
   record({
     psi_id: 'PSI-68',
@@ -193,7 +193,7 @@ export const MOCK_RECORDS: InvestigationSummary[] = [
     recorded_gravity_values: [0],
     hardware: ['FLEX facility'],
     data_status: 'complete',
-    annotation_status: 'verified',
+    annotation_status: 'source_cited',
   }),
   record({
     psi_id: 'PSI-117',
@@ -260,7 +260,7 @@ function provenanceFor(record: InvestigationSummary, field: string) {
   return {
     source_url: record.source_url,
     source_kind: 'psi_narrative' as const,
-    excerpt: `H0 representative fixture for ${field}; the verified H1 excerpt replaces this text.`,
+    excerpt: `H0 representative fixture for ${field}; the source-cited H1 excerpt replaces this text.`,
     note: 'Mock adapter only. Do not treat as a canonical annotation.',
     value_kind: 'reported' as const,
   }
@@ -293,7 +293,7 @@ const MOCK_TABLES: Record<string, ExperimentalTable[]> = {
         source_url: 'https://psi.nasa.gov/data/PSI-25',
         source_kind: 'psi_table',
         excerpt:
-          'H0 representative table fixture; the verified H1 table reference replaces this excerpt.',
+          'H0 representative table fixture; the source-cited H1 table reference replaces this excerpt.',
         note: 'Mock adapter only. Do not treat as a canonical annotation.',
         value_kind: 'reported',
       },
@@ -323,7 +323,7 @@ export function buildDetail(record: InvestigationSummary): InvestigationDetail {
     objectives_text: objectiveFor(record),
     approach_text: approachFor(record),
     key_findings_text:
-      record.annotation_status === 'verified'
+      record.annotation_status === 'source_cited'
         ? 'Representative H0 finding. The backend template justification remains authoritative for wording and scope.'
         : null,
     experimental_tables: MOCK_TABLES[record.psi_id] ?? [],

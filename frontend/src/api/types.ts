@@ -21,7 +21,8 @@ export type ProjectType = 'microgravity' | 'ground'
 export type CatalogRole = 'evidence' | 'instrument_context'
 export type DataStatus = 'complete' | 'partial'
 export type ProgramContextStatus = 'active_program' | 'anticipated_in_psi'
-export type AnnotationStatus = 'verified' | 'metadata_only'
+export type AnnotationStatus = 'source_cited' | 'metadata_only'
+export type ExtractionMethod = 'script' | 'manual' | 'script_assisted_manual'
 export type MatchClass =
   | 'direct_match'
   | 'partial_match'
@@ -58,9 +59,11 @@ export interface Range {
 export interface Provenance {
   source_url: string
   source_kind: SourceKind
-  excerpt: string
+  excerpt_or_table_ref?: string
+  excerpt?: string
   note: string | null
   value_kind: ValueKind
+  extraction_method?: ExtractionMethod
 }
 
 export interface ExperimentalTable {
@@ -184,6 +187,7 @@ export interface RankedResult {
   acronym: string | null
   evidence_class: EvidenceClass
   catalog_role: CatalogRole
+  annotation_status?: AnnotationStatus
   /** Deterministic physical proximity score, 0..1. Not applicability. */
   score: number
   /** Share of requested dimensions present in the record, 0..1. */

@@ -1,3 +1,5 @@
+# Superseded — annotation status is now source_cited with provenance. Worksheet retained for provenance audit reference only.
+
 # Annotation Human-Review Worksheet
 
 > **This worksheet is not a sign-off.** It records the AI-extracted proposal in

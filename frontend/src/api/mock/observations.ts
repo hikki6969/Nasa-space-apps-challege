@@ -57,7 +57,7 @@ export const MOCK_OBSERVATIONS: ObservationsResponse = {
     { id: 'FM2', reason: 'anticipated_in_psi program context; outside the 24-record catalog' },
     { id: 'SoFIE', reason: 'active_program context; no current PSI record' },
     { id: 'FLARE', reason: 'active_program context; no current PSI record' },
-    { id: 'LUCI', reason: 'unverified program context; not plotted' },
+    { id: 'LUCI', reason: 'program context without PSI record; not plotted' },
   ],
   disclaimer: OBSERVED_DOMAIN_DISCLAIMER,
   mock_notice: 'H0 representative observation fixture. Values are not the canonical H1 tables.',

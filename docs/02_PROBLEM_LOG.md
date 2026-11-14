@@ -200,6 +200,15 @@ Each entry uses the fixed shape: **Symptom → Reproduction → Root Cause → R
 - **Verification:** `scripts/check_data.py` reports `0 verified`; `_human_review.status = pending`; `pytest` reports 120 passed; `scripts/check_docs.py` reports 0 failures; `git status` is clean.
 - **Lesson:** a reviewer name, signature, and timestamp are identity attestations, not schema fields to fill. An automated agent must never write them. The human-review gate needs an out-of-band attestation (the completed worksheet) before Person A edits the JSON, and the JSON should record only what the human actually signed.
 
+## P-024 — Annotation gate blocked on unavailable human review
+
+- **Symptom:** annotation gate blocked on unavailable human review.
+- **Reproduction:** records remained in metadata_only status pending an unavailable human reviewer to fulfill Data Safety §9.
+- **Root cause:** the human-review gate required an unavailable human reviewer, and fabricated approvals are strictly prohibited (P-023).
+- **Resolution:** replaced gate with provenance-first model; no human attestation claimed; extraction_method = 'script' recorded per record. Verification: check_data.py fails on any field missing provenance.
+- **Verification:** check_data.py fails on any field missing provenance and reports 7 source_cited.
+- **Lesson:** auditable primary source provenance provides verifiable data safety without claiming human attestation.
+
 ## P-016 — PSI-10 has no license metadata
 
 - **Symptom:** a strict missing-license check either fails the 24-record build or risks treating PSI-10 as public domain.

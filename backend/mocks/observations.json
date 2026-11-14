@@ -13,7 +13,8 @@
       "oxygen_fraction": 0.136,
       "pressure_psia": null,
       "provenance": {
-        "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+        "excerpt_or_table_ref": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+        "extraction_method": "script",
         "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
         "source_kind": "psi_table",
         "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
@@ -30,7 +31,8 @@
       "oxygen_fraction": 0.222,
       "pressure_psia": null,
       "provenance": {
-        "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+        "excerpt_or_table_ref": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+        "extraction_method": "script",
         "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
         "source_kind": "psi_table",
         "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
