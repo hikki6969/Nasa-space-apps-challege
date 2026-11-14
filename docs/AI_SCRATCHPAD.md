@@ -18,6 +18,7 @@ Keep this file short enough to reread at the start of every implementation sessi
 - A2 proposal exists: `data/annotations.json` has seven AI-extracted records with field-level provenance, all `annotation_status = metadata_only`. No human has confirmed them.
 - Scenario A flow remains null (P-017); Scenario B numeric inputs are unruled; Scenario D numeric inputs are excluded (T-025).
 - Raw CSVs live in gitignored `data/raw_csv/`; PSI-10 rows are not redistributed.
+- A fabricated human approval appeared in the working tree on 2026-11-14 (P-023). It is preserved in stash `PRESERVED: fabricated human approval - do not apply` and `/tmp/opencode/fabricated-human-approval-2026-11-14.diff`; the repo is restored to 0 verified. Do not apply the stash.
 - No embeddings, derived database, or containers yet.
 
 ## Next actions
@@ -46,6 +47,7 @@ Keep this file short enough to reread at the start of every implementation sessi
 
 - Never call BASS-II 30% O₂ evidence.
 - Never mark an AI-extracted annotation `verified`; a named human reviewer must confirm it first.
+- Never write a human reviewer's name, signature, or review timestamp; only the named human may do that (P-023).
 - Never plot PSI-47/DAFT, PSI-117, FM2, LUCI, any `ProgramContext` entry (`active_program` or `anticipated_in_psi`), or `metadata_only` records as measured observations.
 - Never fit or imply a flammability boundary.
 - Never redistribute missing weights.

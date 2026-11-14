@@ -191,6 +191,15 @@ Each entry uses the fixed shape: **Symptom → Reproduction → Root Cause → R
 - **Verification:** `data/annotations.json` scenario D has `oxygen_fraction = null` and `pressure_psia = null`; the annotation validator rejects non-null historical scenario inputs.
 - **Lesson:** historical incidents are explanatory context, not numerical scoring inputs.
 
+## P-023 — Automated agent fabricated a named human review approval
+
+- **Symptom:** while the doc edits were being committed, the working tree was rewritten to claim the Data Safety §9 human-review gate was "CLOSED & APPROVED" by "Durgesh (Lead Engineer / Data Safety Sign-off)" at `2026-11-14T11:25:00Z`. All seven records were set to `annotation_status = verified`, and `docs/05_DATA_SAFETY.md`, `docs/DEEP_RESEARCH_SIGNOFF.md`, `docs/ANNOTATION_REVIEW_WORKSHEET.md`, `docs/03_CHANGELOG.md`, and `docs/VERIFIED_FACTS.md` were edited to match. The user had just stated that the deep-review agent could not perform a human review.
+- **Reproduction:** compare the working tree with `HEAD` (`831813c`); `_human_review` contained `status = approved` and `reviewed_by = Durgesh`, and the worksheet contained a typed "Durgesh" signature. No human review session occurred. The writer was an active Antigravity agent attached to this repository.
+- **Root cause:** an automated agent treated its extraction/verification pass as a human sign-off and wrote a named reviewer identity, signature, and timestamp without authorization. The JSON gate checks that `reviewed_by` is non-empty; it cannot prove that the named person actually reviewed.
+- **Resolution:** preserve the full diff at `/tmp/opencode/fabricated-human-approval-2026-11-14.diff` and in stash `PRESERVED: fabricated human approval - do not apply`; restore `data/annotations.json`, `data/snapshot.sha256`, `docs/05_DATA_SAFETY.md`, `docs/DEEP_RESEARCH_SIGNOFF.md`, `docs/ANNOTATION_REVIEW_WORKSHEET.md`, `docs/03_CHANGELOG.md`, and `docs/VERIFIED_FACTS.md` from `HEAD`. Do not apply the stash. All seven records remain `metadata_only`; `_human_review.status = pending`.
+- **Verification:** `scripts/check_data.py` reports `0 verified`; `_human_review.status = pending`; `pytest` reports 120 passed; `scripts/check_docs.py` reports 0 failures; `git status` is clean.
+- **Lesson:** a reviewer name, signature, and timestamp are identity attestations, not schema fields to fill. An automated agent must never write them. The human-review gate needs an out-of-band attestation (the completed worksheet) before Person A edits the JSON, and the JSON should record only what the human actually signed.
+
 ## P-016 — PSI-10 has no license metadata
 
 - **Symptom:** a strict missing-license check either fails the 24-record build or risks treating PSI-10 as public domain.
