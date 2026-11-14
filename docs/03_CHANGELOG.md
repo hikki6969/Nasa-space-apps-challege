@@ -2,6 +2,32 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person B B8, B9, B10 completion (final frontend milestones)
+
+### Added
+
+- `frontend/src/features/investigations/accessibilityAndStates.test.tsx` — 8 cases: pending `role="status" aria-live="polite"` loading state, retryable `role="alert"` error state (ComparePanel catalog failure), zero-match empty filter + reset recovery (`Showing 24 of 24`), computed WCAG contrast (`--ink` ≥ 7.0 AAA; `--ink-muted`/`--ink-dim` ≥ 4.5 AA; every accent/focus token ≥ 4.5 AA on `--space-950`), and a source audit asserting zero CDN host references anywhere in `src/`.
+- `frontend/src/features/investigations/scenarioEndToEnd.test.tsx` — the four canonical scenarios end-to-end: A (T-017 no direct match; `Flow is unspecified`), B (SAME-R ranked; PSI-47 never ranked), C (FLEX/FLEX-2 completed evidence; PSI-117 modeling-only), D (no Apollo 1 reconstruction claim).
+- `frontend/scripts/smoke-dist.mjs` — post-build production smoke: asserts `dist/index.html` exists, every local asset it references resolves, zero remote URLs in HTML, zero remote asset hosts (CDN) in any bundled text asset (one documented allowance: the jsdelivr string inside Plotly's dead Mapbox marker loader, unreachable — noted in the file). Wired as `npm run smoke` into `npm run check` (…→ `build && smoke`).
+- `docs/H3_UI_API_DEFECTS.md` — H3 delivery to Person A: D-001 (reproducible): `/api/compare` rows carry Python-repr strings (`"['solid']"`) for list-typed values — request/response/expected documented, frontend shipped a workaround (ignores `rows`, derives matrix from hydrated `records`). D-002: `/api/observations` reports oxygen bounds only — ruling requested (enrich with `fuel_phase`/flow-with-provenance, or document strip-mode contract).
+- `docs/02_PROBLEM_LOG.md` — P-025 records the D-001 defect using the shared entry shape.
+
+### Changed
+
+- `frontend/Dockerfile` — nginx stage pinned to `nginx:1.27-alpine` (Node stays `node:22-alpine`, deps lockfile-pinned via `npm ci`).
+- `docs/todo/PERSON_B.md` — B8 and B9 checked with verification notes (B9 image/offline-proxy rehearsal explicitly unverified on this host; B10's Docker-twice rehearsal checkbox left open and documented as blocked — no docker CLI available here; responsive checks verified class-level and by jsdom, not by visual browser matrix).
+- H3/H4 handoff log rows carry this milestone's evidence links.
+
+### Verified
+
+- `npm run check` → typecheck, lint, **95/95** tests (was 83; +12 new), production build, `smoke-dist.mjs` pass.
+- `python scripts/check_docs.py` → 0 failures (17 required documents).
+
+### Known limits
+
+- The two offline Docker demo rehearsals mandated by B10 are NOT done — no `docker` CLI exists on this host; neither B9's done-when nor B10's done-when may be claimed until they run on a Docker host. Person A's 2026-11-14 H4 evidence stands as the last container verification.
+- jsdom prints harmless Plotly canvas warnings; contrast verification is computed from `index.css` tokens, not from a rendered browser.
+
 ## 2026-11-14 — Person B H2 live backend integration (full alignment)
 
 ### Added

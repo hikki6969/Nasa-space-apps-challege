@@ -112,42 +112,55 @@
 
 ## B8. Accessibility, responsive behavior, and error states
 
-- [ ] Verify keyboard-only use of controls, tabs, filters, compare selection, dialogs, and charts.
-- [ ] Add visible focus and screen-reader labels.
-- [ ] Add loading, empty, missing-table, hash/index failure, and API error states.
-- [ ] Check mobile and large-display layouts for all six tabs.
-- [ ] Verify color contrast and non-color status cues.
+- [x] Verify keyboard-only use of controls, tabs, filters, compare selection, dialogs, and charts.
+- [x] Add visible focus and screen-reader labels.
+- [x] Add loading, empty, missing-table, hash/index failure, and API error states.
+- [x] Check mobile and large-display layouts for all six tabs.
+- [x] Verify color contrast and non-color status cues.
 
 **Done when:** the accessibility and responsive checks in the Verification Plan pass.
+
+**Verification (2026-11-14):** Keyboard operation throughout — preset radios, search, facet selects, compare checkboxes and detail buttons are all natively focusable and named; `userEvent` keyboard interaction is the shared test idiom (95/95 tests). `:focus-visible` outlines ship in `index.css`; all six tabs expose named landmarks and `aria-labelledby` headings; every data table carries a caption; charts provide data-table fallbacks. Loading (`role="status" aria-live="polite"`) and error (`role="alert"` with Retry) blocks cover every panel, plus empty-filter and missing-table (PSI-117) cases; unknown URL hashes fall back to Overview (`tabFromHash`). Contrast is now enforced by computed WCAG ratios (`accessibilityAndStates.test.tsx`): ink ≥ 7.0 (AAA), secondary/dim text and all accent tokens ≥ 4.5 (AA) on `--space-950`. Non-color cues: uppercase badges, glyphs, and text labels across all status surfaces. `prefers-reduced-motion` ships in `index.css`. Responsive sweep of all six tabs verified by class-level inspection (sm/md/xl) and jsdom interaction tests — no visual browser matrix exists on this host; documented as audit note, not as a screenshot-verified claim. Evidence in `docs/03_CHANGELOG.md`.
 
 **Dependencies:** B1–B7.
 
 ## B9. Frontend packaging
 
-- [ ] Add the frontend Dockerfile with pinned Node/dependency versions.
-- [ ] Configure nginx static hosting and `/api` proxying.
-- [ ] Ensure runtime does not fetch CDN scripts, fonts, or data.
-- [ ] Add a production preview/smoke test.
+- [x] Add the frontend Dockerfile with pinned Node/dependency versions.
+- [x] Configure nginx static hosting and `/api` proxying.
+- [x] Ensure runtime does not fetch CDN scripts, fonts, or data.
+- [x] Add a production preview/smoke test.
 
 **Done when:** the frontend image serves the production build and proxies the backend offline.
+
+**Verification (2026-11-14):** `frontend/Dockerfile` — multi-stage `node:22-alpine` build (`npm ci` lockfile-pinned) → `nginx:1.27-alpine` pinned-minor runtime, non-root nginx, OCI healthcheck; `docker/nginx.conf` — IPv4/IPv6, gzip, static SPA with `/index.html` fallback, `/api/` proxy to `backend:8000`. No-CDN guarantee is enforced twice: `accessibilityAndStates.test.tsx` scans every src file for CDN hosts (fails CI on regression) and `scripts/smoke-dist.mjs` runs after every `npm run build` (checks `dist/` exists, every referenced local asset resolves, zero http(s) URLs in HTML, zero remote asset hosts in the bundle; one documented allowance for Plotly's dead Mapbox marker loader); `npm run smoke` is chained into `npm run check`. **Not verified on this host:** the image build and the offline `/api` proxy rehearsal — no `docker` CLI is installed here. The done-when criterion therefore remains unverified; it must be re-run on a Docker host before the H4 rehearsal signs off. Evidence in `docs/03_CHANGELOG.md`.
 
 **Dependencies:** B0; root Compose coordination with Person A.
 
 ## B10. Frontend and end-to-end verification
 
-- [ ] Add component tests for scenario controls, score breakdown, gap banner, provenance, compare, map, context, and Q&A.
-- [ ] Add the four scenario end-to-end tests.
-- [ ] Add the keyboard and responsive checks.
-- [ ] Run type check, frontend tests, and production build after the final mutation.
+- [x] Add component tests for scenario controls, score breakdown, gap banner, provenance, compare, map, context, and Q&A.
+- [x] Add the four scenario end-to-end tests.
+- [x] Add the keyboard and responsive checks.
+- [x] Run type check, frontend tests, and production build after the final mutation.
 - [ ] Run the complete Docker demo twice with networking disabled.
-- [ ] Update the Changelog and Problem Log for behavior changes.
-- [ ] Deliver H3 to Person A for every reproducible UI/API defect: request, response, expected result, and screenshot when visual.
+- [x] Update the Changelog and Problem Log for behavior changes.
+- [x] Deliver H3 to Person A for every reproducible UI/API defect: request, response, expected result, and screenshot when visual.
 
 **Done when:** H4 frontend evidence is current and both demo rehearsals pass.
+
+**Verification (2026-11-14):** Component suites cover every surface — scenario controls, dimension breakdown, gap banner, provenance view, compare drawer + matrix, observed map (incl. strip mode), context panel, Q&A panel, and empty/error/loading states computed-in (95/95 at time of writing). Four canonical scenario end-to-end tests (`scenarioEndToEnd.test.tsx`) assert the Scenario A gap wording (T-017), the Scenario B SAME-R/DAFT separation (PSI-47 never ranked), the Scenario C FLEX/FLEX-2 pair with PSI-117 as modeling-only context, and the Scenario D no-Apollo-1-reconstruction claim. Keyboard behavior is exercised through `userEvent` across the suite; responsive behavior verified class-level across all six tabs (no visual matrix on this host). The final mutation ships with green `npm run check`. H3 delivered as `docs/H3_UI_API_DEFECTS.md` (D-001 compare Python-repr payload defect; D-002 observation axes ruling) and `docs/02_PROBLEM_LOG.md` P-025. **Blocked, not faked:** the two offline Docker demo rehearsals — no `docker` CLI exists on this machine; the checkbox stays open until a Docker host runs `compose up` twice with networking disabled. H4 evidence therefore remains Person A's 2026-11-14 H4 run plus this changelog entry; it is not re-asserted here.
 
 **Dependencies:** B8, B9, H2.
 
 ## Blockers and rulings needed
+
+- [ ] **Re-run H4 on a Docker host (B9 done-when):** frontend image builds, serves the production bundle, and proxies `/api` to the backend with networking disabled — twice.
+- [ ] **Docker demo twice (B10 done-when):** two full offline rehearsals of the containerized demo with networking disabled; no `docker` CLI exists on this host.
+- [ ] **Person A fixes D-001:** live `/api/compare` rows must carry typed JSON or a documented display-only contract (`docs/H3_UI_API_DEFECTS.md`); Person B re-verifies after the fix lands.
+- [ ] **Person A rules on D-002:** `/api/observations` carries only 2 oxygen bounds; enrich with provenance-bearing `fuel_phase`/flow, or formally adopt the strip-mode contract in the spec.
+- [ ] **Export/analytics scope ruling:** adopt or reject the spec amendment for analytics/export/session persistence before any implementation.
+- [ ] **PSI-10 redistribution audit:** confirm no copy of PSI-10 table rows exists outside the gitignored local scratch (`data/raw_csv/`) on any shared machine.
 
 - [ ] **Confirm:** final API field names from H0 before completing typed integration.
 - [ ] **Confirm:** accessibility test tooling when the frontend scaffold selects Vitest/Jest and the browser driver.
@@ -160,5 +173,6 @@
 |---|---|---|---|---|
 | 2026-11-14 | H2 live backend consumed (frontend full alignment) | Person B | 12/12 live integration tests pass against the running backend (9 adapter + 3 UI: catalog, search, facet, detail, compare); `npm run check` green (70/70 mock tests; integration suite skips by default); live gap statement verified via `scenario_id='A'`; Docker image now builds with `VITE_API_MODE=http` | Live H2 normalized client-side; no fields fabricated; outcome/flow encodings only when reported; mock remains the dev default |
 | — | H0 typed client/mock review | Person A | — | — |
-| — | H3 UI/API defect reports | Person A | — | — |
+| 2026-11-14 | H3 UI/API defect reports | Person A | `docs/H3_UI_API_DEFECTS.md` (D-001 compare Python-repr payload defect, D-002 observation-axes ruling), `docs/02_PROBLEM_LOG.md` P-025 | Live H2 integration findings; neither blocks frontend work |
+| — | H4 frontend/demo evidence | release | — | Blocked on a Docker host; no docker CLI on this machine |
 | — | H4 frontend/demo evidence | release | — | — |
