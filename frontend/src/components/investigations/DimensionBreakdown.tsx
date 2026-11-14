@@ -134,11 +134,11 @@ export function DimensionBreakdown({
                         status === 'partial' && 'bg-compare',
                         status === 'zero' && 'bg-flame',
                       )}
-                      style={{ width: `${Math.max(dimension.similarity * 100, 1)}%` }}
+                      style={{ width: `${Math.max((dimension.similarity ?? 0) * 100, 1)}%` }}
                     />
                   </div>
                   <span className="w-12 text-right font-mono text-xs text-ink">
-                    {formatPercent(dimension.similarity)}
+                    {formatPercent(dimension.similarity ?? 0)}
                   </span>
                 </div>
                 {status === 'zero' && (

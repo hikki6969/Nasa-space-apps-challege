@@ -80,7 +80,10 @@ export default function OverviewPanel() {
 
     const rankEntries = await Promise.all(
       scenariosResponse.scenarios.map(async (scenario) => {
-        const rank = await api.rank({ scenario: scenario.inputs }, { signal })
+        const rank = await api.rank(
+          { scenario: scenario.inputs, scenario_id: scenario.id as 'A' | 'B' | 'C' | 'D' },
+          { signal },
+        )
         return [scenario.id, rank] as const
       }),
     )

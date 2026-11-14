@@ -70,11 +70,24 @@ export interface ExperimentalTable {
   psi_id: string
   file_name: string
   version: number
-  s3_version_id: string
   download_url: string
   columns: string[]
   rows: Array<Record<string, unknown>>
   provenance: Provenance
+}
+
+/** Slim record returned by the live H2 `/api/catalog` (no rich physical fields). */
+export interface CatalogEntryLive {
+  psi_id: string
+  title: string
+  acronym: string | null
+  project_type: ProjectType
+  catalog_role: CatalogRole
+  data_status: DataStatus | null
+  annotation_status: AnnotationStatus
+  evidence_class: EvidenceClass | null
+  safety_theme: SafetyTheme | null
+  source_url: string
 }
 
 export interface InvestigationSummary {
@@ -174,8 +187,8 @@ export interface DimensionScore {
   requested: boolean
   /** True when the record carries a curated value for this dimension. */
   present: boolean
-  /** 0..1; always 0 when the dimension is missing or not requested. */
-  similarity: number
+  /** 0..1; null when the dimension is missing or not requested. */
+  similarity: number | null
   scenario_value: string | number | null
   record_value: string | number | null
   note: string | null
@@ -199,8 +212,12 @@ export interface RankedResult {
   provenance_refs: string[]
 }
 
+export type ScenarioId = 'A' | 'B' | 'C' | 'D'
+
 export interface RankRequest {
   scenario: ScenarioInputs
+  /** Canonical fixture id, when the caller ranks a canonical scenario. */
+  scenario_id?: ScenarioId | null
 }
 
 export interface RankResponse {
@@ -264,29 +281,27 @@ export type ObservationOutcome =
   | 'suppression'
 
 export interface ObservationPoint {
-  id: string
   psi_id: string
-  label: string
+  file_name: string
+  row_index: number
   oxygen_fraction: number
-  flow_velocity_cms: number
-  fuel_phase: FuelPhase
-  outcome: ObservationOutcome
-  source_table: string
-}
-
-export interface ObservationAxis {
-  key: 'oxygen_fraction' | 'flow_velocity_cms'
-  label: string
-  unit: string
+  pressure_psia: number | null
+  flow_velocity_cms: number | null
+  gravity_g: number | null
+  fuel_phase: FuelPhase | null
+  /**
+   * Measured outcome, when the source table reports one. The live H2 endpoint
+   * reports none today; the offline mock fixture carries representative values.
+   */
+  outcome?: ObservationOutcome | null
+  /** Provenance of the measured row. Never fabricated. */
+  provenance: Provenance
 }
 
 export interface ObservationsResponse {
   points: ObservationPoint[]
-  axes: {
-    x: ObservationAxis
-    y: ObservationAxis
-  }
-  excluded: Array<{ id: string; reason: string }>
+  /** Records the endpoint excluded, by accession. Reasons are documented client-side. */
+  excluded_psi_ids: string[]
   disclaimer: string
   mock_notice: string | null
 }
@@ -320,8 +335,10 @@ export interface AskRequest {
 export interface AskCitation {
   psi_id: string
   title: string
-  field: string
-  value: string
+  /** Cited field, when the answer cites specific values. */
+  field?: string
+  /** Cited value, when the answer cites specific values. */
+  value?: string
   source_url: string
 }
 

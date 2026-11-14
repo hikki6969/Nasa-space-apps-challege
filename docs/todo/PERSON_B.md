@@ -69,38 +69,44 @@
 
 ## B5. Observed Flammability Map
 
-- [ ] Plot only API-returned measured observations.
-- [ ] Encode outcome and material/fuel class clearly and accessibly.
-- [ ] Add optional translucent observed-domain hull.
-- [ ] Display exactly: “Observed test domain; not a validated flammability boundary.”
-- [ ] Add no fitted curve, probability, confidence interval, risk tier, or extrapolation.
-- [ ] Prove FM2, LUCI, PSI-47, PSI-117, and every program-context or anticipated record are absent.
-- [ ] Add a source/visual regression test for the forbidden chart elements.
+- [x] Plot only API-returned measured observations.
+- [x] Encode outcome and material/fuel class clearly and accessibly.
+- [x] Add optional translucent observed-domain hull.
+- [x] Display exactly: “Observed test domain; not a validated flammability boundary.”
+- [x] Add no fitted curve, probability, confidence interval, risk tier, or extrapolation.
+- [x] Prove FM2, LUCI, PSI-47, PSI-117, and every program-context or anticipated record are absent.
+- [x] Add a source/visual regression test for the forbidden chart elements.
 
 **Done when:** observed-map tests pass and a reviewer cannot mistake the hull for a boundary.
+
+**Verification (2026-11-14):** `npm run check` passes — typecheck, lint, 65/65 Vitest (observed-map suite in `frontend/src/features/observed-map/ObservedMapPanel.test.tsx`: exact disclaimer, API-points-only table, excluded-ID panel, outcome/phase encoding, hull toggle, hull-trace construction and source regression scan, convex hull, mock adapter coverage of FM2/LUCI/PSI-47/PSI-117/SoFIE/FLARE), production build; `python scripts/check_docs.py` reports 0 failures. The hull trace carries exactly the required disclaimer label (spec §10.2). Fixture-backed under H1 and unverified against real tables. Evidence in `docs/03_CHANGELOG.md`.
 
 **Dependencies:** B1, H2.
 
 ## B6. Historical and Earth Applications
 
-- [ ] Build Apollo 1, Mir, and Apollo 13 context cards from official NASA sources.
-- [ ] Build NASA Spinoff cards from official URLs.
-- [ ] Label thematic links as thematic unless direct lineage is explicit.
-- [ ] Keep every context card outside numerical ranking and measured plots.
+- [x] Build Apollo 1, Mir, and Apollo 13 context cards from official NASA sources.
+- [x] Build NASA Spinoff cards from official URLs.
+- [x] Label thematic links as thematic unless direct lineage is explicit.
+- [x] Keep every context card outside numerical ranking and measured plots.
 
 **Done when:** no historical/spinoff value can enter a ranking payload or observed observation.
+
+**Verification (2026-11-14):** `ContextPanel.test.tsx` (6 cases): official NASA SMA/history URLs and `noopener` links for the three incidents; official `spinoff.nasa.gov` URLs for three Spinoff cards; every card carries `thematic` and `Context only` with no direct-lineage claim; FM2 `Anticipated in PSI` + SoFIE/FLARE `Active program`; PSI-47 instrument context. Live backend confirms the same inventory (3 incidents, 3 spinoffs, FM2/SoFIE/FLARE, PSI-47). `mockAdapter.test.ts` asserts no context-only id (FM2/LUCI/SoFIE/FLARE/PSI-47/PSI-117) appears in any ranked result for the four canonical scenarios. Backend (H2) independently excludes context from measured observations. `python scripts/check_docs.py` reports 0 failures.
 
 **Dependencies:** B0, H1.
 
 ## B7. Bounded Q&A and scope guard
 
-- [ ] Build question input with preset examples.
-- [ ] Render template answers, matched records, fields, and linked PSI citations.
-- [ ] Display out-of-scope rocket/propellant refusals clearly.
-- [ ] Do not inject answer HTML.
-- [ ] Confirm `USE_LLM=false` is invisible in the normal experience.
+- [x] Build question input with preset examples.
+- [x] Render template answers, matched records, fields, and linked PSI citations.
+- [x] Display out-of-scope rocket/propellant refusals clearly.
+- [x] Do not inject answer HTML.
+- [x] Confirm `USE_LLM=false` is invisible in the normal experience.
 
 **Done when:** valid questions are cited and scope violations are refused.
+
+**Verification (2026-11-14):** `QaPanel.test.tsx` (6 cases): four preset questions render (incl. scope guard); preset answer renders with citations, `Answered`/`In scope` badges, matched records and linked PSI citations (rel `noopener`); scope-guard answer renders `Refused`/`Out of scope` with no HTTP citations; typed-question submission; no `img`/`script`/`iframe` injection path. Grep confirms no `USE_LLM`/LLM/Phi-3 copy appears anywhere in the UI; `use_llm` exists only in the typed health surface. Live backend (`/api/ask`) returns template answers with citations and a `rocket_propellant` scope refusal; the live adapter maps both faithfully (see H2 integration). `python scripts/check_docs.py` reports 0 failures.
 
 **Dependencies:** B1, H2.
 
@@ -152,6 +158,7 @@
 
 | Date | Handoff | Recipient | Evidence | Notes |
 |---|---|---|---|---|
+| 2026-11-14 | H2 live backend consumed (frontend full alignment) | Person B | 12/12 live integration tests pass against the running backend (9 adapter + 3 UI: catalog, search, facet, detail, compare); `npm run check` green (70/70 mock tests; integration suite skips by default); live gap statement verified via `scenario_id='A'`; Docker image now builds with `VITE_API_MODE=http` | Live H2 normalized client-side; no fields fabricated; outcome/flow encodings only when reported; mock remains the dev default |
 | — | H0 typed client/mock review | Person A | — | — |
 | — | H3 UI/API defect reports | Person A | — | — |
 | — | H4 frontend/demo evidence | release | — | — |

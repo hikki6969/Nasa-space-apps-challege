@@ -7,6 +7,13 @@ COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 
 COPY frontend/ ./
+
+# Vite inlines env at build time. The production image must bundle the live
+# HTTP adapter (proxied to the backend by nginx at /api), not the mock.
+# Offline mock builds remain possible via --build-arg VITE_API_MODE=mock.
+ARG VITE_API_MODE=http
+ARG VITE_API_BASE_URL=/api
+ENV VITE_API_MODE=${VITE_API_MODE} VITE_API_BASE_URL=${VITE_API_BASE_URL}
 RUN npm run build
 
 # Serve stage

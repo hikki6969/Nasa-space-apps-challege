@@ -174,12 +174,14 @@ export default function QaPanel() {
                         {citation.title}
                       </span>
                     </div>
-                    <p className="mt-1 text-xs text-ink-muted">
-                      <span className="font-mono text-[10px] text-compare">
-                        {citation.field}
-                      </span>{' '}
-                      · {citation.value}
-                    </p>
+                    {citation.field && citation.value && (
+                      <p className="mt-1 text-xs text-ink-muted">
+                        <span className="font-mono text-[10px] text-compare">
+                          {citation.field}
+                        </span>{' '}
+                        · {citation.value}
+                      </p>
+                    )}
                     <a
                       href={citation.source_url}
                       target="_blank"

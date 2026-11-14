@@ -272,7 +272,6 @@ const MOCK_TABLES: Record<string, ExperimentalTable[]> = {
       psi_id: 'PSI-25',
       file_name: 'psi25_bass2_ignition_limits.csv',
       version: 1,
-      s3_version_id: 'h0-mock-not-canonical',
       download_url: 'https://psi.nasa.gov/data/PSI-25/table-download',
       columns: ['sample', 'oxygen_fraction', 'pressure_psia', 'ignition_observed'],
       rows: [
