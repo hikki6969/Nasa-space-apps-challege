@@ -2,6 +2,23 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person B B4 verification pass (key findings in the comparison matrix)
+
+### Added
+
+- `CompareDrawer` now renders a **Key findings** row alongside scores, coverage, and approach: each selected record shows its `key_findings_text`, or the explicit fallback `No key-findings text is available for this record.` when the record carries none. Findings are never fabricated, and the row repeats the non-ranked rule — metadata-only/instrument-context records keep `Not ranked` badges with no scores or coverage values.
+- One Vitest case in `frontend/src/features/investigations/CatalogExplorer.test.tsx` (`compares key findings, withholding them when the record has none`) asserting both paths: verified PSI-25 renders the fixture finding; metadata-only PSI-142 renders the withheld fallback.
+
+### Verified
+
+- The catalog-pinned Compare mode (commit `d5d2477`) and the Parallel-coordinates Compare tab both satisfy the B4 checklist: per-row pins capped at four, side-by-side matrix, non-ranked badges instead of numeric scores for metadata-only/instrument-context records, shared/different fuels, phases, themes and hardware via the compare API contract, and Plotly parallel coordinates limited to numeric fields present for every selected record (an axis is dropped entirely when any selection lacks a value).
+- `npm run check` → typecheck, lint (0 warnings), 48/48 tests (was 47), production build.
+- `python scripts/check_docs.py` → 0 failures (17 required documents).
+
+### Known limits
+
+- Compare mode remains fixture-backed under H1 and unverified against real annotations; no numeric annotation is displayed without provenance. Explicit shared/different measurement grouping beyond the compare API contract (`compare.shared` / `compare.differences`) still needs a Person A contract extension.
+
 ## 2026-11-14 — Person B B4 implementation (Compare mode)
 
 ### Added

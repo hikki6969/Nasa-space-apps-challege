@@ -63,6 +63,8 @@
 
 **Done when:** comparison works for same-theme and cross-theme records without implying equivalent evidence classes.
 
+**Verification (2026-11-14):** `npm run check` passes — typecheck, lint, 48/48 Vitest (compare suite in `frontend/src/features/investigations/CatalogExplorer.test.tsx`), production build; `python scripts/check_docs.py` reports 0 failures. The comparison matrix covers physical scores, coverage, approach, key findings, and field-level provenance; non-ranked records render `Not ranked` badges instead of numeric scores. Parallel coordinates render only numeric fields present for every selection. Compare remains fixture-backed under H1 and unverified against real annotations. Evidence in `docs/03_CHANGELOG.md`.
+
 **Dependencies:** B1, H2.
 
 ## B5. Observed Flammability Map

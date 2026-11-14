@@ -663,6 +663,38 @@ describe('Compare mode — catalog selection and side-by-side view', () => {
     }
   })
 
+  it('compares key findings, withholding them when the record has none', async () => {
+    const user = userEvent.setup()
+    renderExplorer([
+      rankedResult('PSI-25', 'Burning and Suppression of Solids-II', 0.9, 0.3),
+    ])
+
+    await findCatalogTable()
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Mark PSI-25 for comparison' }),
+    )
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Mark PSI-142 for comparison' }),
+    )
+    await user.click(
+      screen.getByRole('button', { name: /Compare selected \(2\)/i }),
+    )
+
+    const drawer = await screen.findByRole('region', {
+      name: /Side-by-side: 2 records/i,
+    })
+    expect(
+      within(drawer).getByText(
+        'Representative H0 finding. The backend template justification remains authoritative for wording and scope.',
+      ),
+    ).toBeInTheDocument()
+    expect(
+      within(drawer).getByText(
+        'No key-findings text is available for this record.',
+      ),
+    ).toBeInTheDocument()
+  })
+
   it('shows non-ranked badges instead of scores for metadata-only selections', async () => {
     const user = userEvent.setup()
     renderExplorer([

@@ -289,6 +289,18 @@ export function CompareDrawer({
                   </td>
                 ))}
               </tr>
+              <tr className="border-b border-edge/70">
+                <th scope="row" className={FIELD_HEAD}>Key findings</th>
+                {details.map((detail) => (
+                  <td
+                    key={detail.psi_id}
+                    className={`${CELL} text-xs leading-relaxed whitespace-pre-line text-ink-muted`}
+                  >
+                    {detail.key_findings_text ??
+                      'No key-findings text is available for this record.'}
+                  </td>
+                ))}
+              </tr>
               <tr>
                 <th scope="row" className={FIELD_HEAD}>Provenance</th>
                 {details.map((detail) => {
