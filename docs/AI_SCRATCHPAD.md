@@ -22,7 +22,7 @@ Keep this file short enough to reread at the start of every implementation sessi
 
 ## Next actions
 
-1. **Human reviewer:** confirm the seven records' numeric values and provenance; then Person A may set `annotation_status = verified`.
+1. **Human reviewer:** complete [`ANNOTATION_REVIEW_WORKSHEET.md`](ANNOTATION_REVIEW_WORKSHEET.md) (70 fields, 7 classifications, 4 scenario rulings); then Person A may set `annotation_status = verified`.
 2. **Person A:** after review, run T-017 and the p95 ranking target against canonical records; then build A3 derived index/embeddings.
 3. **Person A:** cite a primary source for Scenario B or leave its numeric inputs null.
 4. **Person B:** integrate H1 catalog/detail fixtures once A2 publishes them.

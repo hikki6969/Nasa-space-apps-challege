@@ -8,6 +8,7 @@ All notable changes to the specification and implementation baseline are recorde
 
 - `data/annotations.json` with seven AI-extracted record proposals and field-level provenance. All records are `annotation_status = metadata_only`; Data Safety §9 human review is pending.
 - `docs/DEEP_RESEARCH_SIGNOFF.md` documenting the extraction sources and per-field proposals; it is explicitly not a human sign-off.
+- `docs/ANNOTATION_REVIEW_WORKSHEET.md` with 70 field-level checks, 7 evidence classifications, and 4 scenario rulings for the named human reviewer.
 - VF-14 through VF-19 for SAFFIRE-I, SAME-R, FLEX, FLEX-2, CFI-G, and Flame Design table facts; P-017 through P-022.
 
 ### Changed

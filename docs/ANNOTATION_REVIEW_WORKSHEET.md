@@ -60,7 +60,7 @@
 3. **`flow_velocity`** (Flow velocity) — No source column or narrative value exists. Null is intentional; do not fill it without a source.
 4. **`gravity`** (Gravity) — PSI narrative — `PSI-159` detail page. Excerpt: “approach_text: 'Perform spherical diffusion flame tests aboard the International Space Station.' project_type=microgravity.”. Note: ISS microgravity ≈ 0 g. No table column for gravity.
 5. **`recorded_gravity_values`** (Recorded gravity levels) — PSI narrative — `PSI-159` detail page. Excerpt: “project_type=microgravity; ISS operations. Single gravity level: 0 g.”. Note: ISS operates at ~10^-3 to 10^-6 g; recorded as 0.0 g per project_type.
-6. **`recorded_flow_values`** (Recorded flow levels) — No observed flow-level column exists in the source. The empty list is intentional.
+6. **`recorded_flow_values`** (Recorded flow levels) — The source table has no flow column. The empty list is intentional.
 7. **`fuel`** (Fuel) — PSI table — `PSI-159_Experimental table_CFI-G_Inverse Flames.csv`. Excerpt: “PSI-159_Experimental table_CFI-G_Inverse Flames.csv: Fuel column contains: butane, ethane, propane. Normal Flames table Fuel column: 30% butane, 30% ethane, 30% propane, 50% butane, ethane, propane.”.
 8. **`fuel_phases`** (Fuel phase) — PSI narrative — `PSI-159` detail page. Excerpt: “sub_research_area='Flames of Gaseous Fuels'; approach_text: 'spherical diffusion flame tests'. Fuels are propane, butane, ethane — all gaseous hydrocarbons.”. Note: sub_research_area explicitly states 'Gaseous Fuels'.
 9. **`safety_theme`** (Primary safety theme) — PSI narrative — `PSI-159` detail page. Excerpt: “sub_research_area='Flames of Gaseous Fuels'. Objectives include determining cool flame conditions and flammability limits. Primary theme is understanding ignition/flammability boundaries — classified as prevention.”. Note: prevention assigned from sub_research_area and objectives focus on flammability limits.
@@ -103,7 +103,7 @@
 3. **`flow_velocity`** (Flow velocity) — No source column or narrative value exists. Null is intentional; do not fill it without a source.
 4. **`gravity`** (Gravity) — PSI narrative — `PSI-10` detail page. Excerpt: “approach_text: 'Perform spherical diffusion flame tests in drop towers and aboard the International Space Station.' project_type=microgravity.”. Note: ISS + drop tower. Single gravity level: 0 g.
 5. **`recorded_gravity_values`** (Recorded gravity levels) — PSI narrative — `PSI-10` detail page. Excerpt: “project_type=microgravity; ISS and drop tower operations.”.
-6. **`recorded_flow_values`** (Recorded flow levels) — No observed flow-level column exists in the source. The empty list is intentional.
+6. **`recorded_flow_values`** (Recorded flow levels) — The source table has no flow column. The empty list is intentional.
 7. **`fuel`** (Fuel) — PSI table — `PSI-10_Experimental table_Flame Design_Normal Flame.csv`. Excerpt: “PSI-10_Experimental table_Flame Design_Normal Flame.csv: Fuel column contains C2H4, C3H8.”. Note: Inverse Flame table has no explicit Fuel column; ethylene implied by XC2H4 column name.
 8. **`fuel_phases`** (Fuel phase) — PSI narrative — `PSI-10` detail page. Excerpt: “sub_research_area='Flames of Gaseous Fuels'. Fuels are C2H4 (ethylene) and C3H8 (propane) — gaseous at test conditions.”.
 9. **`safety_theme`** (Primary safety theme) — PSI narrative — `PSI-10` detail page. Excerpt: “sub_research_area='Flames of Gaseous Fuels'; objectives focus on soot-inception, extinction limits, flammability — prevention domain.”. Note: prevention assigned from objectives and sub_research_area.
@@ -223,7 +223,7 @@
 | 7 | `fuel` | PMMA (polymethyl methacrylate) films/rods, SIBAL fabric, and other solid samples | [Table CSV](https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false) | `reported` | ☐ |
 | 8 | `fuel_phases` | solid | [Detail page](https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25) | `reported` | ☐ |
 | 9 | `safety_theme` | prevention | [Detail page](https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25) | `reported` | ☐ |
-| 10 | `secondary_safety_themes` | suppression | — | — | ☐ |
+| 10 | `secondary_safety_themes` | suppression | [Detail page](https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25) | classification | ☐ |
 
 **Evidence and notes**
 
@@ -232,11 +232,11 @@
 3. **`flow_velocity`** (Flow velocity) — PSI narrative — `PSI-25` detail page. Excerpt: “approach_text: 'wind tunnel which could impose airflow speeds up to 40 cm/s'. Table has Fan display and Air display (instrument readings only, not direct cm/s). Upper bound 40 cm/s from narrative.”. Note: No direct cm/s column in table. 0 cm/s lower bound from Air display=0 rows. 40 cm/s is stated capability.
 4. **`gravity`** (Gravity) — PSI narrative — `PSI-25` detail page. Excerpt: “approach_text: 'microgravity combustion tests were performed aboard the International Space Station.' project_type=microgravity.”.
 5. **`recorded_gravity_values`** (Recorded gravity levels) — PSI narrative — `PSI-25` detail page. Excerpt: “project_type=microgravity. Single gravity level: 0 g.”.
-6. **`recorded_flow_values`** (Recorded flow levels) — No observed flow-level column exists in the source. The empty list is intentional.
+6. **`recorded_flow_values`** (Recorded flow levels) — The table has instrument readings (`Fan display`, `Air display`), not direct cm/s levels. The empty list is intentional.
 7. **`fuel`** (Fuel) — PSI table — `PSI-25_Experimental table_BASS-II.csv`. Excerpt: “PSI-25_Experimental table_BASS-II.csv: 'Fuel Sample Material' column. Sample values include: 100 micron PMMA film, 200 micron PMMA film, SIBAL, black rod, PMMA 1mm–5mm thick, etc.”.
 8. **`fuel_phases`** (Fuel phase) — PSI narrative — `PSI-25` detail page. Excerpt: “approach_text: 'Fuel samples were mounted inside a small wind tunnel'. objectives_text: 'solid fuels burning in low-velocity forced flows'. All samples are solid materials.”.
 9. **`safety_theme`** (Primary safety theme) — PSI narrative — `PSI-25` detail page. Excerpt: “sub_research_area='Spacecraft Fire Safety'. Title: 'Burning and Suppression of Solids'. objectives_text covers both ignition/spread limits (prevention) and suppression. Primary: prevention; secondary: suppression.”.
-10. **`secondary_safety_themes`** (Secondary safety themes) — No secondary theme is assigned. The empty list is intentional.
+10. **`secondary_safety_themes`** (Secondary safety themes) — No separate provenance entry; the value is supported by the `safety_theme` evidence above.
 
 **Record decision:** ☐ All fields confirmed  ☐ Corrections logged  ☐ Record rejected
 
@@ -266,7 +266,7 @@
 | 7 | `fuel` | Methanol, Heptane (liquid fuels; droplets) | [Table CSV](https://psi.nasa.gov/geode-py/ws/studies/PSI-69/download?file=PSI-69_Experimental%20table_FLEX.csv&version=1&redirect=false) | `reported` | ☐ |
 | 8 | `fuel_phases` | liquid_droplet | [Detail page](https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69) | `reported` | ☐ |
 | 9 | `safety_theme` | suppression | [Detail page](https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69) | `reported` | ☐ |
-| 10 | `secondary_safety_themes` | prevention | — | — | ☐ |
+| 10 | `secondary_safety_themes` | prevention | [Detail page](https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69) | classification | ☐ |
 
 **Evidence and notes**
 
@@ -275,11 +275,11 @@
 3. **`flow_velocity`** (Flow velocity) — No source column or narrative value exists. Null is intentional; do not fill it without a source.
 4. **`gravity`** (Gravity) — PSI narrative — `PSI-69` detail page. Excerpt: “project_type=microgravity; approach_text references ISS flight experiments.”.
 5. **`recorded_gravity_values`** (Recorded gravity levels) — PSI narrative — `PSI-69` detail page. Excerpt: “project_type=microgravity. Single gravity level: 0 g.”.
-6. **`recorded_flow_values`** (Recorded flow levels) — No observed flow-level column exists in the source. The empty list is intentional.
+6. **`recorded_flow_values`** (Recorded flow levels) — The source table has no flow column. The empty list is intentional.
 7. **`fuel`** (Fuel) — PSI table — `PSI-69_Experimental table_FLEX.csv`. Excerpt: “PSI-69_Experimental table_FLEX.csv: Fuel column. Unique values: Methanol, Heptane.”.
 8. **`fuel_phases`** (Fuel phase) — PSI narrative — `PSI-69` detail page. Excerpt: “approach_text: 'igniting and observing the burning behavior of relatively large droplets'. objectives_text: 'liquid fuels in microgravity environments'. Fuel phase: liquid_droplet.”.
 9. **`safety_theme`** (Primary safety theme) — PSI narrative — `PSI-69` detail page. Excerpt: “objectives_text: 'measure the effectiveness of various gaseous fire suppressants (CO2, He, SF6)'. Primary theme: suppression. Secondary: prevention (flammability limits LOI).”.
-10. **`secondary_safety_themes`** (Secondary safety themes) — No secondary theme is assigned. The empty list is intentional.
+10. **`secondary_safety_themes`** (Secondary safety themes) — No separate provenance entry; the value is supported by the `safety_theme` evidence above.
 
 **Record decision:** ☐ All fields confirmed  ☐ Corrections logged  ☐ Record rejected
 
@@ -309,7 +309,7 @@
 | 7 | `fuel` | IsoOctane, n-Octane, Heptane, Decane, Ethanol, Propanol/Glycerol mixtures, Heptane/IsoOctane mixture (liquid fuels; bi-component droplets) | [Table CSV](https://psi.nasa.gov/geode-py/ws/studies/PSI-68/download?file=PSI-68_Experimental%20table_Flex2.csv&version=1&redirect=false) | `reported` | ☐ |
 | 8 | `fuel_phases` | liquid_droplet | [Detail page](https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-68) | `reported` | ☐ |
 | 9 | `safety_theme` | suppression | [Detail page](https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-68) | `reported` | ☐ |
-| 10 | `secondary_safety_themes` | prevention | — | — | ☐ |
+| 10 | `secondary_safety_themes` | prevention | [Detail page](https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-68) | classification | ☐ |
 
 **Evidence and notes**
 
@@ -318,11 +318,11 @@
 3. **`flow_velocity`** (Flow velocity) — PSI table — `PSI-68_Experimental table_Flex2.csv`. Excerpt: “PSI-68_Experimental table_Flex2.csv: 'Flow Velocity (cm/s)' column = '0.1 - 5' for all rows.”.
 4. **`gravity`** (Gravity) — PSI narrative — `PSI-68` detail page. Excerpt: “project_type=microgravity; approach_text: 'conducted in a microgravity environment'.”.
 5. **`recorded_gravity_values`** (Recorded gravity levels) — PSI narrative — `PSI-68` detail page. Excerpt: “project_type=microgravity. Single gravity level: 0 g.”.
-6. **`recorded_flow_values`** (Recorded flow levels) — No observed flow-level column exists in the source. The empty list is intentional.
+6. **`recorded_flow_values`** (Recorded flow levels) — The source reports a flow range (`0.1 - 5` cm/s), not individual observed levels. The empty list is intentional.
 7. **`fuel`** (Fuel) — PSI table — `PSI-68_Experimental table_Flex2.csv`. Excerpt: “PSI-68_Experimental table_Flex2.csv: 'Sample (Fuel Type)' column: IsoOctane (pure), n-Octane (pure), Heptane (pure), Decane (pure), Ethanol (pure), Propanol (95%)/Glycerol (5%), Heptane (50%)/IsoOctane (50%), Propanol (80%)/Glycerol (20%).”.
 8. **`fuel_phases`** (Fuel phase) — PSI narrative — `PSI-68` detail page. Excerpt: “objectives_text: 'bi-component droplet combustion'. approach_text: 'dispensing of a predetermined amount of fuel onto the support fiber'. All fuels are liquids deployed as droplets.”.
 9. **`safety_theme`** (Primary safety theme) — PSI narrative — `PSI-68` detail page. Excerpt: “objectives_text: 'Study flame extinction mechanisms and their boundaries'. approach_text: droplet combustion with varied suppressant atmosphere. Primary: suppression; secondary: prevention (flammability limits).”.
-10. **`secondary_safety_themes`** (Secondary safety themes) — No secondary theme is assigned. The empty list is intentional.
+10. **`secondary_safety_themes`** (Secondary safety themes) — No separate provenance entry; the value is supported by the `safety_theme` evidence above.
 
 **Record decision:** ☐ All fields confirmed  ☐ Corrections logged  ☐ Record rejected
 

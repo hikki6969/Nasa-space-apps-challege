@@ -49,6 +49,7 @@
 - [ ] Keep PSI-117 metadata-only/contextual and confirm it has no measured table.
 - [ ] Record any annotation disagreement as a Problem Log entry; do not average conflicting values.
 - [ ] Have a named human reviewer confirm all seven numeric annotations and their field-level provenance; only then set `annotation_status = verified`.
+- [ ] Human-review worksheet: [`docs/ANNOTATION_REVIEW_WORKSHEET.md`](../ANNOTATION_REVIEW_WORKSHEET.md) — 70 field-level checks, 7 evidence classifications, and 4 scenario rulings.
 - [ ] Provide H1 to Person B: exact snapshot fixture, seven annotations, and table previews with the validation command output.
 
 **Status (2026-11-14):** `data/annotations.json` contains an AI-extracted proposal for the seven records. All records are `annotation_status = metadata_only`; no human has confirmed the values. Scenario A flow remains null (P-017), Scenario B numeric inputs remain unruled, and Scenario D numeric inputs are excluded (T-025). Raw CSVs are gitignored local scratch; PSI-10 rows are not redistributed.
