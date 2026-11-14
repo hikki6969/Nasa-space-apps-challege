@@ -42,12 +42,12 @@
 
 ## B3. Investigations, filters, and provenance
 
-- [ ] Build catalog search and filters for theme, phase, project type, evidence class, and status.
-- [ ] Add sorting by physical score, coverage, and title.
-- [ ] Build detail view with objectives, approach, findings, source links, and table preview.
-- [ ] Build field-level provenance display.
-- [ ] Render metadata-only and instrument-context records as visibly non-ranked.
-- [ ] Render remote text as text, never raw HTML.
+- [x] Build catalog search and filters for theme, phase, project type, evidence class, and status.
+- [x] Add sorting by physical score, coverage, and title.
+- [x] Build detail view with objectives, approach, findings, source links, and table preview.
+- [x] Build field-level provenance display.
+- [x] Render metadata-only and instrument-context records as visibly non-ranked.
+- [x] Render remote text as text, never raw HTML.
 
 **Done when:** all 24 records are reachable and every curated numeric value links to provenance.
 

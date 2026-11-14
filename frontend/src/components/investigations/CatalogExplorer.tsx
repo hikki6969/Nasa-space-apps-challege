@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import {
   useApi,
   type AnnotationStatus,
@@ -43,7 +43,13 @@ const EMPTY_FILTERS: FilterState = {
   catalogRole: '',
 }
 
-type SortKey = 'title' | 'score' | 'coverage'
+type SortKey =
+  | 'title_asc'
+  | 'title_desc'
+  | 'score_desc'
+  | 'score_asc'
+  | 'coverage_desc'
+  | 'coverage_asc'
 
 const SELECT_CLASS =
   'mt-1 w-full rounded-md border border-edge-strong bg-space-950 px-2 py-1.5 text-xs text-ink focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]'
@@ -85,12 +91,18 @@ const ROLE_OPTIONS = [
   { value: 'instrument_context', label: 'Instrument context' },
 ]
 const SORT_OPTIONS: Array<{ value: SortKey; label: string }> = [
-  { value: 'title', label: 'Title A–Z' },
-  { value: 'score', label: 'Physical score (high → low)' },
-  { value: 'coverage', label: 'Coverage (high → low)' },
+  { value: 'title_asc', label: 'Title A–Z' },
+  { value: 'title_desc', label: 'Title Z–A' },
+  { value: 'score_desc', label: 'Physical score — high to low' },
+  { value: 'score_asc', label: 'Physical score — low to high' },
+  { value: 'coverage_desc', label: 'Coverage — high to low' },
+  { value: 'coverage_asc', label: 'Coverage — low to high' },
 ]
 
-function searchHaystack(record: InvestigationSummary): string {
+function searchHaystack(
+  record: InvestigationSummary,
+  detailText: Record<string, string>,
+): string {
   return [
     record.psi_id,
     record.title,
@@ -100,6 +112,9 @@ function searchHaystack(record: InvestigationSummary): string {
     ...record.hardware,
     record.safety_theme ? THEME_LABELS[record.safety_theme] : '',
     EVIDENCE_CLASS_LABELS[record.evidence_class],
+    // Objectives/approach/findings are not part of the summary payload;
+    // the lazy per-record detail fetch populates this cache on first search.
+    detailText[record.psi_id] ?? '',
   ]
     .join(' ')
     .toLowerCase()
@@ -140,30 +155,30 @@ function sortRecords(
   sort: SortKey,
   rankById: Map<string, RankedResult>,
 ): InvestigationSummary[] {
-  const byTitle = (left: InvestigationSummary, right: InvestigationSummary) =>
+  const byTitleAsc = (left: InvestigationSummary, right: InvestigationSummary) =>
     left.title.localeCompare(right.title) || left.psi_id.localeCompare(right.psi_id)
 
-  if (sort === 'title') return [...records].sort(byTitle)
+  if (sort === 'title_asc') return [...records].sort(byTitleAsc)
+  if (sort === 'title_desc') {
+    return [...records].sort((left, right) => byTitleAsc(right, left))
+  }
 
+  const key = sort.startsWith('score') ? 'score' : 'coverage'
+  const descending = sort.endsWith('desc')
+  // Rank eligibility: records with no rank result (metadata-only,
+  // instrument-context, or not in the active ranking) always sort after
+  // ranked records — never interleaved with misleading numeric claims.
   return [...records].sort((left, right) => {
     const leftRank = rankById.get(left.psi_id)
     const rightRank = rankById.get(right.psi_id)
-    const leftValue = leftRank
-      ? sort === 'score'
-        ? leftRank.score
-        : leftRank.coverage
-      : null
-    const rightValue = rightRank
-      ? sort === 'score'
-        ? rightRank.score
-        : rightRank.coverage
-      : null
+    const leftValue = leftRank ? leftRank[key] : null
+    const rightValue = rightRank ? rightRank[key] : null
 
-    if (leftValue === null && rightValue === null) return byTitle(left, right)
+    if (leftValue === null && rightValue === null) return byTitleAsc(left, right)
     if (leftValue === null) return 1
     if (rightValue === null) return -1
-    if (rightValue !== leftValue) return rightValue - leftValue
-    return byTitle(left, right)
+    const delta = descending ? rightValue - leftValue : leftValue - rightValue
+    return delta !== 0 ? delta : byTitleAsc(left, right)
   })
 }
 
@@ -185,8 +200,12 @@ export function CatalogExplorer({
 
   const [search, setSearch] = useState('')
   const [filters, setFilters] = useState<FilterState>(EMPTY_FILTERS)
-  const [sort, setSort] = useState<SortKey>('title')
+  const [sort, setSort] = useState<SortKey>('title_asc')
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  // Objectives/approach/findings text is not in the summary payload; cache it
+  // per record the first time a search term appears.
+  const [detailText, setDetailText] = useState<Record<string, string>>({})
+  const loadingDetailText = useRef<Set<string>>(new Set())
 
   const rankById = useMemo(
     () =>
@@ -199,21 +218,61 @@ export function CatalogExplorer({
     [catalogQuery.data],
   )
 
+  useEffect(() => {
+    const term = search.trim()
+    if (!term) return
+    const missing = records.filter(
+      (record) =>
+        detailText[record.psi_id] === undefined &&
+        !loadingDetailText.current.has(record.psi_id),
+    )
+    if (missing.length === 0) return
+    for (const record of missing) loadingDetailText.current.add(record.psi_id)
+
+    let cancelled = false
+    void Promise.all(
+      missing.map((record) =>
+        api
+          .getInvestigation(record.psi_id)
+          .then(
+            (detail) =>
+              [
+                record.psi_id,
+                [detail.objectives_text, detail.approach_text, detail.key_findings_text ?? ''].join(' '),
+              ] as const,
+            () => [record.psi_id, ''] as const,
+          ),
+      ),
+    ).then((entries) => {
+      if (cancelled) return
+      setDetailText((previous) => ({
+        ...previous,
+        ...Object.fromEntries(entries),
+      }))
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [api, records, search, detailText])
+
   const visibleRecords = useMemo(() => {
     const term = search.trim().toLowerCase()
     const filtered = records.filter((record) => {
       if (!matchesFilters(record, filters)) return false
-      if (term && !searchHaystack(record).includes(term)) return false
+      if (term && !searchHaystack(record, detailText).includes(term)) {
+        return false
+      }
       return true
     })
     return sortRecords(filtered, sort, rankById)
-  }, [records, filters, search, sort, rankById])
+  }, [records, filters, search, sort, rankById, detailText])
 
-  const filtersActive =
-    search.trim() !== '' ||
-    (Object.keys(filters) as Array<keyof FilterState>).some(
+  const activeFilterCount =
+    (search.trim() !== '' ? 1 : 0) +
+    (Object.keys(filters) as Array<keyof FilterState>).filter(
       (key) => filters[key] !== '',
-    )
+    ).length
+  const filtersActive = activeFilterCount > 0
 
   function updateFilter<Key extends keyof FilterState>(
     key: Key,
@@ -225,7 +284,7 @@ export function CatalogExplorer({
   function clearFilters() {
     setSearch('')
     setFilters(EMPTY_FILTERS)
-    setSort('title')
+    setSort('title_asc')
   }
 
   if (catalogQuery.status === 'loading' && !catalogQuery.data) {
@@ -491,6 +550,9 @@ export function CatalogExplorer({
             of <span className="font-mono text-ink">{records.length}</span> catalog
             records
           </p>
+          {activeFilterCount > 0 && (
+            <Badge tone="nav">{activeFilterCount} active</Badge>
+          )}
           {filtersActive && (
             <button
               type="button"
@@ -500,7 +562,7 @@ export function CatalogExplorer({
               Clear search and filters
             </button>
           )}
-          {sort !== 'title' && rankedResults.length === 0 && (
+          {sort !== 'title_asc' && rankedResults.length === 0 && (
             <span className="text-xs text-flame">
               No active ranking. Score and coverage sorts fall back to title.
             </span>
