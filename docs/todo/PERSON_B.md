@@ -55,11 +55,11 @@
 
 ## B4. Compare
 
-- [ ] Allow selection of two to four records.
-- [ ] Build side-by-side matrix of comparable fields.
-- [ ] List shared and different hardware, fuels, phases, themes, and measurements.
-- [ ] Add Plotly parallel coordinates only for fields with compatible units.
-- [ ] Do not force missing or incompatible values onto a shared axis.
+- [x] Allow selection of two to four records.
+- [x] Build side-by-side matrix of comparable fields.
+- [x] List shared and different hardware, fuels, phases, themes, and measurements.
+- [x] Add Plotly parallel coordinates only for fields with compatible units.
+- [x] Do not force missing or incompatible values onto a shared axis.
 
 **Done when:** comparison works for same-theme and cross-theme records without implying equivalent evidence classes.
 

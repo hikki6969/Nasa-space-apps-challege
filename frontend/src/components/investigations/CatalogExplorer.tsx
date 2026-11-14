@@ -185,11 +185,17 @@ function sortRecords(
 interface CatalogExplorerProps {
   rankedResults: RankedResult[]
   scenarioName: string | null
+  compareIds: string[]
+  onToggleCompare: (psiId: string) => void
+  onOpenCompare: () => void
 }
 
 export function CatalogExplorer({
   rankedResults,
   scenarioName,
+  compareIds,
+  onToggleCompare,
+  onOpenCompare,
 }: CatalogExplorerProps) {
   const api = useApi()
   const baseId = useId()
@@ -570,6 +576,19 @@ export function CatalogExplorer({
           <span className="text-xs text-ink-dim">
             Ranking column: {scenarioName ? `Scenario ${scenarioName}` : 'no active scenario'}
           </span>
+          <button
+            type="button"
+            onClick={onOpenCompare}
+            disabled={compareIds.length < 2}
+            title={
+              compareIds.length < 2
+                ? 'Select at least two records to compare'
+                : `Compare ${compareIds.length} selected records`
+            }
+            className="rounded-md border border-compare/50 bg-compare/10 px-3 py-1.5 text-xs font-semibold text-compare hover:bg-compare/20 disabled:cursor-not-allowed disabled:border-edge disabled:bg-space-900/40 disabled:text-ink-dim"
+          >
+            Compare selected ({compareIds.length})
+          </button>
         </div>
       </div>
 
@@ -589,6 +608,7 @@ export function CatalogExplorer({
                   'Project',
                   'Evidence class',
                   'Ranking',
+                  'Compare',
                 ].map((heading) => (
                   <th
                     key={heading}
@@ -703,6 +723,19 @@ export function CatalogExplorer({
                           Not in active ranking
                         </span>
                       )}
+                    </td>
+                    <td className="border-b border-edge px-2 py-2.5 text-center">
+                      <input
+                        type="checkbox"
+                        checked={compareIds.includes(record.psi_id)}
+                        disabled={
+                          !compareIds.includes(record.psi_id) &&
+                          compareIds.length >= 4
+                        }
+                        onChange={() => onToggleCompare(record.psi_id)}
+                        aria-label={`Mark ${record.psi_id} for comparison`}
+                        className="size-4 accent-[var(--accent-cyan)]"
+                      />
                     </td>
                   </tr>
                 )

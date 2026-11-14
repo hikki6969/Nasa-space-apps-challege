@@ -1,7 +1,9 @@
 import { render, screen, within, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
+import { useState } from 'react'
 import { CatalogExplorer } from '../../components/investigations/CatalogExplorer'
+import { CompareDrawer } from '../../components/investigations/CompareDrawer'
 import { InvestigationDetailContent } from '../../components/investigations/InvestigationDetailView'
 import { ApiProvider } from '../../api/ApiContext'
 import { createApiClient } from '../../api'
@@ -47,11 +49,51 @@ async function mockCatalog() {
   return makeClient().api.getCatalog()
 }
 
+function ExplorerHarness({ rankedResults }: { rankedResults: RankedResult[] }) {
+  const [compareIds, setCompareIds] = useState<string[]>([])
+  const [compareOpen, setCompareOpen] = useState(false)
+  return (
+    <>
+      <CatalogExplorer
+        rankedResults={rankedResults}
+        scenarioName="Lunar habitat"
+        compareIds={compareIds}
+        onToggleCompare={(psiId: string) =>
+          setCompareIds((previous) => {
+            if (previous.includes(psiId)) {
+              return previous.filter((id) => id !== psiId)
+            }
+            return previous.length >= 4 ? previous : [...previous, psiId]
+          })
+        }
+        onOpenCompare={() => setCompareOpen(true)}
+      />
+      {compareOpen && compareIds.length >= 1 && (
+        <CompareDrawer
+          ids={compareIds}
+          rankedResults={rankedResults}
+          scenarioName="Lunar habitat"
+          onRemove={(psiId) =>
+            setCompareIds((previous) =>
+              previous.filter((id) => id !== psiId),
+            )
+          }
+          onClear={() => {
+            setCompareIds([])
+            setCompareOpen(false)
+          }}
+          onClose={() => setCompareOpen(false)}
+        />
+      )}
+    </>
+  )
+}
+
 function renderExplorer(rankedResults: RankedResult[] = []) {
   const handle = makeClient()
   return render(
     <ApiProvider handle={handle}>
-      <CatalogExplorer rankedResults={rankedResults} scenarioName="Lunar habitat" />
+      <ExplorerHarness rankedResults={rankedResults} />
     </ApiProvider>,
   )
 }
@@ -546,5 +588,176 @@ describe('InvestigationDetailContent — safe text rendering', () => {
     ).toBeInTheDocument()
     expect(screen.getByText('<script>alert(1)</script>')).toBeInTheDocument()
     expect(screen.getByText('<b>not bold</b>')).toBeInTheDocument()
+  })
+})
+
+describe('Compare mode — catalog selection and side-by-side view', () => {
+  const scoreRanked = [
+    rankedResult('PSI-25', 'Burning and Suppression of Solids-II', 0.9, 0.3),
+    rankedResult('PSI-10', 'Flame Design', 0.7, 0.9),
+  ]
+
+  async function openComparison() {
+    const user = userEvent.setup()
+    renderExplorer(scoreRanked)
+    await findCatalogTable()
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Mark PSI-25 for comparison' }),
+    )
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Mark PSI-10 for comparison' }),
+    )
+    await user.click(
+      screen.getByRole('button', { name: /Compare selected \(2\)/i }),
+    )
+    return user
+  }
+
+  it('keeps the compare button disabled until two records are pinned, then builds the matrix', async () => {
+    const user = userEvent.setup()
+    renderExplorer(scoreRanked)
+
+    await findCatalogTable()
+    const compareButton = screen.getByRole('button', {
+      name: /Compare selected/i,
+    })
+    expect(compareButton).toBeDisabled()
+
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Mark PSI-25 for comparison' }),
+    )
+    expect(
+      screen.getByRole('button', { name: /Compare selected \(1\)/i }),
+    ).toBeDisabled()
+
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Mark PSI-10 for comparison' }),
+    )
+    expect(
+      screen.getByRole('button', { name: /Compare selected \(2\)/i }),
+    ).toBeEnabled()
+  })
+
+  it('builds a side-by-side view with scores, coverage, approach, and provenance', async () => {
+    await openComparison()
+
+    const drawer = await screen.findByRole('region', {
+      name: /Side-by-side: 2 records/i,
+    })
+    expect(within(drawer).getByText('0.900')).toBeInTheDocument()
+    expect(within(drawer).getByText('0.700')).toBeInTheDocument()
+    expect(within(drawer).getByText('30%')).toBeInTheDocument()
+    expect(within(drawer).getByText('90%')).toBeInTheDocument()
+    expect(
+      within(drawer).getAllByText(
+        /Representative microgravity investigation approach/,
+      ).length,
+    ).toBeGreaterThanOrEqual(2)
+
+    const provenanceLinks = within(drawer).getAllByRole('link', {
+      name: /reported provenance/i,
+    })
+    expect(provenanceLinks.length).toBeGreaterThanOrEqual(4)
+    for (const link of provenanceLinks) {
+      expect(link.getAttribute('rel')).toMatch(/noopener/)
+    }
+  })
+
+  it('shows non-ranked badges instead of scores for metadata-only selections', async () => {
+    const user = userEvent.setup()
+    renderExplorer([
+      rankedResult('PSI-25', 'Burning and Suppression of Solids-II', 0.9, 0.3),
+    ])
+
+    await findCatalogTable()
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Mark PSI-25 for comparison' }),
+    )
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Mark PSI-142 for comparison' }),
+    )
+    await user.click(
+      screen.getByRole('button', { name: /Compare selected \(2\)/i }),
+    )
+
+    const drawer = await screen.findByRole('region', {
+      name: /Side-by-side: 2 records/i,
+    })
+    expect(
+      within(drawer).getByText('Not ranked · metadata only'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('note', {
+        name: /Non-ranked records in comparison/i,
+      }),
+    ).toBeInTheDocument()
+    expect(
+      within(drawer).getByText(
+        'No physical values are curated for this record.',
+      ),
+    ).toBeInTheDocument()
+    // The ranked selection keeps its score; the badge never replaces it.
+    expect(within(drawer).getByText('0.900')).toBeInTheDocument()
+  })
+
+  it('limits pins to four records and disables a fifth checkbox', async () => {
+    const user = userEvent.setup()
+    renderExplorer(scoreRanked)
+
+    await findCatalogTable()
+    for (const psiId of ['PSI-142', 'PSI-47', 'PSI-25', 'PSI-10']) {
+      await user.click(
+        screen.getByRole('checkbox', {
+          name: `Mark ${psiId} for comparison`,
+        }),
+      )
+    }
+
+    expect(
+      screen.getByRole('checkbox', { name: 'Mark PSI-159 for comparison' }),
+    ).toBeDisabled()
+    expect(
+      screen.getByRole('button', { name: /Compare selected \(4\)/i }),
+    ).toBeEnabled()
+  })
+
+  it('removing one pinned record updates the open comparison', async () => {
+    const user = await openComparison()
+
+    const drawer = await screen.findByRole('region', {
+      name: /Side-by-side: 2 records/i,
+    })
+    const removeButtons = within(drawer).getAllByRole('button', {
+      name: /Remove from comparison/i,
+    })
+    const flameDesignRemove = removeButtons.find((button) =>
+      button.closest('th')?.textContent?.includes('PSI-10'),
+    )
+    expect(flameDesignRemove).toBeDefined()
+    if (!flameDesignRemove) throw new Error('PSI-10 remove button not found')
+    await user.click(flameDesignRemove)
+
+    const updated = await screen.findByRole('region', {
+      name: /Side-by-side: 1 record/i,
+    })
+    expect(within(updated).queryByText('PSI-10')).toBeNull()
+  })
+
+  it('clearing the comparison empties the selection and closes the view', async () => {
+    const user = await openComparison()
+
+    const drawer = await screen.findByRole('region', {
+      name: /Side-by-side: 2 records/i,
+    })
+    await user.click(
+      within(drawer).getByRole('button', { name: /Clear comparison/i }),
+    )
+
+    expect(
+      screen.queryByRole('region', { name: /Side-by-side/i }),
+    ).toBeNull()
+    expect(
+      screen.getByRole('button', { name: /Compare selected \(0\)/i }),
+    ).toBeDisabled()
   })
 })

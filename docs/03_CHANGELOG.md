@@ -2,6 +2,25 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person B B4 implementation (Compare mode)
+
+### Added
+
+- Catalog-based compare selection in `CatalogExplorer`: a per-row pin checkbox (`Mark <psi_id> for comparison`), capped at four, with an always-visible disabled/enabled `Compare selected (n)` button in the filter bar.
+- `CompareDrawer` in `frontend/src/components/investigations/CompareDrawer.tsx`: a side-by-side, provenance-first comparison of 1–4 pinned records fetched through the typed client — titles, acronyms, safety themes, fuel phases, project type, evidence class, physical proximity score, coverage, approach text, and field-level provenance (source URL, value kind, accession link) on every curated numeric value. Missing provenance withholds the value rather than showing it.
+- Non-ranked handling: pinned metadata-only and instrument-context records render `Not ranked · <reason>` badges instead of scores/coverage, with a visible `role="note"` disclosure that selections are not all ranked evidence.
+- Shared `fieldDefinitions.ts` between the detail view and the comparison view (single source of truth for the curated-field mapping).
+- Seven Vitest cases in `frontend/src/features/investigations/CatalogExplorer.test.tsx`: disabled-until-two selection, open/close, pinned-removal, pin limit, non-ranked badge rendering with a ranked co-selection, scores/coverage/approach/provenance content, and pin clearing.
+
+### Changed
+
+- InvestigationsPanel owns compare state and renders `CompareDrawer` below the catalog; the existing Compare tab (curated-record matrix, shared/differences, Plotly parallel coordinates) is unchanged.
+
+### Known limits
+
+- Explicit shared/different measurement grouping beyond the compare API contract (`compare.shared` / `compare.differences`) needs a Person A contract extension — the matrix itself displays measurement ranges field-by-field, but no new backend data group was invented.
+- Compare mode is fixture-backed under H0 and unverified under H1; no numeric annotation is displayed without provenance.
+
 ## 2026-11-14 — Person B B3 implementation (Investigations, filters, and provenance)
 
 ### Added
