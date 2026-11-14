@@ -167,7 +167,7 @@ export default function OverviewPanel() {
           <StatTile
             label="Curated"
             value={counts.curated}
-            hint={`${formatPercent(curatedShare)} carry verified field annotations`}
+            hint={`${formatPercent(curatedShare)} carry source-cited field annotations`}
             tone="safe"
           />
           <StatTile
@@ -300,9 +300,9 @@ export default function OverviewPanel() {
                 tone="nav"
               />
               <StatTile
-                label="Verified field sets"
+                label="Source-cited field sets"
                 value={counts.curated}
-                hint="annotation_status = verified"
+                hint="annotation_status = source_cited"
                 tone="safe"
               />
               <StatTile

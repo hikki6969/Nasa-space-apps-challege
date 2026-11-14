@@ -1,3 +1,5 @@
+# Superseded — annotation status is now source_cited with provenance. Worksheet retained for provenance audit reference only.
+
 # Deep Research Report — PSI Annotation Proposal
 
 > **Not a human sign-off.** This report was produced by an AI extraction pass.
@@ -214,7 +216,7 @@ Each row = one physical field for one record. Source = table name + column, or n
 | ID | Action required |
 |----|----------------|
 | — | **Human review:** a named human reviewer confirms all seven records' numeric values and provenance, then sets `annotation_status=verified`. Until then, all records stay `metadata_only`. |
-| — | **Review worksheet:** [`docs/ANNOTATION_REVIEW_WORKSHEET.md`](ANNOTATION_REVIEW_WORKSHEET.md) is the field-by-field checklist for the named reviewer. |
+| — | **Review worksheet:** [`docs/archive/ANNOTATION_WORKSHEET_SUPERSEDED.md`](ANNOTATION_WORKSHEET_SUPERSEDED.md) is the field-by-field checklist for the named reviewer. |
 | P-017 | Read SoFIE program page directly; extract verbatim "5 cm/s" passage; add as `nasa_program` provenance; set Scenario A `flow_velocity_cms = 5.0` |
 | — | Scenario B: either cite a primary ISS/NASA source with URL and verbatim excerpt for 0.21 and 14.7 psia, or leave both null. |
 | — | Scenario D: keep numeric inputs null. Apollo 1 is context only (spec §7, T-025). |

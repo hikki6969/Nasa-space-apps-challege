@@ -10,13 +10,13 @@
     "evidence": 23,
     "instrument_context": 1,
     "metadata_only": 17,
-    "total": 24,
-    "verified": 7
+    "source_cited": 7,
+    "total": 24
   },
   "records": [
     {
       "acronym": "ACME/Flame Design",
-      "annotation_status": "verified",
+      "annotation_status": "source_cited",
       "catalog_role": "evidence",
       "data_status": "complete",
       "evidence_class": "flame_physics",
@@ -40,7 +40,7 @@
     },
     {
       "acronym": "SAME-R",
-      "annotation_status": "verified",
+      "annotation_status": "source_cited",
       "catalog_role": "evidence",
       "data_status": "complete",
       "evidence_class": "detection_instrumentation",
@@ -124,7 +124,7 @@
     },
     {
       "acronym": "ACME CFI-G",
-      "annotation_status": "verified",
+      "annotation_status": "source_cited",
       "catalog_role": "evidence",
       "data_status": "complete",
       "evidence_class": "flame_physics",
@@ -184,7 +184,7 @@
     },
     {
       "acronym": "BASS-II",
-      "annotation_status": "verified",
+      "annotation_status": "source_cited",
       "catalog_role": "evidence",
       "data_status": "complete",
       "evidence_class": "bench_flammability",
@@ -256,7 +256,7 @@
     },
     {
       "acronym": "FLEX-2",
-      "annotation_status": "verified",
+      "annotation_status": "source_cited",
       "catalog_role": "evidence",
       "data_status": "complete",
       "evidence_class": "flame_physics",
@@ -268,7 +268,7 @@
     },
     {
       "acronym": "FLEX",
-      "annotation_status": "verified",
+      "annotation_status": "source_cited",
       "catalog_role": "evidence",
       "data_status": "complete",
       "evidence_class": "bench_flammability",
@@ -280,7 +280,7 @@
     },
     {
       "acronym": "SAFFIRE-I",
-      "annotation_status": "verified",
+      "annotation_status": "source_cited",
       "catalog_role": "evidence",
       "data_status": "complete",
       "evidence_class": "large_scale_demonstration",

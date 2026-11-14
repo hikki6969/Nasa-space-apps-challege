@@ -10,6 +10,7 @@
   "results": [
     {
       "acronym": "BASS-II",
+      "annotation_status": "source_cited",
       "coverage": 0.6,
       "data_status": "complete",
       "dimensions": [
@@ -18,7 +19,8 @@
           "name": "oxygen",
           "present": true,
           "provenance": {
-            "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+            "excerpt_or_table_ref": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+            "extraction_method": "script",
             "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
             "source_kind": "psi_table",
             "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
@@ -68,7 +70,8 @@
           "name": "material_phase",
           "present": true,
           "provenance": {
-            "excerpt": "Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity.",
+            "excerpt_or_table_ref": "Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity.",
+            "extraction_method": "script",
             "note": "Solid fuel phase taken from the stated BASS-II objective.",
             "source_kind": "psi_narrative",
             "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
@@ -85,7 +88,8 @@
           "name": "safety_theme",
           "present": true,
           "provenance": {
-            "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+            "excerpt_or_table_ref": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+            "extraction_method": "script",
             "note": "Primary safety theme curated as prevention; suppression is secondary.",
             "source_kind": "psi_narrative",
             "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
@@ -116,21 +120,24 @@
       ],
       "provenance": {
         "fuel_phases": {
-          "excerpt": "Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity.",
+          "excerpt_or_table_ref": "Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity.",
+          "extraction_method": "script",
           "note": "Solid fuel phase taken from the stated BASS-II objective.",
           "source_kind": "psi_narrative",
           "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
           "value_kind": "reported"
         },
         "oxygen_fraction": {
-          "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+          "excerpt_or_table_ref": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+          "extraction_method": "script",
           "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
           "source_kind": "psi_table",
           "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
           "value_kind": "reported"
         },
         "safety_theme": {
-          "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+          "excerpt_or_table_ref": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+          "extraction_method": "script",
           "note": "Primary safety theme curated as prevention; suppression is secondary.",
           "source_kind": "psi_narrative",
           "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",

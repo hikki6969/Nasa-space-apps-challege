@@ -12,7 +12,7 @@ Contested product and engineering rulings live here. Detailed rationale is in th
 | D-006 | 2026-11-14 | Preserve the exact live 24-record corpus; retain PSI-47 as non-ranked `instrument_context` | Accepted | VF-01 and VF-03: removing PSI-47 would incorrectly yield 23 | [Product Spec §3](00_PRODUCT_SPEC.md#3-evidence-corpus-and-status-model) |
 | D-007 | 2026-11-14 | Curate seven physical records: CFI-G, Flame Design, SAME-R, SAFFIRE-I, BASS-II, FLEX, FLEX-2 | Accepted | Makes Scenario C coherent while preserving the other canonical scenarios | [Product Spec §3.2](00_PRODUCT_SPEC.md#32-curated-records) |
 | D-008 | 2026-11-14 | Treat PSI-117 as non-measured FLEX-derived modeling context | Accepted | VF-10: no experimental table | [Problem Log P-008](02_PROBLEM_LOG.md) |
-| D-009 | 2026-11-14 | Remove `anticipated` from `evidence_class`; represent program-only state with the separate `ProgramContext` model and `data_status` | Accepted | One field, one meaning; program context has no evidence class or measured table | [Product Spec §4](00_PRODUCT_SPEC.md#4-frozen-data-contract) |
+| D-009 | 2026-11-14 | Remove `anticipated` from `evidence_class`; represent program-only state with the separate `ProgramContext` model and `data_status` (human-review dependency superseded by D-017) | Accepted | One field, one meaning; program context has no evidence class or measured table | [Product Spec §4](00_PRODUCT_SPEC.md#4-frozen-data-contract) |
 | D-010 | 2026-11-14 | Freeze `Range` with `min`, `max`, `unit`, and optional `notes`; reject reversed bounds | Accepted | Removes undefined schema and silent defaults | [Product Spec §4.1](00_PRODUCT_SPEC.md#41-pydantic-models) |
 | D-011 | 2026-11-14 | Freeze gravity as exact/bracket/disjoint scoring over explicit recorded levels | Accepted | Makes “no direct partial-gravity evidence” behavioral | [Product Spec §6.3](00_PRODUCT_SPEC.md#63-similarity-functions) |
 | D-012 | 2026-11-14 | Keep Apollo 1, Mir, Apollo 13, and Spinoff outside numerical scoring | Accepted | Context must not become hidden numerical evidence | [Verified Facts VF-12/VF-13](VERIFIED_FACTS.md) |
@@ -20,6 +20,7 @@ Contested product and engineering rulings live here. Detailed rationale is in th
 | D-014 | 2026-11-14 | Use two Docker services: FastAPI backend and nginx-served React frontend | Accepted | Clear runtime boundary and local reproducibility | [Product Spec §11](00_PRODUCT_SPEC.md#11-runtime-and-deployment) |
 | D-015 | 2026-11-14 | Exclude unspecified scenario dimensions from the requested set; retain the no-redistribution rule for missing record fields; require all six inputs for `direct_match` | Accepted | Makes partial scenario fixtures deterministic without inventing values | [Product Spec §6.2](00_PRODUCT_SPEC.md#62-ranking-formula) |
 | D-016 | 2026-11-14 | Keep PSI-10 in the exact 24-record corpus with `license.status = unknown` and `redistribution = blocked` | Accepted | PSI-10 exposes no license metadata; Data Safety §7 forbids assuming public domain, while VF-01 forbids dropping the record | A2 table ingestion; PSI-10 remains metadata/narrative context |
+| D-017 | 2026-11-14 | Annotation status is `source_cited` when provenance is attached. No human-review gate exists. Auditable via source URL + excerpt/table reference | Accepted | Replaces blocked human review gate with auditable provenance-first model | [Data Safety §9](05_DATA_SAFETY.md#9-annotation-extraction-and-provenance) |
 
 ## Deferred, not rejected
 
@@ -32,7 +33,7 @@ Contested product and engineering rulings live here. Detailed rationale is in th
 
 | Item | Owner | Blocking point | Required resolution |
 |---|---|---|---|
-| Scenario A numeric flow | Person A + reviewer | Scenario A fixture | Cite a value or keep the condition explicitly missing; do not interpolate |
-| Scenario B–D numeric physical inputs | Person A + reviewer | Fixtures B–D | Record a source-backed ruling per field |
+| Scenario A numeric flow | Person A | Scenario A fixture | Cite a value or keep the condition explicitly missing; do not interpolate |
+| Scenario B–D numeric physical inputs | Person A | Fixtures B–D | Record a source-backed ruling per field |
 | Snapshot SHA-256 | Person A | Data gate | Generate `data/snapshot.sha256` and update VF ledger |
 | LUCI official program source | Person A | Anticipated-context card | Verify an official NASA URL or omit the card |

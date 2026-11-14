@@ -124,7 +124,7 @@ export default function ComparePanel() {
     () =>
       (catalogQuery.data?.records ?? []).filter(
         (record) =>
-          record.annotation_status === 'verified' &&
+          record.annotation_status === 'source_cited' &&
           record.catalog_role === 'evidence',
       ),
     [catalogQuery.data],

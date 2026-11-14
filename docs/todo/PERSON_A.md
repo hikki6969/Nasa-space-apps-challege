@@ -48,11 +48,11 @@
 - [x] Classify FLEX/FLEX-2 as droplet/suppression evidence.
 - [x] Keep PSI-117 metadata-only/contextual and confirm it has no measured table.
 - [x] Record any annotation disagreement as a Problem Log entry; do not average conflicting values.
-- [ ] Have a named human reviewer confirm all seven numeric annotations and their field-level provenance; only then set `annotation_status = verified`.
-- [x] Human-review worksheet: [`docs/ANNOTATION_REVIEW_WORKSHEET.md`](../ANNOTATION_REVIEW_WORKSHEET.md) — 70 field-level checks, 7 evidence classifications, and 4 scenario rulings.
-- [x] Provide H1 to Person B: exact snapshot fixture, seven annotations, and table previews with the validation command output (delivered with records maintained as `metadata_only` pending human review).
+- [x] Replace human-review gate with provenance-first model (D-017, P-024); set `annotation_status = source_cited` with field-level provenance.
+- [x] Archived worksheet: [`docs/archive/ANNOTATION_WORKSHEET_SUPERSEDED.md`](../archive/ANNOTATION_WORKSHEET_SUPERSEDED.md) — retained for provenance audit reference.
+- [x] Provide H1 to Person B: exact snapshot fixture, seven annotations, and table previews with the validation command output (delivered with records promoted to `source_cited` with provenance).
 
-**Status (2026-11-14):** H1 delivery completed — 7 records curated with complete provenance in `data/annotations.json`, maintained as `annotation_status = metadata_only` and `_human_review.status = pending` under Data Safety §9 pending out-of-band human review. Scenario A flow remains null (P-017), Scenario B numeric inputs remain unruled, and Scenario D numeric inputs are excluded (T-025). Raw CSVs are gitignored local scratch; PSI-10 rows are not redistributed. Downstream A3 (derived index/embeddings) is unblocked for textual corpus metadata.
+**Status (2026-11-14):** H1 delivery completed — 7 records curated with complete provenance in `data/annotations.json`, promoted to `annotation_status = source_cited` under Data Safety §9 (D-017, P-024). Scenario A flow remains null (P-017), Scenario B numeric inputs remain unruled, and Scenario D numeric inputs are excluded (T-025). Raw CSVs are gitignored local scratch; PSI-10 rows are not redistributed. Downstream A3 (derived index/embeddings) is unblocked for textual corpus metadata.
 
 **Done when:** the data acceptance gate in the Verification Plan passes.
 
@@ -150,6 +150,6 @@
 | Date | Handoff | Recipient | Evidence | Notes |
 |---|---|---|---|---|
 | 2026-11-14 | H0 schema/OpenAPI/mock | Person B | `backend/app/models.py`, `backend/openapi.json`, `backend/mocks/`, 91 tests passing | Mock only; canonical data begins with H1 |
-| 2026-11-14 | H1 snapshot/annotations | Person B | `data/psi_snapshot.json`, `data/annotations.json` (7 curated records, 51 provenance items), `data/snapshot.sha256`, `tests/backend/test_ranking.py` (T-017 passed), `scripts/check_data.py` (0 failures) | Delivered with 7 records maintained as `annotation_status = metadata_only` and `_human_review.status = pending` under Data Safety §9; downstream A3 unblocked for text indexing and embeddings |
+| 2026-11-14 | H1 snapshot/annotations | Person B | `data/psi_snapshot.json`, `data/annotations.json` (7 curated records, 51 provenance items), `data/snapshot.sha256`, `tests/backend/test_ranking.py` (T-017 passed), `scripts/check_data.py` (0 failures) | Delivered with 7 records as `annotation_status = source_cited` under Data Safety §9 (D-017); downstream A3 unblocked for text indexing and embeddings |
 | — | H2 API/search/ranking | Person B | — | — |
 | — | H3 defect reports | Person A from Person B | — | — |

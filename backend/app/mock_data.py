@@ -90,16 +90,18 @@ def _table_url(psi_id: str, file_name: str, version: int) -> str:
 def _provenance(
     url: str,
     kind: str,
-    excerpt: str,
+    excerpt_or_table_ref: str,
     note: str | None = None,
     value_kind: str = "reported",
+    extraction_method: str = "script",
 ) -> Provenance:
     return Provenance(
         source_url=url,
         source_kind=kind,
-        excerpt=excerpt,
+        excerpt_or_table_ref=excerpt_or_table_ref,
         note=note,
         value_kind=value_kind,
+        extraction_method=extraction_method,
     )
 
 
@@ -261,7 +263,8 @@ BASS_II = InvestigationRecord(
         )
     ],
     data_status="complete",
-    annotation_status="verified",
+    annotation_status="source_cited",
+    extraction_method="script",
     doi="10.60555/4qc4-de67",
     license="CC0-1.0",
     source_url=_detail_url("PSI-25"),
@@ -362,7 +365,8 @@ CFI_G = InvestigationRecord(
         )
     ],
     data_status="complete",
-    annotation_status="verified",
+    annotation_status="source_cited",
+    extraction_method="script",
     doi="10.60555/cyt1-kh64",
     license="CC0-1.0",
     source_url=_detail_url("PSI-159"),
@@ -400,7 +404,8 @@ FLAME_DESIGN = InvestigationRecord(
         )
     ],
     data_status="complete",
-    annotation_status="verified",
+    annotation_status="source_cited",
+    extraction_method="script",
     doi="10.60555/w4zy-bt45",
     license=None,
     source_url=_detail_url("PSI-10"),
@@ -436,7 +441,8 @@ SAME_R = InvestigationRecord(
         )
     ],
     data_status="complete",
-    annotation_status="verified",
+    annotation_status="source_cited",
+    extraction_method="script",
     doi="10.60555/2np7-jv14",
     license="CC0-1.0",
     source_url=_detail_url("PSI-101"),
@@ -470,7 +476,8 @@ SAFFIRE_I = InvestigationRecord(
         )
     ],
     data_status="complete",
-    annotation_status="verified",
+    annotation_status="source_cited",
+    extraction_method="script",
     doi="10.60555/0t15-1z43",
     license="CC0-1.0",
     source_url=_detail_url("PSI-98"),
@@ -509,7 +516,8 @@ FLEX = InvestigationRecord(
         )
     ],
     data_status="complete",
-    annotation_status="verified",
+    annotation_status="source_cited",
+    extraction_method="script",
     doi="10.60555/mbq8-0451",
     license="CC0-1.0",
     source_url=_detail_url("PSI-69"),
@@ -547,7 +555,8 @@ FLEX_2 = InvestigationRecord(
         )
     ],
     data_status="complete",
-    annotation_status="verified",
+    annotation_status="source_cited",
+    extraction_method="script",
     doi="10.60555/byp8-h018",
     license="CC0-1.0",
     source_url=_detail_url("PSI-68"),
@@ -634,7 +643,9 @@ MOCK_CATALOG = CatalogResponse(
         instrument_context=sum(
             entry.catalog_role == "instrument_context" for entry in CATALOG
         ),
-        verified=sum(entry.annotation_status == "verified" for entry in CATALOG),
+        source_cited=sum(
+            entry.annotation_status == "source_cited" for entry in CATALOG
+        ),
         metadata_only=sum(
             entry.annotation_status == "metadata_only" for entry in CATALOG
         ),
@@ -851,6 +862,7 @@ def _ranked(
         source_url=record.source_url,
         evidence_class=record.evidence_class,
         data_status=record.data_status,
+        annotation_status=record.annotation_status,
     )
 
 
@@ -1205,8 +1217,18 @@ def mock_investigation(psi_id: str) -> InvestigationResponse | None:
     return InvestigationResponse(record=record, table_previews=previews)
 
 
+SCOPE_GUARD_TERMS = (
+    "rocket",
+    "propellant",
+    "rp-1",
+    "lox",
+    "turbopump",
+    "combustion chamber",
+)
+
+
 def mock_ask(question: str) -> AskResponse:
     lowered = question.lower()
-    if "rocket" in lowered or "propellant" in lowered:
+    if any(term in lowered for term in SCOPE_GUARD_TERMS):
         return MOCK_REFUSAL
     return MOCK_ASK

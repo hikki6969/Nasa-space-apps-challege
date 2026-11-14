@@ -88,7 +88,7 @@ def theme_similarity(
 
 def score_record(record: InvestigationRecord, scenario: Scenario) -> RankScore | None:
     """Score one record over the scenario dimensions that are specified."""
-    # Product Spec 6.4: modeling is contextual, even when otherwise verified.
+    # Product Spec 6.4: modeling is contextual, even when otherwise source_cited.
     if not record.rank_eligible or record.evidence_class == "modeling":
         return None
 

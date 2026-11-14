@@ -58,7 +58,7 @@ describe('H0 mock adapter', () => {
     expect(daft?.catalog_role).toBe('instrument_context')
 
     const curated = catalog.records
-      .filter((record) => record.annotation_status === 'verified')
+      .filter((record) => record.annotation_status === 'source_cited')
       .map((record) => record.psi_id)
       .sort()
     expect(curated).toEqual(CURATED_IDS)

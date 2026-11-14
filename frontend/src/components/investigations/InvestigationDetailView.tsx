@@ -1,4 +1,5 @@
-import type { InvestigationDetail } from '../../api'
+import { useState } from 'react'
+import type { InvestigationDetail, Provenance } from '../../api'
 import { useApi } from '../../api'
 import { useAsyncData } from '../../hooks/useAsyncData'
 import { Badge } from '../ui/Badge'
@@ -83,6 +84,63 @@ const FIELD_DEFINITIONS: FieldDefinition[] = [
       detail.safety_theme ? THEME_LABELS[detail.safety_theme] : null,
   },
 ]
+
+function SourceIcon({ provenance }: { provenance: Provenance }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const excerpt = provenance.excerpt_or_table_ref ?? provenance.excerpt ?? ''
+
+  return (
+    <div className="relative inline-flex items-center">
+      <button
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        aria-label="View source and provenance"
+        aria-expanded={isOpen}
+        title={`Source: ${provenance.source_url}\n${excerpt}`}
+        className="inline-flex size-5 items-center justify-center rounded text-compare hover:bg-space-800 hover:text-ink focus:outline-none focus:ring-1 focus:ring-nav"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          className="size-3.5"
+          aria-hidden="true"
+        >
+          <path
+            fillRule="evenodd"
+            d="M4.5 2A1.5 1.5 0 0 0 3 3.5v13A1.5 1.5 0 0 0 4.5 18h11a1.5 1.5 0 0 0 1.5-1.5V7.621a1.5 1.5 0 0 0-.44-1.06l-4.12-4.122A1.5 1.5 0 0 0 11.378 2H4.5Zm2.25 8.5a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5Zm0 3a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+      {isOpen && (
+        <div
+          role="tooltip"
+          className="absolute right-0 bottom-full z-20 mb-2 w-72 rounded-tile border border-edge-strong bg-space-900 p-2.5 shadow-xl text-left"
+        >
+          <p className="text-[10px] font-bold tracking-[0.08em] text-compare uppercase">
+            Source Provenance
+          </p>
+          <p className="mt-1 text-xs font-mono text-ink-muted break-all">
+            <a
+              href={provenance.source_url}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="text-nav hover:underline"
+            >
+              {provenance.source_url} ↗
+            </a>
+          </p>
+          <p className="mt-1.5 text-xs text-ink leading-relaxed font-sans">
+            {excerpt}
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
 
 function cellText(value: unknown): string {
   if (value === null || value === undefined) return '—'
@@ -244,9 +302,12 @@ export function InvestigationDetailContent({
                   className="rounded-tile border border-edge bg-space-950/70 px-3 py-2.5"
                 >
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <span className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase">
-                      {field.label}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase">
+                        {field.label}
+                      </span>
+                      {provenance && <SourceIcon provenance={provenance} />}
+                    </div>
                     <span className="font-mono text-xs text-ink">
                       {provenance ? field.display : 'Value withheld'}
                     </span>
@@ -262,7 +323,7 @@ export function InvestigationDetailContent({
                         cite={provenance.source_url}
                         className="border-l-2 border-edge-strong pl-2 text-[11px] leading-relaxed text-ink-muted"
                       >
-                        {provenance.excerpt}
+                        {provenance.excerpt_or_table_ref ?? provenance.excerpt}
                       </blockquote>
                       {provenance.note && (
                         <p className="text-[11px] leading-snug text-ink-dim">
@@ -376,7 +437,7 @@ export function InvestigationDetailContent({
 
                   <p className="mt-1 text-[11px] text-ink-dim">
                     Showing {previewRows.length} of {table.rows.length} rows.
-                    Table provenance: {table.provenance.excerpt}
+                    Table provenance: {table.provenance.excerpt_or_table_ref ?? table.provenance.excerpt}
                   </p>
                   <a
                     href={table.provenance.source_url}

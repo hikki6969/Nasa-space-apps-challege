@@ -7,6 +7,7 @@ from typing import Any, Literal
 from pydantic import Field
 
 from .models import (
+    AnnotationStatus,
     DataStatus,
     EvidenceClass,
     FuelPhase,
@@ -49,7 +50,7 @@ class CatalogEntry(StrictModel):
     project_type: ProjectType
     catalog_role: Literal["evidence", "instrument_context"]
     data_status: DataStatus | None = None
-    annotation_status: Literal["verified", "metadata_only"]
+    annotation_status: Literal["source_cited", "metadata_only"]
     evidence_class: EvidenceClass | None = None
     safety_theme: SafetyTheme | None = None
     source_url: str
@@ -59,7 +60,7 @@ class CatalogCounts(StrictModel):
     total: int
     evidence: int
     instrument_context: int
-    verified: int
+    source_cited: int
     metadata_only: int
     by_evidence_class: dict[str, int]
 
@@ -131,6 +132,7 @@ class RankedResult(StrictModel):
     source_url: str
     evidence_class: EvidenceClass
     data_status: DataStatus
+    annotation_status: AnnotationStatus = "source_cited"
 
 
 class RankResponse(StrictModel):

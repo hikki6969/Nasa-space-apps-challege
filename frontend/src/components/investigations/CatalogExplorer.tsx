@@ -82,7 +82,7 @@ const DATA_STATUS_OPTIONS = [
 ]
 const ANNOTATION_OPTIONS = [
   { value: '', label: 'Any annotation status' },
-  { value: 'verified', label: 'Verified' },
+  { value: 'source_cited', label: 'Source-cited' },
   { value: 'metadata_only', label: 'Metadata only' },
 ]
 const ROLE_OPTIONS = [
@@ -320,7 +320,7 @@ export function CatalogExplorer({
           <p className="mt-1 max-w-3xl text-sm text-ink-muted">
             Search and filter every accession, then open the detail view for
             objectives, approach, findings, source links, field-level provenance,
-            and any table preview. Only verified evidence records can carry a
+            and any table preview. Only source-cited evidence records can carry a
             physical score.
           </p>
         </div>
@@ -638,13 +638,13 @@ export function CatalogExplorer({
                       <div className="flex flex-wrap gap-1">
                         <Badge
                           tone={
-                            record.annotation_status === 'verified'
+                            record.annotation_status === 'source_cited'
                               ? 'safe'
                               : 'flame'
                           }
                         >
-                          {record.annotation_status === 'verified'
-                            ? 'Verified'
+                          {record.annotation_status === 'source_cited'
+                            ? 'Source-cited'
                             : 'Metadata only'}
                         </Badge>
                         <Badge

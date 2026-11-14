@@ -15,7 +15,8 @@ def provenance() -> Provenance:
     return Provenance(
         source_url="https://example.test/source",
         source_kind="psi_narrative",
-        excerpt="test excerpt",
+        excerpt_or_table_ref="test excerpt",
+        extraction_method="script",
     )
 
 
@@ -29,7 +30,8 @@ def minimal_record(**overrides) -> InvestigationRecord:
         "objectives_text": "Test objective.",
         "approach_text": "Test approach.",
         "data_status": "complete",
-        "annotation_status": "verified",
+        "annotation_status": "source_cited",
+        "extraction_method": "script",
         "source_url": "https://example.test/PSI-900",
     }
     data.update(overrides)
@@ -210,7 +212,7 @@ def test_program_context_distinguishes_statuses():
     [
         {"evidence_class": "modeling"},
         {"experimental_tables": []},
-        {"annotation_status": "verified"},
+        {"annotation_status": "source_cited"},
     ],
 )
 def test_program_context_rejects_measured_record_fields(extra):
@@ -266,6 +268,24 @@ def test_provenance_rejects_unknown_value_kind():
         Provenance(
             source_url="https://example.test/source",
             source_kind="psi_narrative",
-            excerpt="test excerpt",
+            excerpt_or_table_ref="test excerpt",
             value_kind="estimated",
+            extraction_method="script",
         )
+
+
+def test_annotation_status_enum_values():
+    from typing import get_args
+    from backend.app.models import AnnotationStatus
+    assert set(get_args(AnnotationStatus)) == {"source_cited", "metadata_only"}
+
+
+def test_no_human_review_field_on_investigation_record():
+    assert "_human_review" not in InvestigationRecord.model_fields
+    with pytest.raises(ValidationError):
+        minimal_record(_human_review={"status": "approved"})
+
+
+def test_extraction_method_required_when_source_cited():
+    with pytest.raises(ValidationError, match="source_cited records require extraction_method"):
+        minimal_record(annotation_status="source_cited", extraction_method=None)

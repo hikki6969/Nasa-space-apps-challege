@@ -89,7 +89,7 @@ describe('OverviewPanel corpus overview', () => {
       name: 'PSI evidence counts',
     })
     expect(tileIn(psi, 'Ranked evidence candidates')).toHaveTextContent('23')
-    expect(tileIn(psi, 'Verified field sets')).toHaveTextContent('7')
+    expect(tileIn(psi, 'Source-cited field sets')).toHaveTextContent('7')
     expect(tileIn(psi, 'Metadata only')).toHaveTextContent('17')
     expect(tileIn(psi, 'Instrument context')).toHaveTextContent('1')
 

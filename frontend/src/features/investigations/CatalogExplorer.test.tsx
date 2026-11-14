@@ -169,7 +169,7 @@ describe('CatalogExplorer — search', () => {
     expect(within(table).getByText('PSI-142')).toBeInTheDocument()
   })
 
-  it('matches objectives text for verified records once loaded', async () => {
+  it('matches objectives text for source-cited records once loaded', async () => {
     const user = userEvent.setup()
     renderExplorer()
 
@@ -230,8 +230,8 @@ const FILTER_CASES: Array<{
   {
     name: 'annotation status',
     label: /Annotation status/i,
-    value: 'verified',
-    test: (record) => record.annotation_status === 'verified',
+    value: 'source_cited',
+    test: (record) => record.annotation_status === 'source_cited',
     present: 'PSI-25',
     absent: 'PSI-142',
   },
@@ -298,7 +298,7 @@ describe('CatalogExplorer — filters', () => {
     )
     await user.selectOptions(
       screen.getByLabelText(/Annotation status/i),
-      'verified',
+      'source_cited',
     )
     await user.type(screen.getByLabelText('Search catalog'), 'DAFT')
 
@@ -521,7 +521,7 @@ describe('InvestigationDetailContent — safe text rendering', () => {
       hardware: [],
       orientation: [],
       data_status: 'complete',
-      annotation_status: 'verified',
+      annotation_status: 'source_cited',
       doi: null,
       license: null,
       source_url: 'https://psi.nasa.gov/detail?id=PSI-999',

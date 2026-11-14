@@ -8,6 +8,7 @@ export type BadgeTone =
   | 'compare'
   | 'danger'
   | 'safe'
+  | 'cyan'
 
 const TONES: Record<BadgeTone, string> = {
   neutral: 'border-edge-strong/80 bg-space-700/65 text-ink-muted',
@@ -16,6 +17,7 @@ const TONES: Record<BadgeTone, string> = {
   compare: 'border-compare/40 bg-compare/10 text-compare',
   danger: 'border-danger/45 bg-danger/10 text-danger',
   safe: 'border-safe/40 bg-safe/10 text-safe',
+  cyan: 'border-compare/40 bg-compare/10 text-compare',
 }
 
 interface BadgeProps {
