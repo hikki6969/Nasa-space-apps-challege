@@ -11,6 +11,7 @@ import {
 } from '../../components/ui/States'
 import { DimensionStatusLegend } from '../../components/investigations/DimensionBreakdown'
 import { CatalogExplorer } from '../../components/investigations/CatalogExplorer'
+import { CompareDrawer } from '../../components/investigations/CompareDrawer'
 import { GapBanner } from '../../components/investigations/GapBanner'
 import { RankedResultCard } from '../../components/investigations/RankedResultCard'
 import { ScenarioControls } from '../../components/investigations/ScenarioControls'
@@ -51,6 +52,27 @@ function ScenarioWorkbench({ scenarios }: { scenarios: Scenario[] }) {
       }
   const [rankedInputs, setRankedInputs] = useState(initialInputs)
   const [requestNonce, setRequestNonce] = useState(0)
+  const [compareIds, setCompareIds] = useState<string[]>([])
+  const [compareOpen, setCompareOpen] = useState(false)
+
+  const toggleCompare = useCallback((psiId: string) => {
+    setCompareIds((previous) => {
+      if (previous.includes(psiId)) {
+        return previous.filter((id) => id !== psiId)
+      }
+      if (previous.length >= 4) return previous
+      return [...previous, psiId]
+    })
+  }, [])
+
+  const removeCompare = useCallback((psiId: string) => {
+    setCompareIds((previous) => previous.filter((id) => id !== psiId))
+  }, [])
+
+  const clearCompare = useCallback(() => {
+    setCompareIds([])
+    setCompareOpen(false)
+  }, [])
 
   const rankQuery = useAsyncData(
     (signal) => api.rank({ scenario: rankedInputs }, { signal }),
@@ -149,7 +171,21 @@ function ScenarioWorkbench({ scenarios }: { scenarios: Scenario[] }) {
       <CatalogExplorer
         rankedResults={rank?.results ?? []}
         scenarioName={rankedScenario?.name ?? null}
+        compareIds={compareIds}
+        onToggleCompare={toggleCompare}
+        onOpenCompare={() => setCompareOpen(true)}
       />
+
+      {compareOpen && compareIds.length >= 1 && (
+        <CompareDrawer
+          ids={compareIds}
+          rankedResults={rank?.results ?? []}
+          scenarioName={rankedScenario?.name ?? null}
+          onRemove={removeCompare}
+          onClear={clearCompare}
+          onClose={() => setCompareOpen(false)}
+        />
+      )}
     </div>
   )
 }

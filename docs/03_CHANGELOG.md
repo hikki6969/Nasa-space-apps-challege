@@ -2,6 +2,42 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person B B4 verification pass (key findings in the comparison matrix)
+
+### Added
+
+- `CompareDrawer` now renders a **Key findings** row alongside scores, coverage, and approach: each selected record shows its `key_findings_text`, or the explicit fallback `No key-findings text is available for this record.` when the record carries none. Findings are never fabricated, and the row repeats the non-ranked rule — metadata-only/instrument-context records keep `Not ranked` badges with no scores or coverage values.
+- One Vitest case in `frontend/src/features/investigations/CatalogExplorer.test.tsx` (`compares key findings, withholding them when the record has none`) asserting both paths: verified PSI-25 renders the fixture finding; metadata-only PSI-142 renders the withheld fallback.
+
+### Verified
+
+- The catalog-pinned Compare mode (commit `d5d2477`) and the Parallel-coordinates Compare tab both satisfy the B4 checklist: per-row pins capped at four, side-by-side matrix, non-ranked badges instead of numeric scores for metadata-only/instrument-context records, shared/different fuels, phases, themes and hardware via the compare API contract, and Plotly parallel coordinates limited to numeric fields present for every selected record (an axis is dropped entirely when any selection lacks a value).
+- `npm run check` → typecheck, lint (0 warnings), 48/48 tests (was 47), production build.
+- `python scripts/check_docs.py` → 0 failures (17 required documents).
+
+### Known limits
+
+- Compare mode remains fixture-backed under H1 and unverified against real annotations; no numeric annotation is displayed without provenance. Explicit shared/different measurement grouping beyond the compare API contract (`compare.shared` / `compare.differences`) still needs a Person A contract extension.
+
+## 2026-11-14 — Person B B4 implementation (Compare mode)
+
+### Added
+
+- Catalog-based compare selection in `CatalogExplorer`: a per-row pin checkbox (`Mark <psi_id> for comparison`), capped at four, with an always-visible disabled/enabled `Compare selected (n)` button in the filter bar.
+- `CompareDrawer` in `frontend/src/components/investigations/CompareDrawer.tsx`: a side-by-side, provenance-first comparison of 1–4 pinned records fetched through the typed client — titles, acronyms, safety themes, fuel phases, project type, evidence class, physical proximity score, coverage, approach text, and field-level provenance (source URL, value kind, accession link) on every curated numeric value. Missing provenance withholds the value rather than showing it.
+- Non-ranked handling: pinned metadata-only and instrument-context records render `Not ranked · <reason>` badges instead of scores/coverage, with a visible `role="note"` disclosure that selections are not all ranked evidence.
+- Shared `fieldDefinitions.ts` between the detail view and the comparison view (single source of truth for the curated-field mapping).
+- Seven Vitest cases in `frontend/src/features/investigations/CatalogExplorer.test.tsx`: disabled-until-two selection, open/close, pinned-removal, pin limit, non-ranked badge rendering with a ranked co-selection, scores/coverage/approach/provenance content, and pin clearing.
+
+### Changed
+
+- InvestigationsPanel owns compare state and renders `CompareDrawer` below the catalog; the existing Compare tab (curated-record matrix, shared/differences, Plotly parallel coordinates) is unchanged.
+
+### Known limits
+
+- Explicit shared/different measurement grouping beyond the compare API contract (`compare.shared` / `compare.differences`) needs a Person A contract extension — the matrix itself displays measurement ranges field-by-field, but no new backend data group was invented.
+- Compare mode is fixture-backed under H0 and unverified under H1; no numeric annotation is displayed without provenance.
+
 ## 2026-11-14 — H1 delivery and Scenario A direct gap (T-017) unblocking
 
 ### Added
