@@ -1690,7 +1690,7 @@
     }
   },
   "info": {
-    "description": "NASA PSI fire-safety evidence synthesizer. This version is the H0 mock contract; canonical snapshot endpoints arrive in H1/H2.",
+    "description": "NASA PSI fire-safety evidence synthesizer. Wired to canonical 24-record snapshot, SQLite FTS5 index, and MiniLM embeddings.",
     "title": "FireSight API",
     "version": "0.1.0"
   },

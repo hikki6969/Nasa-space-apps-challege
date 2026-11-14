@@ -2,6 +2,33 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person A A3, A4, A5 delivery and H2 handoff package
+
+### Added
+
+- **A3 (Derived index and embeddings)**:
+  - `scripts/build_index.py`: generates SQLite database `data/generated/firesight.db` with an FTS5 virtual table (`investigations_fts`) using `porter unicode61` tokenizer over title, objectives, approach, findings, fuel, hardware, and keywords for all 24 canonical records.
+  - `scripts/build_embeddings.py`: generates 384-dimensional L2-normalized text embeddings (`data/embeddings.npy`) from `sentence-transformers/all-MiniLM-L6-v2` (model revision `c224e78d5e4b10e9976450a52084712171457f30`, Apache-2.0) with row-order manifest `data/embeddings_manifest.json`.
+  - `tests/backend/test_index.py`: validates table structure, FTS5 BM25 search, embeddings normalization, manifest consistency, and asserts runtime code does not import Torch, Transformers, or sentence-transformers.
+- **A4 (Similarity and ranking benchmark)**:
+  - `tests/backend/test_benchmark_ranking.py`: measures ranking latency across all four canonical scenarios, validating p95 latency = 7.39 ms against the strictly enforced < 500 ms threshold.
+- **A5 & H2 (Live API wiring, templates, and retrieval)**:
+  - `backend/app/catalog.py`: canonical loader merging `psi_snapshot.json` and `annotations.json` into typed `InvestigationRecord` models and table previews.
+  - `backend/app/retrieval.py`: structured filters, SQLite FTS5/BM25 retrieval, vector cosine similarity via NumPy dot products, and Reciprocal Rank Fusion (RRF).
+  - `backend/app/justifications.py`: template explanations engine, dimension scoring, false-coverage prevention (BASS-II at 30% O2 never described as covering), gap statements, and rocket/propellant scope guard.
+  - `backend/app/observations.py`: measured observation points from ranked-eligible evidence records only; strictly excludes PSI-47, PSI-117, FM2, and LUCI.
+  - `backend/app/context.py`: structured context response for incidents, spinoffs, and programs.
+  - `backend/app/main.py`: live endpoints wired to canonical data for `/api/health`, `/api/catalog`, `/api/investigations/{id}`, `/api/scenarios`, `/api/rank`, `/api/compare`, `/api/observations`, `/api/context`, and `/api/ask`.
+
+### Verified
+
+- `pytest`: 148 passed in 1.95s.
+- `npm run check`: typecheck, lint (0 warnings), 49 Vitest tests passed, production build clean.
+- `scripts/check_data.py`: 0 failures (24 records, 22 tables, 7 annotations, 7 source_cited).
+- `scripts/check_docs.py`: 0 failures (17 required documents).
+- H2 handoff delivered to Person B in `docs/todo/PERSON_A.md`.
+
+
 ## 2026-11-14 — Person B B4 verification pass (key findings in the comparison matrix)
 
 ### Added

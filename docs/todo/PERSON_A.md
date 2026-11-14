@@ -60,14 +60,16 @@
 
 ## A3. Derived index and embeddings
 
-- [ ] Implement `scripts/build_index.py` to generate SQLite/FTS5 from canonical JSON.
-- [ ] Add deterministic FTS content and indexes for title, objectives, approach, findings, fuel, hardware, and keywords.
-- [ ] Pin `all-MiniLM-L6-v2` revision/hash and record its license.
-- [ ] Implement `scripts/build_embeddings.py` at build/refresh time only.
-- [ ] Store `embeddings.npy`, row order manifest, model hash, and generator command.
-- [ ] Prove runtime code does not import Torch or sentence-transformers.
+- [x] Implement `scripts/build_index.py` to generate SQLite/FTS5 from canonical JSON.
+- [x] Add deterministic FTS content and indexes for title, objectives, approach, findings, fuel, hardware, and keywords.
+- [x] Pin `all-MiniLM-L6-v2` revision/hash and record its license.
+- [x] Implement `scripts/build_embeddings.py` at build/refresh time only.
+- [x] Store `embeddings.npy`, row order manifest, model hash, and generator command.
+- [x] Prove runtime code does not import Torch or sentence-transformers.
 
 **Done when:** the index and embeddings rebuild deterministically from canonical inputs; the backend starts without the embedding model installed.
+
+**Status (2026-11-14):** Delivered with `scripts/build_index.py`, `scripts/build_embeddings.py`, `data/generated/firesight.db`, `data/embeddings.npy`, and `data/embeddings_manifest.json`. Tested by `tests/backend/test_index.py` (4 tests passing).
 
 **Dependencies:** A1, A2.
 
@@ -80,26 +82,28 @@
 - [x] Implement fixed-weight scoring with coverage^0.5 and no redistribution.
 - [x] Implement direct/partial/contextual/anticipated match classification.
 - [x] Add hand-computed unit tests from the Verification Plan.
-- [ ] Measure ranking p95 over the four canonical scenarios.
+- [x] Measure ranking p95 over the four canonical scenarios.
 
 **Done when:** T-011 through T-020 and the performance target pass.
 
-**Evidence (2026-11-14):** `backend/app/ranking.py` and `tests/backend/test_ranking.py` cover T-011 through T-016, T-017 (Scenario A partial-gravity direct gap verified passing against canonical annotations and ranking rules with zero direct matches), T-018 through T-020, and T-045 (29 tests passing). The p95 target remains pending live scenario benchmark suite.
+**Evidence (2026-11-14):** `backend/app/ranking.py`, `tests/backend/test_ranking.py` (29 tests passing), and `tests/backend/test_benchmark_ranking.py` (p95 latency = 7.39 ms vs < 500 ms target) pass.
 
 **Dependencies:** A0 for the pure functions; A2 for canonical scenario scoring and p95 (A2 H1 delivered).
 
 ## A5. Templates, retrieval, and API
 
-- [ ] Implement structured filters and FTS5/BM25 candidate retrieval.
-- [ ] Implement Reciprocal Rank Fusion only where both candidate lists exist.
-- [ ] Implement template justifications with matched values, sources, limitations, and gap statement.
-- [ ] Implement the forbidden false-coverage check, including BASS-II at 30% O₂.
-- [ ] Implement bounded Q&A over retrieval results and the rocket/propellant scope guard.
-- [ ] Implement the measured-observation endpoint with anticipated, program-context, modeling, metadata-only, and instrument-context records excluded.
-- [ ] Implement `/health`, `/catalog`, `/investigations/{id}`, `/scenarios`, `/rank`, `/compare`, `/observations`, `/context`, and `/ask`.
-- [ ] Provide H2 to Person B with passing targeted API tests.
+- [x] Implement structured filters and FTS5/BM25 candidate retrieval.
+- [x] Implement Reciprocal Rank Fusion only where both candidate lists exist.
+- [x] Implement template justifications with matched values, sources, limitations, and gap statement.
+- [x] Implement the forbidden false-coverage check, including BASS-II at 30% O₂.
+- [x] Implement bounded Q&A over retrieval results and the rocket/propellant scope guard.
+- [x] Implement the measured-observation endpoint with anticipated, program-context, modeling, metadata-only, and instrument-context records excluded.
+- [x] Implement `/health`, `/catalog`, `/investigations/{id}`, `/scenarios`, `/rank`, `/compare`, `/observations`, `/context`, and `/ask`.
+- [x] Provide H2 to Person B with passing targeted API tests.
 
 **Done when:** all four scenario invariants and citation/numeric checks pass.
+
+**Status (2026-11-14):** H2 delivery completed with live `backend/app/catalog.py`, `backend/app/retrieval.py`, `backend/app/justifications.py`, `backend/app/observations.py`, `backend/app/context.py`, and `backend/app/main.py`. Tested by 148 backend tests and 49 frontend tests passing.
 
 **Dependencies:** A2, A3, A4.
 
@@ -151,5 +155,5 @@
 |---|---|---|---|---|
 | 2026-11-14 | H0 schema/OpenAPI/mock | Person B | `backend/app/models.py`, `backend/openapi.json`, `backend/mocks/`, 91 tests passing | Mock only; canonical data begins with H1 |
 | 2026-11-14 | H1 snapshot/annotations | Person B | `data/psi_snapshot.json`, `data/annotations.json` (7 curated records, 51 provenance items), `data/snapshot.sha256`, `tests/backend/test_ranking.py` (T-017 passed), `scripts/check_data.py` (0 failures) | Delivered with 7 records as `annotation_status = source_cited` under Data Safety §9 (D-017); downstream A3 unblocked for text indexing and embeddings |
-| — | H2 API/search/ranking | Person B | — | — |
+| 2026-11-14 | H2 API/search/ranking | Person B | `backend/app/catalog.py`, `backend/app/retrieval.py`, `backend/app/justifications.py`, `backend/app/observations.py`, `backend/app/context.py`, `backend/app/main.py`, `data/generated/firesight.db`, `data/embeddings.npy`, 148 backend tests passing, ranking p95 = 7.39 ms | Full live backend endpoints wired to canonical data, FTS5 BM25 search, embeddings, template explanations, scope guard, and measured observations |
 | — | H3 defect reports | Person A from Person B | — | — |
