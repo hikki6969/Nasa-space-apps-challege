@@ -2,6 +2,20 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — H1 delivery and Scenario A direct gap (T-017) unblocking
+
+### Added
+
+- `test_scenario_a_partial_gravity_direct_gap_t017` in `tests/backend/test_ranking.py`: verifies that Scenario A produces zero direct matches against canonical annotations (`data/annotations.json`) and under physical ranking rules due to partial gravity (0.16 g vs 0.0 g) and unspecified flow velocity (T-017).
+- VF-21 in `docs/VERIFIED_FACTS.md` documenting H1 delivery and the verified Scenario A direct gap.
+
+### Changed
+
+- `docs/todo/PERSON_A.md`: marked A2 H1 handoff delivered with 7 curated records maintained as `annotation_status = metadata_only` and `_human_review.status = pending` under Data Safety §9 pending out-of-band human review.
+- `docs/todo/PERSON_A.md`: marked T-017 as implemented and passing (29 ranking tests passing).
+- `docs/todo/PERSON_A.md`: noted downstream A3 (SQLite/FTS5 search index and MiniLM text embeddings from canonical text metadata) is unblocked.
+- Updated Handoff log with H1 delivery date, evidence, and notes.
+
 ## 2026-11-14 — A2 annotation proposal and human-review gate
 
 ### Added

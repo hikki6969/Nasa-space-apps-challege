@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 import pytest
 
 from backend.app.models import InvestigationRecord, Provenance, Range, Scenario
@@ -11,6 +14,9 @@ from backend.app.ranking import (
     score_record,
     theme_similarity,
 )
+
+ROOT = Path(__file__).resolve().parents[2]
+ANNOTATIONS_PATH = ROOT / "data" / "annotations.json"
 
 
 def provenance() -> Provenance:
@@ -260,3 +266,56 @@ def test_modeling_record_is_contextual():
 
     assert score_record(record, Scenario(oxygen_fraction=0.3)) is None
     assert classify_match(record, None) == "contextual_only"
+
+
+def test_scenario_a_partial_gravity_direct_gap_t017():
+    """T-017: Scenario A partial-gravity direct gap produces zero direct_match results.
+
+    Verification Plan T-017: 'Scenario A has no direct_match'.
+    1. Verifies against canonical annotations that all records produce zero direct_match
+       results (all are contextual_only while annotation_status='metadata_only' pending human review).
+    2. Verifies against physical ranking rules that even if evidence records are promoted to
+       verified status, Scenario A produces zero direct_match results because:
+       - Gravity is 0.16 g (lunar partial gravity) whereas PSI records are microgravity (0.0 g).
+       - Flow velocity is null (|Q(S)| = 5 < 6), which precludes direct_match per Spec §6.4.
+    """
+    annotations_data = json.loads(ANNOTATIONS_PATH.read_text(encoding="utf-8"))
+    scenario_raw = annotations_data["scenarios"]["scenario_A"]
+    scenario_a = Scenario(
+        oxygen_fraction=scenario_raw["oxygen_fraction"],
+        pressure_psia=scenario_raw["pressure_psia"],
+        gravity_g=scenario_raw["gravity_g"],
+        flow_velocity_cms=scenario_raw["flow_velocity_cms"],
+        fuel_phase=scenario_raw["fuel_phase"],
+        safety_theme=scenario_raw["safety_theme"],
+    )
+
+    records = [
+        InvestigationRecord.model_validate(raw)
+        for raw in annotations_data["records"]
+    ]
+    assert len(records) == 7
+
+    # 1. Canonical data verification
+    canonical_matches = []
+    for record in records:
+        score = score_record(record, scenario_a)
+        match_class = classify_match(record, score)
+        canonical_matches.append(match_class)
+        assert match_class != "direct_match"
+        assert match_class == "contextual_only"
+
+    assert not any(m == "direct_match" for m in canonical_matches)
+
+    # 2. Physical ranking rule verification (even under hypothetical verified status)
+    for record in records:
+        if record.catalog_role == "evidence" and record.evidence_class != "modeling":
+            hypothetical_verified = record.model_copy(update={"annotation_status": "verified"})
+            score = score_record(hypothetical_verified, scenario_a)
+            assert score is not None
+            # Direct match requires all six dimensions (|Q(S)| == 6) and all similarities == 1.0.
+            # Scenario A has flow=None (5 dimensions) and gravity is 0.16 g vs 0.0 g (similarity 0.0).
+            match_class = classify_match(hypothetical_verified, score)
+            assert match_class != "direct_match"
+            assert match_class == "partial_match"
+
