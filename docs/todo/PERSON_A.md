@@ -1,0 +1,145 @@
+# Person A TODO — Evidence & Backend
+
+**Owner boundary:** `backend/**`, `data/**`, canonical build/validation scripts, backend tests, and the verified-facts ledger.
+
+**Start here:** [Product Spec §4](../00_PRODUCT_SPEC.md#4-frozen-data-contract), [Verified Facts](../VERIFIED_FACTS.md), and [Verification Plan](../06_VERIFICATION_PLAN.md).
+
+## A0. Schema and contract freeze
+
+- [ ] Create `backend/app/models.py` with the frozen Pydantic models.
+- [ ] Enable strict Pydantic configuration and `extra = forbid`; reject string-to-number coercion.
+- [ ] Implement `Range` bounds validation and expected-unit validation.
+- [ ] Implement status/catalog-role/provenance validators.
+- [ ] Add tests for reversed bounds, missing provenance on any populated physical field including metadata-only records, nested table ID mismatch, anticipated status, and metadata-only ranking exclusion.
+- [ ] Export a versioned OpenAPI document and representative mock responses.
+- [ ] Provide H0 to Person B: schema, OpenAPI, and mock payloads.
+
+**Done when:** targeted schema tests pass; Person B can type its client without asking for an undocumented field.
+
+**Dependencies:** none.
+
+## A1. Canonical snapshot builder
+
+- [ ] Implement `scripts/build_snapshot.py` against PSI JSON/detail endpoints.
+- [ ] Select records using the exact VF-01 research-area filter and assert the exact 24-ID set.
+- [ ] Assert PSI-181 and PSI-108 are absent.
+- [ ] Preserve PSI-47 with `catalog_role = instrument_context`.
+- [ ] Store stable detail/table URLs, file names, versions, S3 version IDs, DOI, license, and source metadata.
+- [ ] Reject duplicate IDs, missing licenses, partial downloads, and unexpected counts.
+- [ ] Generate `data/snapshot.sha256` and update the `Snapshot SHA-256` field under Verification metadata.
+
+**Done when:** two clean builds produce byte-identical canonical JSON and the same digest.
+
+**Dependencies:** A0.
+
+## A2. Experimental tables and annotations
+
+- [ ] Ingest visible public tables without committing signed URLs.
+- [ ] Curate PSI-159, PSI-10, PSI-101, PSI-98, PSI-25, PSI-69, and PSI-68.
+- [ ] Add field-level provenance for every curated numeric value and observed-level list.
+- [ ] Verify BASS-II initial O₂ as 0.136–0.222 and preserve final outliers separately.
+- [ ] Verify CFI-G and Flame Design high-O₂ values against their exact columns.
+- [ ] Classify SAFFIRE-I as large-scale demonstration, not bench flammability.
+- [ ] Classify SAME-R as detection instrumentation.
+- [ ] Classify FLEX/FLEX-2 as droplet/suppression evidence.
+- [ ] Keep PSI-117 metadata-only/contextual and confirm it has no measured table.
+- [ ] Record any annotation disagreement as a Problem Log entry; do not average conflicting values.
+- [ ] Provide H1 to Person B: exact snapshot fixture, seven annotations, and table previews with the validation command output.
+
+**Done when:** the data acceptance gate in the Verification Plan passes.
+
+**Dependencies:** A1.
+
+## A3. Derived index and embeddings
+
+- [ ] Implement `scripts/build_index.py` to generate SQLite/FTS5 from canonical JSON.
+- [ ] Add deterministic FTS content and indexes for title, objectives, approach, findings, fuel, hardware, and keywords.
+- [ ] Pin `all-MiniLM-L6-v2` revision/hash and record its license.
+- [ ] Implement `scripts/build_embeddings.py` at build/refresh time only.
+- [ ] Store `embeddings.npy`, row order manifest, model hash, and generator command.
+- [ ] Prove runtime code does not import Torch or sentence-transformers.
+
+**Done when:** the index and embeddings rebuild deterministically from canonical inputs; the backend starts without the embedding model installed.
+
+**Dependencies:** A1, A2.
+
+## A4. Similarity and ranking
+
+- [ ] Implement the frozen oxygen and pressure tolerance-overlap formulas.
+- [ ] Implement exact/bracket/disjoint gravity scoring over explicit recorded levels.
+- [ ] Implement flow exact/bracket/tolerance/disjoint scoring.
+- [ ] Implement phase and primary/secondary theme similarity.
+- [ ] Implement fixed-weight scoring with coverage^0.5 and no redistribution.
+- [ ] Implement direct/partial/contextual/anticipated match classification.
+- [ ] Add hand-computed unit tests from the Verification Plan.
+- [ ] Measure ranking p95 over the four canonical scenarios.
+
+**Done when:** T-011 through T-020 and the performance target pass.
+
+**Dependencies:** A0, A2.
+
+## A5. Templates, retrieval, and API
+
+- [ ] Implement structured filters and FTS5/BM25 candidate retrieval.
+- [ ] Implement Reciprocal Rank Fusion only where both candidate lists exist.
+- [ ] Implement template justifications with matched values, sources, limitations, and gap statement.
+- [ ] Implement the forbidden false-coverage check, including BASS-II at 30% O₂.
+- [ ] Implement bounded Q&A over retrieval results and the rocket/propellant scope guard.
+- [ ] Implement the measured-observation endpoint with anticipated, program-context, modeling, metadata-only, and instrument-context records excluded.
+- [ ] Implement `/health`, `/catalog`, `/investigations/{id}`, `/scenarios`, `/rank`, `/compare`, `/observations`, `/context`, and `/ask`.
+- [ ] Provide H2 to Person B with passing targeted API tests.
+
+**Done when:** all four scenario invariants and citation/numeric checks pass.
+
+**Dependencies:** A2, A3, A4.
+
+## A6. Backend packaging and hardening
+
+- [ ] Add the backend Dockerfile with pinned dependencies.
+- [ ] Add clear errors for missing snapshot, hash mismatch, missing table, and invalid scenario.
+- [ ] Ensure the default image has no Phi-3 or runtime model download.
+- [ ] Implement the optional local-model profile only if A7 gates are likely to pass.
+- [ ] Add `/health` details sufficient to diagnose missing derived artifacts.
+
+**Done when:** the backend container starts from a clean build and serves the fixture API offline.
+
+**Dependencies:** A5.
+
+## A7. Optional local Phi-3
+
+- [ ] Confirm a hash-pinned local Phi-3 artifact and license.
+- [ ] Supply structured canonical record context only.
+- [ ] Validate exact numerics, valid PSI citations, no unsupported claims, and p95 below 3 s.
+- [ ] Keep `USE_LLM=false` if any gate fails.
+
+**Done when:** all optional gates pass, or the feature is explicitly left disabled with evidence.
+
+**Dependencies:** A5, A6.
+
+## A8. Backend release evidence
+
+- [ ] Run targeted tests, then the full backend suite.
+- [ ] Run the data validator and hash check.
+- [ ] Measure ranking latency.
+- [ ] Rehearse the API with networking disabled after the image is built.
+- [ ] Update [Verified Facts](../VERIFIED_FACTS.md), [Decision Log](../01_DECISION_LOG.md), [Problem Log](../02_PROBLEM_LOG.md), and [Changelog](../03_CHANGELOG.md).
+
+**Done when:** H4 backend evidence is current after the final mutation.
+
+**Dependencies:** A6; A7 only if enabled.
+
+## Blockers and rulings needed
+
+- [ ] **Rule:** numeric flow value for Scenario A; otherwise keep it explicitly missing.
+- [ ] **Rule:** source-backed numeric physical inputs for Scenarios B–D.
+- [ ] **Rule:** exact optional Phi-3 model artifact, if Phase 4 is attempted.
+- [ ] **Verify:** official NASA LUCI source URL before adding a LUCI card.
+
+## Handoff log
+
+| Date | Handoff | Recipient | Evidence | Notes |
+|---|---|---|---|---|
+| — | H0 schema/OpenAPI/mock | Person B | — | — |
+| — | H1 snapshot/annotations | Person B | — | — |
+| — | H2 API/search/ranking | Person B | — | — |
+| — | H3 defect reports | Person A from Person B | — | — |

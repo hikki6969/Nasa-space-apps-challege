@@ -1,0 +1,138 @@
+# Problem Log
+
+Each entry uses the fixed shape: **Symptom → Reproduction → Root Cause → Resolution → Verification → Lesson**.
+
+## P-001 — BASS-II was described as 30% O₂ evidence
+
+- **Symptom:** a lunar-habitat scenario appeared to have completed solid-fuel evidence.
+- **Reproduction:** parse `PSI-25_Experimental table_BASS-II.csv`; calibrated initial O₂ spans 13.6–22.2%, while the scenario requests 30%.
+- **Root cause:** an earlier draft conflated final oxygen readings and narrative expectations with the initial test-condition envelope.
+- **Resolution:** curate 0.136–0.222 fraction; retain final outliers separately; forbid “covers 30% O₂” template output.
+- **Verification:** VF-06 plus template unit test in [Verification Plan](06_VERIFICATION_PLAN.md).
+- **Lesson:** every numeric claim needs a field-level source and semantic qualifier such as initial versus final.
+
+## P-002 — Keyword search contaminated the corpus
+
+- **Symptom:** a 26-record result included solder and fluid-physics investigations.
+- **Reproduction:** inspect PSI-181 and PSI-108 detail records; their research areas are Materials Science and Fluid Physics.
+- **Root cause:** keyword relevance was used where exact taxonomy membership was required.
+- **Resolution:** filter by `Research Area = Combustion Science`, persist the exact 24 accessions, and reject both false positives in validation.
+- **Verification:** VF-01, VF-02, and the snapshot membership test.
+- **Lesson:** retrieval shortcuts cannot define a canonical corpus.
+
+## P-003 — DAFT exclusion contradicted the live exact filter
+
+- **Symptom:** an approved note said DAFT was outside the 24 records, but the live query included PSI-47.
+- **Reproduction:** request the exact VF-01 search URL and inspect the PSI-47 detail record.
+- **Root cause:** the corpus ruling relied on a stale or unverified classification assumption.
+- **Resolution:** retain PSI-47 to preserve the exact count, assign `catalog_role = instrument_context`, and exclude it from physical ranking, default retrieval results, observation endpoints, and measured plots.
+- **Verification:** VF-03 and tests asserting 24 IDs including PSI-47, zero PSI-47 ranked candidates, and zero PSI-47 observations.
+- **Lesson:** corpus counts and taxonomy membership must be verified at the same boundary.
+
+## P-004 — Same and Saffire identities were unverified
+
+- **Symptom:** the curated plan named PSI-101 and PSI-98 without a recorded live check.
+- **Reproduction:** request their detail endpoints.
+- **Root cause:** assertions had migrated between planning documents without evidence links.
+- **Resolution:** verify SAME-R and SAFFIRE-I and retain them; no fallback substitution is needed.
+- **Verification:** VF-04.
+- **Lesson:** every PSI ID in a fixture must have a verified detail URL.
+
+## P-005 — Scenario C depended on an uncurated derivative
+
+- **Symptom:** the plan expected FLEX/FLEX-2 while curating only PSI-117, a FLEX-derived modeling study without a table.
+- **Reproduction:** inspect PSI-117 detail; `experimentalTable` is empty.
+- **Root cause:** a derivative was mistaken for the experimental evidence.
+- **Resolution:** curate PSI-69 and PSI-68; keep PSI-117 contextual and non-ranked.
+- **Verification:** VF-05, VF-10, and the Scenario C fixture test.
+- **Lesson:** derived models may explain experiments but cannot replace their measured tables.
+
+## P-006 — A fitted flammability curve created false precision
+
+- **Symptom:** an earlier product proposal included logistic regression, bootstrap confidence intervals, and material risk tiers.
+- **Reproduction:** compare the proposed model inputs with the number of comparable tabulated points per material class.
+- **Root cause:** regression was treated as presentation rather than validated inference on a tiny heterogeneous sample.
+- **Resolution:** delete the model; plot source observations and an explicitly non-validated observed-domain hull.
+- **Verification:** AST/static check for regression modules and the observed-map visual test.
+- **Lesson:** a smooth curve communicates more certainty than the evidence supports.
+
+## P-007 — The hosted-LLM default contradicted the offline requirement
+
+- **Symptom:** the primary extraction/Q&A path depended on an API key and network access; one referenced model ID was not a real served model.
+- **Reproduction:** disable network and API credentials in a fresh environment.
+- **Root cause:** convenience was prioritized over the judged operating constraint.
+- **Resolution:** human-verified annotations and template retrieval are primary; optional local Phi-3 is flag-gated; no hosted client exists.
+- **Verification:** offline Docker rehearsal and source scan for hosted model clients/API keys.
+- **Lesson:** a fallback is not a fallback if the primary path still depends on it.
+
+## P-008 — PSI-117 had an ambiguous evidence role
+
+- **Symptom:** it could appear as a ranked record despite having no physical fields or measured table.
+- **Reproduction:** validate the record against the schema.
+- **Root cause:** modeling and evidence availability were conflated.
+- **Resolution:** `evidence_class = modeling`, `data_status = partial`, `annotation_status = metadata_only`, no physical fields, no table, and no rank. It remains visible as contextual modeling evidence.
+- **Verification:** VF-10 and schema/ranking tests.
+- **Lesson:** evidence kind, completeness, and ranking eligibility are separate decisions.
+
+## P-009 — Evidence and availability duplicated “anticipated”
+
+- **Symptom:** `evidence_class = anticipated` and `data_status = anticipated_in_psi` encoded the same state.
+- **Reproduction:** construct a record and vary both fields inconsistently.
+- **Root cause:** two independently writable fields represented one fact.
+- **Resolution:** remove `anticipated` from `evidence_class`; use the separate `ProgramContext` model with `data_status = anticipated_in_psi` or `active_program`, no evidence class, and no measured table.
+- **Verification:** Pydantic validator tests.
+- **Lesson:** one fact should have one authoritative field.
+
+## P-010 — The `Range` contract was undefined
+
+- **Symptom:** physical fields referenced a type that did not exist, leaving defaults and validation unspecified.
+- **Reproduction:** attempt to instantiate the proposed schema.
+- **Root cause:** the product summary omitted an implementation-level model.
+- **Resolution:** freeze `min`, `max`, `unit`, optional `notes`, and reject reversed bounds.
+- **Verification:** schema tests.
+- **Lesson:** every referenced schema type must be defined before freeze.
+
+## P-011 — Missing dimensions could be rewarded
+
+- **Symptom:** a weighted average over only present fields can outrank a complete matching record.
+- **Reproduction:** compare a record with one matching field against one with the same match plus five complete dimensions.
+- **Root cause:** normalization by present weight erased uncertainty.
+- **Resolution:** normalize only over the dimensions requested by the scenario `Q(S)`, multiply by requested-coverage^0.5, and never redistribute the weight of a missing record field.
+- **Verification:** missing-field and coverage tests.
+- **Lesson:** missing evidence is a penalty, not free relevance.
+
+## P-012 — Partial gravity was only a narrative gap
+
+- **Symptom:** the UI could say there was no partial-gravity evidence while the scorer treated all conditions as generically close.
+- **Reproduction:** score a 0.16 g scenario against explicit 0 g and 1 g levels.
+- **Root cause:** exact/bracket/disjoint gravity similarity was unspecified.
+- **Resolution:** freeze discrete-level gravity similarity and require exact gravity for `direct_match`.
+- **Verification:** formula and direct-classification tests.
+- **Lesson:** a safety-gap statement must be enforced by code, not only prose.
+
+## P-013 — Partial scenarios had undefined scoring behavior
+
+- **Symptom:** Scenarios B–D and Scenario A's unspecified flow could be interpreted as zero similarity, missing coverage, or excluded dimensions, producing different rankings.
+- **Reproduction:** score the same candidate with one scenario field omitted under each interpretation.
+- **Root cause:** the formula assumed every scenario always specified all six dimensions.
+- **Resolution:** define `Q(S)` as the explicitly requested scenario dimensions; exclude omitted scenario fields from score and record coverage, while missing record fields inside `Q(S)` still receive no weight redistribution. Require all six inputs for `direct_match`.
+- **Verification:** T-045 and scenario fixture tests.
+- **Lesson:** unspecified inputs need a first-class semantic, not an implementation default.
+
+## P-014 — Program context initially allowed measured tables
+
+- **Symptom:** the first `AnticipatedProgram` draft exposed an `experimental_tables` field even though the product contract forbade anticipated measurements.
+- **Reproduction:** construct a program-context object with a table and pass schema validation.
+- **Root cause:** the separate program model reused the completed-record table shape without a rejecting validator.
+- **Resolution:** replace it with table-free `ProgramContext`, distinguish `active_program` from `anticipated_in_psi`, and exclude the model from observation endpoints.
+- **Verification:** T-007 and T-030.
+- **Lesson:** separation must be enforced by the type and data path, not only by a label.
+
+## P-015 — The frozen schema allowed silent numeric coercion
+
+- **Symptom:** an ordinary Pydantic float field accepted a numeric string and converted it, contradicting the strict no-coercion requirement.
+- **Reproduction:** instantiate a strict-model candidate with `"0.3"` for a float field.
+- **Root cause:** the first model draft did not set `ConfigDict(strict=True, extra="forbid")` or enforce field-specific range units.
+- **Resolution:** use strict models, forbid extra fields, validate the unit for each physical range, and reject incompatible recorded-level/range combinations.
+- **Verification:** T-006 plus schema unit tests.
+- **Lesson:** a documented strictness claim must be visible in the normative model.
