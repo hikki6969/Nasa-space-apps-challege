@@ -154,6 +154,7 @@
 
 | Date | Handoff | Recipient | Evidence | Notes |
 |---|---|---|---|---|
+| 2026-11-14 | H2 live backend consumed (frontend full alignment) | Person B | 12/12 live integration tests pass against the running backend (9 adapter + 3 UI: catalog, search, facet, detail, compare); `npm run check` green (70/70 mock tests; integration suite skips by default); live gap statement verified via `scenario_id='A'`; Docker image now builds with `VITE_API_MODE=http` | Live H2 normalized client-side; no fields fabricated; outcome/flow encodings only when reported; mock remains the dev default |
 | — | H0 typed client/mock review | Person A | — | — |
 | — | H3 UI/API defect reports | Person A | — | — |
 | — | H4 frontend/demo evidence | release | — | — |

@@ -10,8 +10,8 @@ import type {
   ObservationsResponse,
   RankRequest,
   RankResponse,
-  RequestOptions,
   ScenariosResponse,
+  RequestOptions,
 } from './types'
 
 /**
@@ -68,11 +68,28 @@ export interface HttpApiOptions {
   fetchImpl?: typeof fetch
 }
 
+export interface HttpTransport {
+  get<T>(path: string, requestOptions?: RequestOptions): Promise<T>
+  post<T>(
+    path: string,
+    body: unknown,
+    requestOptions?: RequestOptions,
+  ): Promise<T>
+}
+
 function isAbortError(error: unknown): boolean {
   return error instanceof DOMException && error.name === 'AbortError'
 }
 
-export function createHttpApi(options: HttpApiOptions = {}): FireSightApi {
+/**
+ * Low-level typed transport for the H2 live backend. Response bodies are
+ * JSON-parsed without reshaping; normalization lives in `./live.ts`, which
+ * maps the wire format onto the shapes the UI consumes. The mock adapter
+ * implements the same `FireSightApi` surface for offline development.
+ */
+export function createHttpTransport(
+  options: HttpApiOptions = {},
+): HttpTransport {
   const baseUrl = (options.baseUrl ?? '/api').replace(/\/+$/, '')
   const fetchImpl = options.fetchImpl ?? fetch
 
@@ -130,36 +147,9 @@ export function createHttpApi(options: HttpApiOptions = {}): FireSightApi {
   }
 
   return {
-    getHealth(requestOptions) {
-      return request<HealthResponse>('/health', {}, requestOptions)
+    get<T>(path: string, requestOptions?: RequestOptions): Promise<T> {
+      return request<T>(path, {}, requestOptions)
     },
-    getCatalog(requestOptions) {
-      return request<CatalogResponse>('/catalog', {}, requestOptions)
-    },
-    getInvestigation(psiId, requestOptions) {
-      return request<InvestigationDetail>(
-        `/investigations/${encodeURIComponent(psiId)}`,
-        {},
-        requestOptions,
-      )
-    },
-    getScenarios(requestOptions) {
-      return request<ScenariosResponse>('/scenarios', {}, requestOptions)
-    },
-    rank(requestBody, requestOptions) {
-      return post<RankResponse>('/rank', requestBody, requestOptions)
-    },
-    compare(requestBody, requestOptions) {
-      return post<CompareResponse>('/compare', requestBody, requestOptions)
-    },
-    getObservations(requestOptions) {
-      return request<ObservationsResponse>('/observations', {}, requestOptions)
-    },
-    getContext(requestOptions) {
-      return request<ContextResponse>('/context', {}, requestOptions)
-    },
-    ask(requestBody, requestOptions) {
-      return post<AskResponse>('/ask', requestBody, requestOptions)
-    },
+    post,
   }
 }

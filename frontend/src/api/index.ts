@@ -1,9 +1,6 @@
-import {
-  createHttpApi,
-  type ApiClientHandle,
-  type ApiMode,
-} from './client'
+import { createLiveApi } from './live'
 import { createMockApi } from './mock/mockAdapter'
+import type { ApiClientHandle, ApiMode } from './client'
 
 export interface CreateApiClientOptions {
   mode?: ApiMode
@@ -27,7 +24,7 @@ export function createApiClient(
   const baseUrl = options.baseUrl ?? import.meta.env.VITE_API_BASE_URL ?? '/api'
 
   if (mode === 'http') {
-    return { api: createHttpApi({ baseUrl }), mode, baseUrl }
+    return { api: createLiveApi({ baseUrl }), mode, baseUrl }
   }
 
   return {
@@ -37,7 +34,8 @@ export function createApiClient(
   }
 }
 
-export { ApiError, createHttpApi } from './client'
+export { ApiError, createHttpTransport } from './client'
+export { createLiveApi } from './live'
 export type {
   ApiClientHandle,
   ApiMode,

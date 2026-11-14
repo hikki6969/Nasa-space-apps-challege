@@ -76,7 +76,7 @@ function buildResult(input: ResultInput): RankedResult {
   )
   const weighted = requested.reduce(
     (total, dimension) =>
-      total + (dimension.present ? dimension.weight * dimension.similarity : 0),
+      total + (dimension.present ? dimension.weight * (dimension.similarity ?? 0) : 0),
     0,
   )
   const coverage = requested.length > 0 ? present.length / requested.length : 0

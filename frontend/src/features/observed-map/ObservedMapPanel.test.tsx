@@ -1,16 +1,21 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import ObservedMapPanel from './ObservedMapPanel'
 import {
   buildObservedMapTraces,
+  buildObservedStripTraces,
+  hasFlowAxis,
+  observedMapStripLayout,
   observedOutcomeColor,
 } from '../../components/charts/observedMap'
-import { ApiProvider, createApiClient, OBSERVED_DOMAIN_DISCLAIMER } from '../../api'
+import { ApiProvider, type FireSightApi } from '../../api'
+import { createApiClient, OBSERVED_DOMAIN_DISCLAIMER } from '../../api'
 import { MOCK_OBSERVATIONS } from '../../api/mock/observations'
 import { convexHull } from '../../lib/geometry'
+import type { ObservationsResponse } from '../../api'
 
-const EXCLUDED_IDS = ['PSI-47', 'PSI-117', 'FM2', 'SoFIE', 'FLARE', 'LUCI'] as const
+const EXCLUDED_IDS = ['PSI-47', 'PSI-117', 'FM2'] as const
 const PLOTTED_PSI_IDS = ['PSI-25', 'PSI-98', 'PSI-69', 'PSI-68', 'PSI-159', 'PSI-10'] as const
 
 function renderPanel() {
@@ -20,6 +25,70 @@ function renderPanel() {
       <ObservedMapPanel />
     </ApiProvider>,
   )
+}
+
+/** Live H2 wire shape: 2 measured oxygen bounds, no flow, no outcome. */
+const LIVE_OBSERVATIONS: ObservationsResponse = {
+  points: [
+    {
+      psi_id: 'PSI-25',
+      file_name: 'PSI-25_Experimental table_BASS-II.csv',
+      row_index: 0,
+      oxygen_fraction: 0.136,
+      pressure_psia: null,
+      flow_velocity_cms: null,
+      gravity_g: null,
+      fuel_phase: null,
+      provenance: {
+        source_url: 'https://psi.nasa.gov/baas2-csv',
+        source_kind: 'psi_table',
+        excerpt_or_table_ref: 'BASS-II O2 column, min=13.6% (VF-06).',
+        note: 'Initial conditions only.',
+        value_kind: 'reported',
+        extraction_method: 'script',
+      },
+    },
+    {
+      psi_id: 'PSI-25',
+      file_name: 'PSI-25_Experimental table_BASS-II.csv',
+      row_index: 1,
+      oxygen_fraction: 0.222,
+      pressure_psia: null,
+      flow_velocity_cms: null,
+      gravity_g: null,
+      fuel_phase: null,
+      provenance: {
+        source_url: 'https://psi.nasa.gov/baas2-csv',
+        source_kind: 'psi_table',
+        excerpt_or_table_ref: 'BASS-II O2 column, max=22.2% (VF-06).',
+        note: 'Initial conditions only.',
+        value_kind: 'reported',
+        extraction_method: 'script',
+      },
+    },
+  ],
+  excluded_psi_ids: ['PSI-47', 'PSI-117'],
+  disclaimer: OBSERVED_DOMAIN_DISCLAIMER,
+  mock_notice: null,
+}
+
+function liveHandle(): { api: FireSightApi; mode: 'http'; baseUrl: string } {
+  const unused = () => Promise.reject(new Error('not exercised in this test'))
+  return {
+    api: {
+      getHealth: unused,
+      getCatalog: unused,
+      getInvestigation: unused,
+      getScenarios: unused,
+      rank: unused,
+      compare: unused,
+      getObservations: () => Promise.resolve(LIVE_OBSERVATIONS),
+      getContext: unused,
+      ask: unused,
+    },
+    mode: 'http',
+    baseUrl: 'http://live.invalid/api',
+  }
 }
 
 describe('ObservedMapPanel — measured points only', () => {
@@ -75,9 +144,11 @@ describe('ObservedMapPanel — measured points only', () => {
     const outcomeLegend = await screen.findByRole('list', {
       name: 'Outcome colours',
     })
-    for (const outcome of ['Ignition', 'Extinction', 'Suppression', 'No ignition']) {
+    for (const outcome of ['Ignition', 'Extinction', 'Suppression']) {
       expect(within(outcomeLegend).getByText(outcome)).toBeInTheDocument()
     }
+    // Only outcomes actually present in the plotted data are listed.
+    expect(within(outcomeLegend).queryByText('No ignition')).toBeNull()
 
     const phaseLegend = screen.getByRole('list', {
       name: 'Material phase marker shapes',
@@ -101,7 +172,7 @@ describe('ObservedMapPanel — measured points only', () => {
     expect(toggle).toBeChecked()
   })
 
-  it('keeps the mock-fixture notice visible', async () => {
+  it('keeps the mock-fixture notice visible in mock mode', async () => {
     renderPanel()
 
     expect(
@@ -110,11 +181,57 @@ describe('ObservedMapPanel — measured points only', () => {
   })
 })
 
+describe('ObservedMapPanel — live H2 shape (oxygen bounds only)', () => {
+  it('renders the strip lane and honest missing-data copy instead of fabricating axes', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(
+      <ApiProvider handle={liveHandle()}>
+        <ObservedMapPanel />
+      </ApiProvider>,
+    )
+
+    expect(
+      await screen.findByText(/The live endpoint reports no outcome/i),
+    ).toBeInTheDocument()
+    expect(
+      screen.getAllByText(/Measured oxygen bounds/i).length,
+    ).toBeGreaterThanOrEqual(1)
+    expect(
+      screen.queryByRole('checkbox', { name: /Show translucent observed-domain hull/i }),
+    ).toBeNull()
+    const disclaimer = screen.getByRole('note')
+    expect(disclaimer).toHaveTextContent(OBSERVED_DOMAIN_DISCLAIMER)
+  })
+})
+
 describe('buildObservedMapTraces — no forbidden chart elements', () => {
   const points = MOCK_OBSERVATIONS.points
   const traces = buildObservedMapTraces(points, true)
   const markerTraces = traces.filter((trace) => trace.mode === 'markers')
   const lineTraces = traces.filter((trace) => trace.mode === 'lines')
+
+  it('keeps one marker trace per phase·outcome group with matching symbol and colour', () => {
+    for (const trace of markerTraces) {
+      const [phase, ...outcomeParts] = String(trace.name).split(' · ')
+      const outcomeLabel = outcomeParts.join(' · ')
+      const outcomeKey = Object.entries({
+        Ignition: 'ignition',
+        Extinction: 'extinction',
+        Suppression: 'suppression',
+        'No ignition': 'no_ignition',
+      }).find(([label]) => label === outcomeLabel)?.[1]
+      expect(outcomeKey, `unmapped outcome label: ${String(trace.name)}`).toBeDefined()
+      const marker = trace.marker as
+        | { symbol?: string; color?: string }
+        | undefined
+      expect(marker?.symbol).toBe(
+        phase === 'Solid' ? 'circle' : phase === 'Liquid droplet' ? 'diamond' : 'triangle-up',
+      )
+      expect(marker?.color).toBe(
+        observedOutcomeColor(outcomeKey as Parameters<typeof observedOutcomeColor>[0]),
+      )
+    }
+  })
 
   it('creates scatter traces only — no model, trendline, or fit trace kind', () => {
     for (const trace of traces) {
@@ -142,29 +259,6 @@ describe('buildObservedMapTraces — no forbidden chart elements', () => {
     ).toHaveLength(0)
   })
 
-  it('keeps one marker trace per phase·outcome group with matching symbol and colour', () => {
-    for (const trace of markerTraces) {
-      const [phase, ...outcomeParts] = String(trace.name).split(' · ')
-      const outcomeLabel = outcomeParts.join(' · ')
-      const outcomeKey = Object.entries({
-        Ignition: 'ignition',
-        Extinction: 'extinction',
-        Suppression: 'suppression',
-        'No ignition': 'no_ignition',
-      }).find(([label]) => label === outcomeLabel)?.[1]
-      expect(outcomeKey, `unmapped outcome label: ${String(trace.name)}`).toBeDefined()
-      const marker = trace.marker as
-        | { symbol?: string; color?: string }
-        | undefined
-      expect(marker?.symbol).toBe(
-        phase === 'Solid' ? 'circle' : phase === 'Liquid droplet' ? 'diamond' : 'triangle-up',
-      )
-      expect(marker?.color).toBe(
-        observedOutcomeColor(outcomeKey as Parameters<typeof observedOutcomeColor>[0]),
-      )
-    }
-  })
-
   it('gives each of the four outcomes a distinct colour', () => {
     const colours = new Set(
       (['ignition', 'extinction', 'suppression', 'no_ignition'] as const).map(
@@ -179,6 +273,30 @@ describe('buildObservedMapTraces — no forbidden chart elements', () => {
     expect(serialized).not.toMatch(
       /logistic|trendline|polyfit|lowess|fitted|confidence|interval|p[-_ ]?value|probabilit|extrapolat|risk tier|regression|predict/i,
     )
+  })
+})
+
+describe('hasFlowAxis and strip traces', () => {
+  it('is true for the mock fixture and false for live points', () => {
+    expect(hasFlowAxis(MOCK_OBSERVATIONS.points)).toBe(true)
+    expect(hasFlowAxis(LIVE_OBSERVATIONS.points)).toBe(false)
+    expect(hasFlowAxis([])).toBe(false)
+  })
+
+  it('strip traces carry measured x values on a single lane with no fabricated flow', () => {
+    const traces = buildObservedStripTraces(LIVE_OBSERVATIONS.points)
+    expect(traces).toHaveLength(1)
+    expect(traces[0]?.name).toBe('Measured table bounds')
+    expect(traces[0]?.x).toEqual([0.136, 0.222])
+    expect(traces[0]?.y).toEqual([0, 0])
+  })
+
+  it('strip layout hides the empty axis and keeps the oxygen fraction range', () => {
+    const layout = observedMapStripLayout()
+    const xaxis = layout.xaxis as Record<string, unknown>
+    const yaxis = layout.yaxis as Record<string, unknown>
+    expect(xaxis.range).toEqual([0, 1])
+    expect(yaxis.visible).toBe(false)
   })
 })
 

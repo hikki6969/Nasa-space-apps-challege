@@ -2,6 +2,36 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person B H2 live backend integration (full alignment)
+
+### Added
+
+- `frontend/src/api/live.ts` — the live H2 adapter. Normalizes Person A's wire format onto the UI's shapes: slim `/api/catalog` is hydrated from `/api/investigations/{id}` (25 in-memory calls, exact — never estimated); counts/distributions/warnings derived from the 24 hydrated canonical records; `anticipated` counted from `/api/context` programs with `data_status = anticipated_in_psi`; snapshot SHA-256 read from `/api/health`; `/api/compare` returns full records which feed the same derivation path as the mock (`buildCompareFromRecords`); `material_phase`/`safety_theme` map to the UI's `phase`/`theme` dimensions; `similarity` stays nullable end-to-end. Nothing is fabricated; provenance passes through untouched.
+- `frontend/src/api/derived.ts` — derivation helpers shared by the mock and live adapters (counts, distributions, compare matrix, parallel axes), so both produce identical UI shapes from the same records.
+- `frontend/src/features/investigations/liveBackend.integration.test.tsx` — 12 opt-in tests (9 adapter-level + 3 UI run-throughs of B3/B4: catalog render/search/facet filter, detail with field-level provenance, compare drawer). Skipped unless `FIRESIGHT_LIVE_API=1` with the backend running at `FIRESIGHT_API_BASE_URL` (default `http://127.0.0.1:8000/api`); always skipped by `npm run check`.
+- `RankRequest.scenario_id` (`'A'|'B'|'C'|'D'`) — the Overview now ranks canonical scenarios with their id, which selects the canonical gap statement (e.g. T-017's direct gap for Scenario A).
+
+### Changed
+
+- `frontend/src/api/client.ts` — the transport (`createHttpTransport`) is now separated from any schema assumption; normalization lives in `live.ts`. `createHttpApi` is replaced by `createLiveApi` (exported from `api/index.ts`).
+- `types.ts` — aligned with the live contract: `ObservationPoint` is now `{ psi_id, file_name, row_index, oxygen_fraction, pressure_psia, flow_velocity_cms, gravity_g, fuel_phase, outcome?, provenance }` with null live values; `ObservationsResponse.excluded` replaced by `excluded_psi_ids` (the live endpoint reports accessions only); `DimensionScore.similarity` is `number | null`; `AskCitation.field/value` optional; `ExperimentalTable.s3_version_id` removed (absent in live previews).
+- `frontend/Dockerfile` — production image now builds with `VITE_API_MODE=http` and `VITE_API_BASE_URL=/api` (previously the default mock bundle shipped in the "live" image); offline mock builds possible via `--build-arg VITE_API_MODE=mock`.
+- Observed map (B5) — two honest render modes from one payload: flow-rich fixtures keep the 2-D O₂×flow chart (hull on ≥3 points); live oxygen-bounds-only data renders a single-lane strip with `.0%` O₂ axis, no flow axis, no hull, and legends shown only for outcomes/phases actually present ("The live endpoint reports no outcome for these rows"). Disclaimer remains exact and always visible.
+- Mock fixture (`api/mock/observations.ts`) carries representative outcomes/flow so the 2-D chart stays exercisable offline; values labeled H0 non-canonical.
+- Q&A panel renders citation field/value only when present (live citations carry none).
+
+### Verified
+
+- Live backend (`uvicorn backend.app.main:app --port 8000`): `/api/health` ok (snapshot digest `596f50c6…`, `use_llm=false`). Integration suite: **12/12 pass**, including T-017 shape of Scenario A (no `direct_match`, canonical gap statement), BASS-II oxygen provenance (`excerpt_or_table_ref`, VF-06), exact disclaimer string, FM2/LUCI/PSI-47/PSI-117 exclusion, rocket/propellant refusal, and Spot-check rendering of the full catalog UI with real scores (PSI-25 `0.199 · 80%`, PSI-47 `Not ranked · instrument context`).
+- `npm run check` → typecheck, lint (0 warnings), **70/70** tests, production build (integration suite skips by default).
+
+### Known limits
+
+- The mock adapter (H0 representative fixtures) remains the default for offline development and is unaffected by the live path. The containerized demo (`docker compose`) has NOT been rebuilt/re-verified in this pass — B9 remains unchecked; the Dockerfile change fixes the mock-bundle bug but needs an H4 rehearsal.
+- The live `/api/compare` returns Python-repr `rows` that the UI deliberately does not render; the matrix and unit-compatible parallel axes derive from the hydrated full records instead (identical logic to the mock, missing values excluded rather than imputed).
+- The live observed-points endpoint reports 2 BASS-II oxygen bounds only — the map shows them as measured table bounds; no flow axis, no outcome encoding (not fabricated).
+- Hydration is 25 HTTP calls per catalog load; acceptable against the in-memory backend, worth revisiting if the corpus grows.
+
 ## 2026-11-14 — Person B B5 implementation (Observed Flammability Map)
 
 ### Added

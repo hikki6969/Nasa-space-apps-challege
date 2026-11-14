@@ -120,7 +120,7 @@ describe('H0 mock adapter', () => {
     expect(observedIds.has('PSI-98')).toBe(true)
     expect(observedIds.has('PSI-69')).toBe(true)
     expect(observedIds.has('PSI-68')).toBe(true)
-    expect(observations.excluded.map((entry) => entry.id)).toEqual(
+    expect(observations.excluded_psi_ids).toEqual(
       expect.arrayContaining(['PSI-47', 'PSI-117', 'FM2']),
     )
   })

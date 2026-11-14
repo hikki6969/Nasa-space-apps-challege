@@ -73,8 +73,8 @@ export function dimensionStatus(
 ): DimensionStatus {
   if (!dimension.requested) return 'not_requested'
   if (!dimension.present) return 'missing'
-  if (dimension.similarity >= 1) return 'match'
-  if (dimension.similarity > 0) return 'partial'
+  if ((dimension.similarity ?? 0) >= 1) return 'match'
+  if ((dimension.similarity ?? 0) > 0) return 'partial'
   return 'zero'
 }
 
