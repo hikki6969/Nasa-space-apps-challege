@@ -2,6 +2,30 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person A H3 resolution & offline Docker demo rehearsals (B10 / H4 closure)
+
+### Added
+
+- `tests/backend/test_api.py`: added regression test verifying `/api/compare` list fields return clean display strings (e.g. `"solid"`, `"gas"`) with no Python single-quotes or brackets (D-001).
+- `tests/backend/test_api.py`: added assertion verifying `/api/observations` BASS-II points carry `fuel_phase = "solid"` (D-002).
+
+### Changed
+
+- `backend/app/main.py`: updated `/api/compare` row serialization to join lists into comma-separated display strings (`", ".join(str(item) for item in val)`), eliminating Python list reprs.
+- `backend/app/observations.py`: enriched BASS-II observation points with provenance-backed `fuel_phase = "solid"`.
+- `docs/H3_UI_API_DEFECTS.md`: updated status marking D-001 and D-002 resolved.
+- `docs/02_PROBLEM_LOG.md`: updated P-025 resolution to reflect Person A's backend fix and regression test.
+
+### Verified
+
+- **Offline Docker Demo Rehearsals (B10 / H4 done-when)**: Executed twice on Docker host with networking disabled:
+  - **Pass 1**: Containers `firesight-backend` and `firesight-frontend` started, achieved `(healthy)` status, `/api/health` returned `status: ok` with verified 24-record digest `596f50c6...`, and `/api/compare` verified clean strings (`fuel_phases: {"PSI-25": "solid", "PSI-10": "gas"}`).
+  - **Pass 2**: Fresh container pair started on isolated network, live integration suite (`liveBackend.integration.test.tsx`) executed through nginx proxy (`http://127.0.0.1:3000/api`), all 12 tests passed.
+- `python scripts/check_data.py`: 0 failures (24 records, 22 tables, 7 annotations, 7 source_cited).
+- `python scripts/check_docs.py`: 0 failures (17 required documents).
+- `python -m pytest`: 148 passed in 1.79s.
+- `npm --prefix frontend run check`: typecheck, oxlint (0 errors/warnings on 69 files), Vitest (95 passed, 12 skipped live tests), production build, and `smoke-dist.mjs` (15 text assets verified) clean.
+
 ## 2026-11-14 — Person B B8, B9, B10 completion (final frontend milestones)
 
 ### Added

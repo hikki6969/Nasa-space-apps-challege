@@ -170,10 +170,15 @@ def compare(request: CompareRequest) -> CompareResponse:
     differing: list[str] = []
 
     for fn in field_names:
-        vals = {
-            rec.psi_id: str(getattr(rec, fn)) if getattr(rec, fn) is not None else None
-            for rec in selected
-        }
+        vals: dict[str, str | None] = {}
+        for rec in selected:
+            val = getattr(rec, fn, None)
+            if val is None:
+                vals[rec.psi_id] = None
+            elif isinstance(val, list):
+                vals[rec.psi_id] = ", ".join(str(item) for item in val)
+            else:
+                vals[rec.psi_id] = str(val)
         rows.append(CompareRow(name=fn, values=vals))
         unique_vals = set(vals.values())
         if len(unique_vals) == 1 and None not in unique_vals:

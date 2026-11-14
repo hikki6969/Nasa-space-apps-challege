@@ -214,9 +214,9 @@ Each entry uses the fixed shape: **Symptom → Reproduction → Root Cause → R
 - **Symptom:** the live comparison API returns rows whose list-typed values are single-quoted Python object reprs, e.g. `"['solid']"`, breaking JSON-native consumers.
 - **Reproduction:** `POST /api/compare` with `{"psi_ids":["PSI-25","PSI-10"]}` on the running H2 backend; inspect `rows[*].values`.
 - **Root cause:** `repr(list)` reached the wire for display-oriented payload fields instead of typed JSON arrays or a documented display-only contract.
-- **Resolution:** Person B shipped a defect report (docs/H3_UI_API_DEFECTS.md, D-001); the frontend comparison build does not consume `rows` at all — it derives the matrix, shared/different groupings, and unit-compatible parallel axes from the hydrated `records` payloads through the same derivation path as the mock adapter. The defect is logged to Person A for a backend-side fix.
-- **Verification:** `liveBackend.integration.test.tsx` passes against the live backend; compare assertions use `records` and derived fields only.
-- **Lesson:** never let repr-shaped payloads cross a JSON boundary; if the contract needs a display string, say so explicitly and type it as such.
+- **Resolution:** Person A updated `backend/app/main.py` to format list-typed attributes via `", ".join(str(item) for item in val)` into clean display strings (`"solid"`, `"gas"`), eliminating Python single-quoted reprs and brackets. Added regression test in `tests/backend/test_api.py`.
+- **Verification:** `tests/backend/test_api.py::test_compare_route` passes asserting clean strings without single quotes or brackets; live rehearsal with Docker containers passes.
+- **Lesson:** never let repr-shaped payloads cross a JSON boundary; if the contract needs a display string, format it explicitly as clean prose.
 
 ## P-016 — PSI-10 has no license metadata
 

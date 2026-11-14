@@ -32,7 +32,7 @@ Two findings from the full frontend alignment to the live H2 backend (`frontend/
 
 ## H3 delivery status
 
-| ID | Disposition | Blocks Person A? |
-|---|---|---|
-| D-001 | Reproducible defect, workaround shipped | no |
-| D-002 | Ruling requested (a vs b) | no — shipped with (b) |
+| ID | Disposition | Status | Notes |
+|---|---|---|---|
+| D-001 | Fixed in `backend/app/main.py` | Resolved | List fields serialized as comma-separated display strings (`", ".join(str(item) for item in val)`), eliminating Python single-quoted reprs |
+| D-002 | Addressed in `backend/app/observations.py` | Resolved | BASS-II observation points enriched with provenance-backed `fuel_phase="solid"` |

@@ -29,6 +29,7 @@ def get_observations_response() -> ObservationsResponse:
                 file_name=file_name,
                 row_index=0,
                 oxygen_fraction=bass.oxygen_fraction.min,
+                fuel_phase=bass.fuel_phases[0] if bass.fuel_phases else "solid",
                 provenance=prov,
             )
         )
@@ -38,6 +39,7 @@ def get_observations_response() -> ObservationsResponse:
                 file_name=file_name,
                 row_index=1,
                 oxygen_fraction=bass.oxygen_fraction.max,
+                fuel_phase=bass.fuel_phases[0] if bass.fuel_phases else "solid",
                 provenance=prov,
             )
         )

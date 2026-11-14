@@ -51,9 +51,20 @@ def test_rank_route_rejects_unknown_scenario():
 
 
 def test_compare_route():
-    response = client.post("/api/compare", json={"psi_ids": ["PSI-69", "PSI-68"]})
+    response = client.post("/api/compare", json={"psi_ids": ["PSI-25", "PSI-10"]})
     assert response.status_code == 200
-    assert response.json()["psi_ids"] == ["PSI-69", "PSI-68"]
+    payload = response.json()
+    assert payload["psi_ids"] == ["PSI-25", "PSI-10"]
+
+    # D-001 regression: fuel_phases must be clean display strings, never Python repr like "['solid']"
+    fuel_phase_row = next((r for r in payload["rows"] if r["name"] == "fuel_phases"), None)
+    assert fuel_phase_row is not None
+    assert fuel_phase_row["values"]["PSI-25"] == "solid"
+    assert fuel_phase_row["values"]["PSI-10"] == "gas"
+    for val in fuel_phase_row["values"].values():
+        assert val is not None
+        assert "'" not in val
+        assert "[" not in val
 
 
 def test_compare_route_requires_two_to_four_ids():
@@ -67,6 +78,10 @@ def test_observations_route_excludes_context_records():
     assert "PSI-47" in payload["excluded_psi_ids"]
     assert "PSI-117" in payload["excluded_psi_ids"]
     assert all(point["psi_id"] not in {"PSI-47", "PSI-117"} for point in payload["points"])
+    # D-002: BASS-II points carry fuel_phase="solid"
+    for point in payload["points"]:
+        if point["psi_id"] == "PSI-25":
+            assert point["fuel_phase"] == "solid"
 
 
 def test_context_route_has_no_luci_card():

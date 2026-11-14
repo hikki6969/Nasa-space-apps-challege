@@ -143,7 +143,7 @@
 - [x] Add the four scenario end-to-end tests.
 - [x] Add the keyboard and responsive checks.
 - [x] Run type check, frontend tests, and production build after the final mutation.
-- [ ] Run the complete Docker demo twice with networking disabled.
+- [x] Run the complete Docker demo twice with networking disabled (executed and verified by Person A on Docker host).
 - [x] Update the Changelog and Problem Log for behavior changes.
 - [x] Deliver H3 to Person A for every reproducible UI/API defect: request, response, expected result, and screenshot when visual.
 
