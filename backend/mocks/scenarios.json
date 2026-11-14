@@ -1,0 +1,64 @@
+{
+  "scenarios": [
+    {
+      "description": "Solid-fuel fire prevention at 30% O2, 8.2 psia, and 0.16 g.",
+      "expected_invariant": "Zero direct_match records; the gap names the solid-fuel, 30% O2, 8.2 psia, partial-gravity combination; FM2 remains anticipated.",
+      "id": "A",
+      "name": "Lunar habitat",
+      "numeric_inputs_complete": false,
+      "scenario": {
+        "flow_velocity_cms": null,
+        "fuel_phase": "solid",
+        "gravity_g": 0.16,
+        "oxygen_fraction": 0.3,
+        "pressure_psia": 8.2,
+        "safety_theme": "prevention"
+      }
+    },
+    {
+      "description": "Cabin smoke/fire detection theme; numeric inputs not specified.",
+      "expected_invariant": "SAME-R is present; DAFT stays outside ranked results; detector evidence is not presented as flame-spread evidence.",
+      "id": "B",
+      "name": "Cabin detection",
+      "numeric_inputs_complete": false,
+      "scenario": {
+        "flow_velocity_cms": null,
+        "fuel_phase": null,
+        "gravity_g": null,
+        "oxygen_fraction": null,
+        "pressure_psia": null,
+        "safety_theme": "detection"
+      }
+    },
+    {
+      "description": "Liquid-droplet suppression theme; numeric inputs not specified.",
+      "expected_invariant": "FLEX and FLEX-2 are present; PSI-117, if shown, is modeling context with no measured table.",
+      "id": "C",
+      "name": "Droplet suppression",
+      "numeric_inputs_complete": false,
+      "scenario": {
+        "flow_velocity_cms": null,
+        "fuel_phase": "liquid_droplet",
+        "gravity_g": null,
+        "oxygen_fraction": null,
+        "pressure_psia": null,
+        "safety_theme": "suppression"
+      }
+    },
+    {
+      "description": "Prevention theme; numeric inputs not specified.",
+      "expected_invariant": "No direct_match claim; high-O2 gas-phase context and solid-fuel context remain separated; Apollo 1 appears only as context.",
+      "id": "D",
+      "name": "Apollo 1 reconstruction",
+      "numeric_inputs_complete": false,
+      "scenario": {
+        "flow_velocity_cms": null,
+        "fuel_phase": null,
+        "gravity_g": null,
+        "oxygen_fraction": null,
+        "pressure_psia": null,
+        "safety_theme": "prevention"
+      }
+    }
+  ]
+}

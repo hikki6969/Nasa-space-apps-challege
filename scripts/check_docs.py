@@ -78,9 +78,13 @@ if all(path.is_file() for path in REQUIRED):
         "22.2%",
         "0.85",
         "0.849977932",
-        "not yet applicable",
+        "data/snapshot.sha256",
     ]:
         require(token in facts, f"VERIFIED_FACTS.md is missing required fact token: {token!r}")
+    require(
+        re.search(r"\*\*Snapshot SHA-256:\*\* `[0-9a-f]{64}`", facts) is not None,
+        "VERIFIED_FACTS.md is missing a 64-hex snapshot digest",
+    )
 
     corpus_block = re.search(r"```text\n(.*?)\n```", facts, re.DOTALL)
     require(corpus_block is not None, "VERIFIED_FACTS.md is missing the exact corpus block")

@@ -1,0 +1,147 @@
+{
+  "gap_statement": "No completed PSI record directly covers the solid-fuel, 30% O2, 8.2 psia, partial-gravity combination. The flow value is not specified, so the scenario cannot produce a direct match. FM2 remains anticipated_in_psi context, not measured evidence.",
+  "requested_dimensions": [
+    "oxygen",
+    "pressure",
+    "gravity",
+    "material_phase",
+    "safety_theme"
+  ],
+  "results": [
+    {
+      "acronym": "BASS-II",
+      "coverage": 0.6,
+      "data_status": "complete",
+      "dimensions": [
+        {
+          "limitation": "BASS-II initial O2 is 0.136–0.222; the 0.30 scenario lies outside tolerance.",
+          "name": "oxygen",
+          "present": true,
+          "provenance": {
+            "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+            "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
+            "source_kind": "psi_table",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+            "value_kind": "reported"
+          },
+          "record_value": "0.136–0.222 fraction",
+          "requested": true,
+          "scenario_value": "0.30",
+          "similarity": 0.0,
+          "weight": 0.3
+        },
+        {
+          "limitation": "No pressure range is curated for BASS-II.",
+          "name": "pressure",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": true,
+          "scenario_value": "8.2 psia",
+          "similarity": 0.0,
+          "weight": 0.2
+        },
+        {
+          "limitation": "No explicit recorded gravity level is curated for BASS-II.",
+          "name": "gravity",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": true,
+          "scenario_value": "0.16 g",
+          "similarity": 0.0,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario flow is not specified, so flow is outside Q(S).",
+          "name": "flow",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.1
+        },
+        {
+          "limitation": null,
+          "name": "material_phase",
+          "present": true,
+          "provenance": {
+            "excerpt": "Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity.",
+            "note": "Solid fuel phase taken from the stated BASS-II objective.",
+            "source_kind": "psi_narrative",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+            "value_kind": "reported"
+          },
+          "record_value": "solid",
+          "requested": true,
+          "scenario_value": "solid",
+          "similarity": 1.0,
+          "weight": 0.1
+        },
+        {
+          "limitation": null,
+          "name": "safety_theme",
+          "present": true,
+          "provenance": {
+            "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+            "note": "Primary safety theme curated as prevention; suppression is secondary.",
+            "source_kind": "psi_narrative",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+            "value_kind": "safely_derived"
+          },
+          "record_value": "prevention",
+          "requested": true,
+          "scenario_value": "prevention",
+          "similarity": 1.0,
+          "weight": 0.1
+        }
+      ],
+      "evidence_class": "bench_flammability",
+      "justification": "BASS-II shares the solid fuel phase and prevention theme, but its curated initial O2 range 0.136–0.222 does not reach 0.30 and no pressure or explicit gravity level is curated. It does not cover the lunar-habitat condition.",
+      "limitations": [
+        "No completed PSI record directly covers the solid-fuel, 30% O2, 8.2 psia, partial-gravity combination.",
+        "BASS-II initial O2 is 0.136–0.222; it must not be described as covering 30% O2.",
+        "Scenario flow is not specified; the flow dimension is outside Q(S)."
+      ],
+      "match_class": "partial_match",
+      "matched_conditions": [
+        "solid fuel phase",
+        "prevention theme"
+      ],
+      "missing_dimensions": [
+        "pressure",
+        "gravity"
+      ],
+      "provenance": {
+        "fuel_phases": {
+          "excerpt": "Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity.",
+          "note": "Solid fuel phase taken from the stated BASS-II objective.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+          "value_kind": "reported"
+        },
+        "oxygen_fraction": {
+          "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+          "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
+          "source_kind": "psi_table",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+          "value_kind": "reported"
+        },
+        "safety_theme": {
+          "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+          "note": "Primary safety theme curated as prevention; suppression is secondary.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+          "value_kind": "safely_derived"
+        }
+      },
+      "psi_id": "PSI-25",
+      "score": 0.1721,
+      "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+      "title": "Burning and Suppression of Solids - II"
+    }
+  ],
+  "scenario_id": "A"
+}

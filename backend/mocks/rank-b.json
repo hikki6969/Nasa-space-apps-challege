@@ -1,0 +1,112 @@
+{
+  "gap_statement": "Detection instrumentation evidence is present, but no numeric cabin conditions are specified; no direct match is claimed.",
+  "requested_dimensions": [
+    "safety_theme"
+  ],
+  "results": [
+    {
+      "acronym": "SAME-R",
+      "coverage": 1.0,
+      "data_status": "complete",
+      "dimensions": [
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "oxygen",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.3
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "pressure",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "gravity",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "flow",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.1
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "material_phase",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.1
+        },
+        {
+          "limitation": null,
+          "name": "safety_theme",
+          "present": true,
+          "provenance": {
+            "excerpt": "Quantify the sizes that the liquid smoke particulate achieves in low gravity.",
+            "note": "Primary safety theme curated as detection instrumentation.",
+            "source_kind": "psi_narrative",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-101",
+            "value_kind": "safely_derived"
+          },
+          "record_value": "detection",
+          "requested": true,
+          "scenario_value": "detection",
+          "similarity": 1.0,
+          "weight": 0.1
+        }
+      ],
+      "evidence_class": "detection_instrumentation",
+      "justification": "SAME-R matches the requested detection theme. Only the safety theme is specified, so this is a partial match and detector evidence is not flame-spread evidence.",
+      "limitations": [
+        "Only the safety theme is specified; no numeric physical inputs are ruled.",
+        "DAFT/DAFT-2 remains instrument context and is not a ranked candidate."
+      ],
+      "match_class": "partial_match",
+      "matched_conditions": [
+        "detection theme"
+      ],
+      "missing_dimensions": [],
+      "provenance": {
+        "safety_theme": {
+          "excerpt": "Quantify the sizes that the liquid smoke particulate achieves in low gravity.",
+          "note": "Primary safety theme curated as detection instrumentation.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-101",
+          "value_kind": "safely_derived"
+        }
+      },
+      "psi_id": "PSI-101",
+      "score": 1.0,
+      "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-101",
+      "title": "Smoke Aerosol Measurement Experiment-Reflight"
+    }
+  ],
+  "scenario_id": "B"
+}

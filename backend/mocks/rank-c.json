@@ -1,0 +1,256 @@
+{
+  "gap_statement": "FLEX and FLEX-2 provide droplet suppression evidence, but numeric physical inputs are unspecified; no direct match is claimed.",
+  "requested_dimensions": [
+    "material_phase",
+    "safety_theme"
+  ],
+  "results": [
+    {
+      "acronym": "FLEX",
+      "coverage": 1.0,
+      "data_status": "complete",
+      "dimensions": [
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "oxygen",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.3
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "pressure",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "gravity",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "flow",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.1
+        },
+        {
+          "limitation": null,
+          "name": "material_phase",
+          "present": true,
+          "provenance": {
+            "excerpt": "The FLEX investigation aims to map the flammability limits of liquid fuels in microgravity environments and measure the effectiveness of gaseous fire suppressants.",
+            "note": "Liquid-droplet phase taken from the stated FLEX objective.",
+            "source_kind": "psi_narrative",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
+            "value_kind": "reported"
+          },
+          "record_value": "liquid_droplet",
+          "requested": true,
+          "scenario_value": "liquid_droplet",
+          "similarity": 1.0,
+          "weight": 0.1
+        },
+        {
+          "limitation": null,
+          "name": "safety_theme",
+          "present": true,
+          "provenance": {
+            "excerpt": "Measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6.",
+            "note": "Primary safety theme curated as suppression.",
+            "source_kind": "psi_narrative",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
+            "value_kind": "safely_derived"
+          },
+          "record_value": "suppression",
+          "requested": true,
+          "scenario_value": "suppression",
+          "similarity": 1.0,
+          "weight": 0.1
+        }
+      ],
+      "evidence_class": "bench_flammability",
+      "justification": "FLEX matches the liquid-droplet phase and suppression theme. Numeric physical inputs are not specified, so this is a partial match.",
+      "limitations": [
+        "Only phase and theme are specified; no numeric physical inputs are ruled."
+      ],
+      "match_class": "partial_match",
+      "matched_conditions": [
+        "liquid_droplet phase",
+        "suppression theme"
+      ],
+      "missing_dimensions": [],
+      "provenance": {
+        "fuel": {
+          "excerpt": "The FLEX investigation aims to map the flammability limits of liquid fuels in microgravity environments and measure the effectiveness of gaseous fire suppressants.",
+          "note": "Liquid-droplet phase taken from the stated FLEX objective.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
+          "value_kind": "reported"
+        },
+        "fuel_phases": {
+          "excerpt": "The FLEX investigation aims to map the flammability limits of liquid fuels in microgravity environments and measure the effectiveness of gaseous fire suppressants.",
+          "note": "Liquid-droplet phase taken from the stated FLEX objective.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
+          "value_kind": "reported"
+        },
+        "safety_theme": {
+          "excerpt": "Measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6.",
+          "note": "Primary safety theme curated as suppression.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
+          "value_kind": "safely_derived"
+        }
+      },
+      "psi_id": "PSI-69",
+      "score": 1.0,
+      "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
+      "title": "Flame Extinguishment Experiment"
+    },
+    {
+      "acronym": "FLEX-2",
+      "coverage": 1.0,
+      "data_status": "complete",
+      "dimensions": [
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "oxygen",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.3
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "pressure",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "gravity",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "flow",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.1
+        },
+        {
+          "limitation": null,
+          "name": "material_phase",
+          "present": true,
+          "provenance": {
+            "excerpt": "Provide benchmark experimental data on bi-component droplet combustion over a wide range of initial conditions.",
+            "note": "Liquid-droplet phase taken from the stated FLEX-2 objective.",
+            "source_kind": "psi_narrative",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-68",
+            "value_kind": "reported"
+          },
+          "record_value": "liquid_droplet",
+          "requested": true,
+          "scenario_value": "liquid_droplet",
+          "similarity": 1.0,
+          "weight": 0.1
+        },
+        {
+          "limitation": null,
+          "name": "safety_theme",
+          "present": true,
+          "provenance": {
+            "excerpt": "Benchmark experimental data on bi-component droplet combustion, including extinction and model validation.",
+            "note": "Primary safety theme curated as suppression; the evidence class remains flame physics.",
+            "source_kind": "psi_narrative",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-68",
+            "value_kind": "safely_derived"
+          },
+          "record_value": "suppression",
+          "requested": true,
+          "scenario_value": "suppression",
+          "similarity": 1.0,
+          "weight": 0.1
+        }
+      ],
+      "evidence_class": "flame_physics",
+      "justification": "FLEX-2 matches the liquid-droplet phase and suppression theme as bi-component droplet-combustion evidence.",
+      "limitations": [
+        "Only phase and theme are specified; no numeric physical inputs are ruled."
+      ],
+      "match_class": "partial_match",
+      "matched_conditions": [
+        "liquid_droplet phase",
+        "suppression theme"
+      ],
+      "missing_dimensions": [],
+      "provenance": {
+        "fuel": {
+          "excerpt": "Provide benchmark experimental data on bi-component droplet combustion over a wide range of initial conditions.",
+          "note": "Liquid-droplet phase taken from the stated FLEX-2 objective.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-68",
+          "value_kind": "reported"
+        },
+        "fuel_phases": {
+          "excerpt": "Provide benchmark experimental data on bi-component droplet combustion over a wide range of initial conditions.",
+          "note": "Liquid-droplet phase taken from the stated FLEX-2 objective.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-68",
+          "value_kind": "reported"
+        },
+        "safety_theme": {
+          "excerpt": "Benchmark experimental data on bi-component droplet combustion, including extinction and model validation.",
+          "note": "Primary safety theme curated as suppression; the evidence class remains flame physics.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-68",
+          "value_kind": "safely_derived"
+        }
+      },
+      "psi_id": "PSI-68",
+      "score": 1.0,
+      "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-68",
+      "title": "Flame Extinguishment Experiment - 2"
+    }
+  ],
+  "scenario_id": "C"
+}

@@ -2,6 +2,31 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person A A0/A1 implementation and H0 handoff
+
+### Added
+
+- Frozen Pydantic schema in `backend/app/models.py` with strict models, field-specific units, provenance checks, nested-table linkage, and rank eligibility.
+- Versioned API contract in `backend/app/api_models.py`, `backend/openapi.json` (v0.1.0), and 15 representative H0 mock payloads in `backend/mocks/`.
+- H0 FastAPI mock surface in `backend/app/main.py` for all nine specified endpoints.
+- Schema, contract, API, and snapshot tests under `tests/backend/`.
+- Deterministic `scripts/build_snapshot.py`, the canonical `data/psi_snapshot.json`, and `data/snapshot.sha256`.
+- Offline `scripts/check_data.py` validator for membership, licenses, stable URLs, and digest.
+- Shared corpus constants in `backend/app/corpus.py`.
+
+### Changed
+
+- `docs/VERIFIED_FACTS.md` now records the generated snapshot digest and manifest.
+- `scripts/check_docs.py` validates a real 64-hex snapshot digest instead of the placeholder text.
+- PSI-10 is retained with `license.status = unknown` and `redistribution = blocked`; table rows for it must not be redistributed (Decision D-016, Problem P-016).
+
+### Evidence
+
+- `.venv/bin/python -m pytest -q` → 91 passed.
+- `.venv/bin/python scripts/check_data.py` → `Data check: 0 failures (24 records, 22 tables)`.
+- Two consecutive snapshot builds were byte-identical with SHA-256 `596f50c614478bdc08a578fbde6ac6f27d87a30acfb9220e6d401b6e99be146a`.
+- `.venv/bin/python scripts/check_docs.py` → 0 failures.
+
 ## 2026-11-14 — Documentation baseline and implementation handoff
 
 ### Added

@@ -1,0 +1,43 @@
+{
+  "disclaimer": "Observed test domain; not a validated flammability boundary.",
+  "excluded_psi_ids": [
+    "PSI-47",
+    "PSI-117"
+  ],
+  "points": [
+    {
+      "file_name": "PSI-25_Experimental table_BASS-II.csv",
+      "flow_velocity_cms": null,
+      "fuel_phase": null,
+      "gravity_g": null,
+      "oxygen_fraction": 0.136,
+      "pressure_psia": null,
+      "provenance": {
+        "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+        "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
+        "source_kind": "psi_table",
+        "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+        "value_kind": "reported"
+      },
+      "psi_id": "PSI-25",
+      "row_index": 0
+    },
+    {
+      "file_name": "PSI-25_Experimental table_BASS-II.csv",
+      "flow_velocity_cms": null,
+      "fuel_phase": null,
+      "gravity_g": null,
+      "oxygen_fraction": 0.222,
+      "pressure_psia": null,
+      "provenance": {
+        "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+        "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
+        "source_kind": "psi_table",
+        "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+        "value_kind": "reported"
+      },
+      "psi_id": "PSI-25",
+      "row_index": 1
+    }
+  ]
+}

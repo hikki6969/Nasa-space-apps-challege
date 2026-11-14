@@ -1,0 +1,109 @@
+{
+  "incidents": [
+    {
+      "id": "apollo-1",
+      "kind": "incident",
+      "source_url": "https://sma.nasa.gov/sma-disciplines/accllp/apollo-1",
+      "summary": "Explanatory precedent for a high-oxygen, ground-test cabin fire; never a scoring input.",
+      "title": "Apollo 1"
+    },
+    {
+      "id": "mir-fire",
+      "kind": "incident",
+      "source_url": "https://www.nasa.gov/history/25-years-ago-fire-aboard-space-station-mir/",
+      "summary": "Explanatory precedent for a spacecraft fire event; never a scoring input.",
+      "title": "Mir fire"
+    },
+    {
+      "id": "apollo-13",
+      "kind": "incident",
+      "source_url": "https://sma.nasa.gov/sma-disciplines/accllp/apollo-13",
+      "summary": "Explanatory precedent for oxygen-system risk; never a scoring input.",
+      "title": "Apollo 13"
+    }
+  ],
+  "instruments": [
+    {
+      "acronym": "DAFT / DAFT-2",
+      "annotation_status": "metadata_only",
+      "catalog_role": "instrument_context",
+      "data_status": "complete",
+      "evidence_class": "detection_instrumentation",
+      "project_type": "microgravity",
+      "psi_id": "PSI-47",
+      "safety_theme": "detection",
+      "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-47",
+      "title": "Dust and Aerosol Measurement Feasibility Test / Dust and Aerosol Measurement Feasibility Test-2"
+    }
+  ],
+  "programs": [
+    {
+      "data_status": "anticipated_in_psi",
+      "program_id": "FM2",
+      "provenance": {
+        "data_status": {
+          "excerpt": "Listed as current combustion research; no PSI record appears in the exact 24-record corpus.",
+          "note": "Anticipated program context, never a measured observation.",
+          "source_kind": "nasa_program",
+          "source_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+          "value_kind": "reported"
+        }
+      },
+      "source_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-of-materials-on-the-moon-fm2/",
+      "title": "Flammability of Materials on the Moon (FM2)"
+    },
+    {
+      "data_status": "active_program",
+      "program_id": "SoFIE",
+      "provenance": {
+        "data_status": {
+          "excerpt": "Official program page; no current PSI record in the exact 24-record corpus.",
+          "note": null,
+          "source_kind": "nasa_program",
+          "source_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/solid-fuel-ignition-and-extinction-sofie/",
+          "value_kind": "reported"
+        }
+      },
+      "source_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/solid-fuel-ignition-and-extinction-sofie/",
+      "title": "Solid Fuel Ignition and Extinction (SoFIE)"
+    },
+    {
+      "data_status": "active_program",
+      "program_id": "FLARE",
+      "provenance": {
+        "data_status": {
+          "excerpt": "Official program page; no current PSI record in the exact 24-record corpus.",
+          "note": null,
+          "source_kind": "nasa_program",
+          "source_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-limits-at-reduced-g-experiment-flare/",
+          "value_kind": "reported"
+        }
+      },
+      "source_url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-limits-at-reduced-g-experiment-flare/",
+      "title": "Flammability Limits at Reduced Gravity Experiment (FLARE)"
+    }
+  ],
+  "spinoff": [
+    {
+      "id": "incipient-fire-detector",
+      "kind": "spinoff",
+      "source_url": "https://spinoff.nasa.gov/node/9407",
+      "summary": "Discriminates combustion particles from dust; thematic context, not direct PSI lineage.",
+      "title": "Incipient fire detector"
+    },
+    {
+      "id": "oxygen-safety-regulators",
+      "kind": "spinoff",
+      "source_url": "https://spinoff.nasa.gov/Spinoff2019/ps_2.html",
+      "summary": "Oxygen-safety equipment with thematic links to spacecraft fire work.",
+      "title": "Oxygen-safety gas regulators"
+    },
+    {
+      "id": "public-safety-equipment",
+      "kind": "spinoff",
+      "source_url": "https://spinoff.nasa.gov/Spinoff2020/pdf/Spinoff2020.pdf",
+      "summary": "Terrestrial suppression and equipment themes; no direct PSI lineage claimed.",
+      "title": "Public-safety equipment"
+    }
+  ]
+}

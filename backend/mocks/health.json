@@ -1,0 +1,13 @@
+{
+  "embeddings": false,
+  "index": false,
+  "messages": [
+    "H0 mock contract; endpoints are not yet wired to the canonical snapshot or derived index."
+  ],
+  "snapshot": false,
+  "snapshot_records": 0,
+  "snapshot_sha256": null,
+  "status": "ok",
+  "use_llm": false,
+  "version": "0.1.0"
+}

@@ -11,14 +11,16 @@ Keep this file short enough to reread at the start of every implementation sessi
 - Schema, strict units, dimensional similarities, requested-dimension scoring, match classification, status semantics, and verification assertions are frozen in [Product Spec](00_PRODUCT_SPEC.md).
 - Two-person ownership and handoffs are in [Team Execution Plan](07_TEAM_EXECUTION_PLAN.md).
 - The final documentation-audit findings are closed: unconditional provenance enforcement, parent-child table linkage, requested-dimension scoring wording, and the exclusion rules.
-- No application code, snapshot, embeddings, database, containers, or git repository exists yet.
+- A0 is implemented: frozen schema, H0 mock API, versioned OpenAPI, and 15 mock payloads; 91 backend tests pass.
+- A1 is implemented: deterministic 24-record snapshot, 22 verified table downloads, and `data/snapshot.sha256` (`596f50c6…`).
+- No curated annotations, embeddings, derived database, containers, or frontend exist yet.
 
 ## Next actions
 
-1. **Person A:** implement the frozen schema and tests, then publish H0 mock/OpenAPI.
-2. **Person B:** scaffold the frontend against the agreed mock contract and publish H0 review notes.
+1. **Person A:** complete A2 — ingest the seven curated records, field-level provenance, and H1.
+2. **Person B:** scaffold the frontend against the H0 mock contract and publish H0 review notes.
 3. **Joint:** review H0 before real-data integration.
-4. **Person A:** build the exact snapshot and seven annotations.
+4. **Person A:** then build A3 derived index/embeddings and A4 scoring.
 5. **Person B:** integrate H1 catalog/detail fixtures.
 
 ## Open items and owners
@@ -27,7 +29,7 @@ Keep this file short enough to reread at the start of every implementation sessi
 |---|---|---|
 | Scenario A numeric flow | A + reviewer | Scenario A fixture; otherwise remain explicitly missing |
 | Scenarios B–D numeric physical inputs | A + reviewer | Fixtures B–D |
-| Canonical snapshot SHA-256 | A | Data gate and VF ledger update |
+| Canonical snapshot SHA-256 | A | Resolved 2026-11-14: `596f50c6…`; annotation digest joins in A2 |
 | Exact MiniLM revision/hash and license | A | Embedding build |
 | Official LUCI source | A | Optional LUCI context card only |
 | Frontend test/browser tool | B | Frontend test gate |
@@ -48,7 +50,10 @@ Keep this file short enough to reread at the start of every implementation sessi
 
 ```bash
 python scripts/check_docs.py
-# backend commands are added with the scaffold
+python scripts/check_data.py
+python scripts/build_snapshot.py
+python scripts/export_contract.py
+python -m pytest -q
 # frontend commands are added with the scaffold
 docker compose up --build
 ```
@@ -65,3 +70,5 @@ docker compose up --build
 - PSI-159 inverse table: max `XO2 = 0.85`.
 - PSI-10 inverse table: max `XO2 = 0.849977932`.
 - PSI-117: no experimental table.
+- Snapshot: 24 records, 22 verified tables, SHA-256 `596f50c6…`; two builds byte-identical.
+- Tests: 91 passed; data check: 0 failures; docs check: 0 failures.

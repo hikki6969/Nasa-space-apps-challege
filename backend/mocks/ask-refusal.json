@@ -1,0 +1,7 @@
+{
+  "answer": "This bounded assistant covers NASA PSI spacecraft fire-safety evidence. Rocket-engine and propellant-combustion questions are outside its scope.",
+  "citations": [],
+  "refusal_reason": "rocket/propellant scope guard",
+  "refused": true,
+  "scope": "rocket_propellant"
+}
