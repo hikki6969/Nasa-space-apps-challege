@@ -13,22 +13,29 @@ Keep this file short enough to reread at the start of every implementation sessi
 - The final documentation-audit findings are closed: unconditional provenance enforcement, parent-child table linkage, requested-dimension scoring wording, and the exclusion rules.
 - A0 is implemented: frozen schema, H0 mock API, versioned OpenAPI, and 15 mock payloads; 91 backend tests pass.
 - A1 is implemented: deterministic 24-record snapshot, 22 verified table downloads, and `data/snapshot.sha256` (`596f50c6…`).
-- No curated annotations, embeddings, derived database, containers, or frontend exist yet.
+- A4 pure scoring is implemented: frozen similarity functions, coverage-penalty aggregation, and match classification in `backend/app/ranking.py`; 28 hand-computed tests pass.
+- Frontend B0–B2 is merged and `frontend/src/lib/` is tracked; `npm run check` passes.
+- A2 proposal exists: `data/annotations.json` has seven AI-extracted records with field-level provenance, all `annotation_status = metadata_only`. No human has confirmed them.
+- Scenario A flow remains null (P-017); Scenario B numeric inputs are unruled; Scenario D numeric inputs are excluded (T-025).
+- Raw CSVs live in gitignored `data/raw_csv/`; PSI-10 rows are not redistributed.
+- No embeddings, derived database, or containers yet.
 
 ## Next actions
 
-1. **Person A:** complete A2 — ingest the seven curated records, field-level provenance, and H1.
-2. **Person B:** scaffold the frontend against the H0 mock contract and publish H0 review notes.
-3. **Joint:** review H0 before real-data integration.
-4. **Person A:** then build A3 derived index/embeddings and A4 scoring.
-5. **Person B:** integrate H1 catalog/detail fixtures.
+1. **Human reviewer:** confirm the seven records' numeric values and provenance; then Person A may set `annotation_status = verified`.
+2. **Person A:** after review, run T-017 and the p95 ranking target against canonical records; then build A3 derived index/embeddings.
+3. **Person A:** cite a primary source for Scenario B or leave its numeric inputs null.
+4. **Person B:** integrate H1 catalog/detail fixtures once A2 publishes them.
+5. **Joint:** keep H0-only frontend behavior until H1 exists.
 
 ## Open items and owners
 
 | Item | Owner | Blocking |
 |---|---|---|
+| Named human annotation reviewer | User/team | A2 verified status for all seven records |
 | Scenario A numeric flow | A + reviewer | Scenario A fixture; otherwise remain explicitly missing |
-| Scenarios B–D numeric physical inputs | A + reviewer | Fixtures B–D |
+| Scenario B numeric inputs | A + reviewer | Fixture B; otherwise remain explicitly missing |
+| Scenario D numeric inputs | — | Excluded by spec §7 and T-025; Apollo 1 is context only |
 | Canonical snapshot SHA-256 | A | Resolved 2026-11-14: `596f50c6…`; annotation digest joins in A2 |
 | Exact MiniLM revision/hash and license | A | Embedding build |
 | Official LUCI source | A | Optional LUCI context card only |
@@ -38,11 +45,13 @@ Keep this file short enough to reread at the start of every implementation sessi
 ## Rules that must not drift
 
 - Never call BASS-II 30% O₂ evidence.
+- Never mark an AI-extracted annotation `verified`; a named human reviewer must confirm it first.
 - Never plot PSI-47/DAFT, PSI-117, FM2, LUCI, any `ProgramContext` entry (`active_program` or `anticipated_in_psi`), or `metadata_only` records as measured observations.
 - Never fit or imply a flammability boundary.
 - Never redistribute missing weights.
 - Never let historical incidents or Spinoff cases enter numerical scoring.
 - Never let PSI-47/DAFT enter physical ranking, default retrieval results, observation endpoints, or measured plots.
+- Never let modeling records enter physical ranking; they are contextual only.
 - Never add a hosted LLM or API key to the committed path.
 - Never claim a direct match without all six exact conditions.
 
@@ -54,7 +63,7 @@ python scripts/check_data.py
 python scripts/build_snapshot.py
 python scripts/export_contract.py
 python -m pytest -q
-# frontend commands are added with the scaffold
+cd frontend && npm run check
 docker compose up --build
 ```
 
@@ -71,4 +80,6 @@ docker compose up --build
 - PSI-10 inverse table: max `XO2 = 0.849977932`.
 - PSI-117: no experimental table.
 - Snapshot: 24 records, 22 verified tables, SHA-256 `596f50c6…`; two builds byte-identical.
-- Tests: 91 passed; data check: 0 failures; docs check: 0 failures.
+- Annotations: 7 AI-extracted records, 0 verified, all `metadata_only`; human review pending.
+- Tests: 120 passed; data check: 0 failures; docs check: 0 failures.
+- Frontend: typecheck, lint, 18 tests, and production build pass.

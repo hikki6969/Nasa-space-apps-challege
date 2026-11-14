@@ -48,7 +48,10 @@
 - [ ] Classify FLEX/FLEX-2 as droplet/suppression evidence.
 - [ ] Keep PSI-117 metadata-only/contextual and confirm it has no measured table.
 - [ ] Record any annotation disagreement as a Problem Log entry; do not average conflicting values.
+- [ ] Have a named human reviewer confirm all seven numeric annotations and their field-level provenance; only then set `annotation_status = verified`.
 - [ ] Provide H1 to Person B: exact snapshot fixture, seven annotations, and table previews with the validation command output.
+
+**Status (2026-11-14):** `data/annotations.json` contains an AI-extracted proposal for the seven records. All records are `annotation_status = metadata_only`; no human has confirmed the values. Scenario A flow remains null (P-017), Scenario B numeric inputs remain unruled, and Scenario D numeric inputs are excluded (T-025). Raw CSVs are gitignored local scratch; PSI-10 rows are not redistributed.
 
 **Done when:** the data acceptance gate in the Verification Plan passes.
 
@@ -69,18 +72,20 @@
 
 ## A4. Similarity and ranking
 
-- [ ] Implement the frozen oxygen and pressure tolerance-overlap formulas.
-- [ ] Implement exact/bracket/disjoint gravity scoring over explicit recorded levels.
-- [ ] Implement flow exact/bracket/tolerance/disjoint scoring.
-- [ ] Implement phase and primary/secondary theme similarity.
-- [ ] Implement fixed-weight scoring with coverage^0.5 and no redistribution.
-- [ ] Implement direct/partial/contextual/anticipated match classification.
-- [ ] Add hand-computed unit tests from the Verification Plan.
+- [x] Implement the frozen oxygen and pressure tolerance-overlap formulas.
+- [x] Implement exact/bracket/disjoint gravity scoring over explicit recorded levels.
+- [x] Implement flow exact/bracket/tolerance/disjoint scoring.
+- [x] Implement phase and primary/secondary theme similarity.
+- [x] Implement fixed-weight scoring with coverage^0.5 and no redistribution.
+- [x] Implement direct/partial/contextual/anticipated match classification.
+- [x] Add hand-computed unit tests from the Verification Plan.
 - [ ] Measure ranking p95 over the four canonical scenarios.
 
 **Done when:** T-011 through T-020 and the performance target pass.
 
-**Dependencies:** A0, A2.
+**Evidence (2026-11-14):** `backend/app/ranking.py` and `tests/backend/test_ranking.py` cover T-011 through T-016 and T-018 through T-020 plus T-045 (28 tests). T-017 and the p95 target remain blocked on A2 canonical annotations and the Scenario B–D numeric rulings; no canonical record or scenario timing is claimed yet.
+
+**Dependencies:** A0 for the pure functions; A2 for canonical scenario scoring and p95.
 
 ## A5. Templates, retrieval, and API
 
@@ -144,6 +149,6 @@
 | Date | Handoff | Recipient | Evidence | Notes |
 |---|---|---|---|---|
 | 2026-11-14 | H0 schema/OpenAPI/mock | Person B | `backend/app/models.py`, `backend/openapi.json`, `backend/mocks/`, 91 tests passing | Mock only; canonical data begins with H1 |
-| — | H1 snapshot/annotations | Person B | Snapshot built; seven annotations pending A2 | — |
+| — | H1 snapshot/annotations | Person B | Snapshot built; AI annotation proposal exists; all seven records `metadata_only` pending human review | — |
 | — | H2 API/search/ranking | Person B | — | — |
 | — | H3 defect reports | Person A from Person B | — | — |

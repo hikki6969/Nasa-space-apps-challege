@@ -2,6 +2,33 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — A2 annotation proposal and human-review gate
+
+### Added
+
+- `data/annotations.json` with seven AI-extracted record proposals and field-level provenance. All records are `annotation_status = metadata_only`; Data Safety §9 human review is pending.
+- `docs/DEEP_RESEARCH_SIGNOFF.md` documenting the extraction sources and per-field proposals; it is explicitly not a human sign-off.
+- VF-14 through VF-19 for SAFFIRE-I, SAME-R, FLEX, FLEX-2, CFI-G, and Flame Design table facts; P-017 through P-022.
+
+### Changed
+
+- Scenario B numeric inputs remain unruled; Scenario D numeric inputs are excluded because Apollo 1 is context only (Product Spec §7; T-025).
+- `data/raw_csv/` is gitignored local scratch; PSI-10 rows are not redistributed.
+- All seven annotations were downgraded from the extraction pass's `verified` status to `metadata_only` pending a named human reviewer.
+- `scripts/check_data.py` validates annotation records, the seven-ID set, PSI-10 row exclusion, and the human-review gate.
+- `data/snapshot.sha256` now covers both canonical JSON inputs; `scripts/build_snapshot.py` preserves the annotation digest on rebuild.
+
+## 2026-11-14 — Person A A4 pure similarity and ranking
+
+### Added
+
+- `backend/app/ranking.py` with the frozen oxygen/pressure tolerance overlap, gravity and flow exact/bracket rules, phase/theme similarity, coverage-penalty aggregation, and direct/partial/contextual classification.
+- `tests/backend/test_ranking.py` with 28 hand-computed tests covering T-011–T-016, T-018–T-020, and T-045.
+
+### Changed
+
+- `docs/todo/PERSON_A.md` records A4's pure-function evidence; T-017 and the p95 target remain blocked on A2 canonical annotations and the Scenario B–D numeric rulings.
+
 ## 2026-11-14 — Person B B3 implementation (Investigations, filters, and provenance)
 
 ### Added
