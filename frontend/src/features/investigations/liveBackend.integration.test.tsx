@@ -229,7 +229,9 @@ describeLive('H2 live UI run-through (B3/B4 against live data)', () => {
     const drawer = await screen.findByRole('region', {
       name: /Side-by-side: 2 records/i,
     })
-    expect(within(drawer).getByText('PSI-25')).toBeInTheDocument()
+    expect(
+      await within(drawer).findByText('PSI-25', {}, { timeout: 10000 }),
+    ).toBeInTheDocument()
     expect(within(drawer).getByText('PSI-10')).toBeInTheDocument()
     expect(
       within(drawer).getAllByRole('link', { name: /provenance/i }).length,
