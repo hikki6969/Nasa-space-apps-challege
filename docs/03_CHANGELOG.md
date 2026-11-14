@@ -2,6 +2,29 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person B B3 implementation (Investigations, filters, and provenance)
+
+### Added
+
+- `CatalogExplorer` in `frontend/src/components/investigations/CatalogExplorer.tsx`: search over investigation ID, title, acronym, research area, fuel, hardware, theme/evidence labels, plus lazily loaded objectives/approach/findings text for the 24 accessions.
+- Seven catalog facets: safety theme, fuel phase, project type, evidence class, data status, annotation status, and catalog role, with an always-visible active-filter count and a one-click reset.
+- Sorting by title A–Z/Z–A, physical score/coverage high→low and low→high. Records without a rank result (metadata-only, instrument-context, or not in the active ranking) always sort after ranked records — never interleaved, never shown a fabricated score.
+- `InvestigationDetailView` (fetching wrapper + exported `InvestigationDetailContent`): objectives, approach, key findings, source link, table preview (PSI-25 BASS-II fixture), and always-on field-level provenance (source URL, source kind, excerpt/table reference, value kind, note) for every curated numeric value. Missing provenance withholds the value instead of showing it.
+- `frontend/src/lib/records.ts` `rankEligibility` helper shared by the catalog table and the detail view for non-ranked rendering.
+- Lazy objectives fetch on first keystroke; H0 mock/HTTP behavior unchanged (no contract change).
+- `frontend/src/features/investigations/CatalogExplorer.test.tsx` with 23 tests: 24-accession reachability (table + typed client), ID/title/objectives search, all seven facet filters, active-count/reset, six sort orders with ranked-before-non-ranked ordering, visibly non-ranked badges, detail flow, provenance display, safe-text rendering of HTML-looking remote strings.
+
+### Changed
+
+- Investigations tab now renders the catalog table below the scenario workbench; ranked-results list carries `aria-label="Ranked results"` to keep tests deterministic.
+- H0 mock adapter gained the PSI-25 experimental-table fixture (representative values only; real previews arrive via H1).
+- Existing B1/App tests were re-scoped to the ranked-results region because the catalog table repeats record names.
+
+### Verification
+
+- `npm run check` → typecheck, lint (0 warnings), 41/41 tests, production build.
+- H1 artifacts (real snapshot, annotations, table previews) remain Person A's gap; no numeric annotation is displayed unless provenance is present.
+
 ## 2026-11-14 — Person A A0/A1 implementation and H0 handoff
 
 ### Added
