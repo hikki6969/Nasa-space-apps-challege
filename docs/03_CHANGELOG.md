@@ -2,6 +2,27 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Person B B5 implementation (Observed Flammability Map)
+
+### Added
+
+- `frontend/src/features/observed-map/ObservedMapPanel.test.tsx` — 17 cases in four suites:
+  - Panel: exact spec §10.2 disclaimer (`Observed test domain; not a validated flammability boundary.`) rendered as a `role="note"`; exactly the API-returned 14 fixture points plotted (rows counted) with PSI-47, PSI-117, FM2, SoFIE, FLARE and LUCI absent; the excluded-context panel lists all six with reasons; outcome-colour and material-phase-shape legends are present and accessible (`Outcome colours`, `Material phase marker shapes`); the translucent hull is an opt-out checkbox, on by default; H0 mock-fixture notice visible.
+  - `buildObservedMapTraces`: scatter traces only (exactly one `lines` trace — the hull, `fill: 'toself'`, closed polygon, labelled with exactly the required disclaimer); hull omitted when toggled off or with fewer than three points; one marker trace per phase·outcome group with symbol/colour matched to phase/outcome; four distinct outcome colours; serialized traces contain no fitted-curve, probability, confidence-interval, risk-tier, or extrapolation token.
+  - `convexHull`: encloses observed points, excludes interior points, handles duplicate/collinear inputs without fabricating vertices.
+  - Source regression: `observedMap.ts`, `ObservedMapPanel.tsx` and `geometry.ts` contain no statistical-model implementation tokens (logistic, polyfit, trendline, confidence_interval, pvalue, r_squared, lowess, quartile, …), and no `validated flammability boundary` copy outside the exact required disclaimer string.
+- The hull trace's Plotly legend label is now exactly `OBSERVED_DOMAIN_DISCLAIMER` (spec §10.2: "The hull label is exactly …"); previously it was `Observed test domain (descriptive)`.
+
+### Verification
+
+- `npm run check` → typecheck, lint (0 warnings), 65/65 tests (was 48), production build.
+- `python scripts/check_docs.py` → 0 failures (17 required documents).
+- The existing mock-adapter case (`keeps context-only IDs out of measured observations and uses the exact disclaimer`) remains green; together with the new component suite, FM2/LUCI/PSI-47/PSI-117/SoFIE/FLARE are proven absent at both layers.
+
+### Known limits
+
+- Observed points remain H0 representative fixtures; real H1 tables arrive with Person A's table previews. The hull is descriptive only — it is not a validated flammability boundary. jsdom prints harmless `HTMLCanvasElement.getContext` warnings from Plotly; the accessible data table in every chart remains the authoritative fallback.
+
 ## 2026-11-14 — Person B B4 verification pass (key findings in the comparison matrix)
 
 ### Added

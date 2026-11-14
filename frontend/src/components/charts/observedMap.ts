@@ -1,4 +1,5 @@
 import type { ObservationPoint } from '../../api/types'
+import { OBSERVED_DOMAIN_DISCLAIMER } from '../../api/types'
 import {
   baseLayout,
   chartPalette,
@@ -89,7 +90,7 @@ export function buildObservedMapTraces(
         traces.push({
           type: 'scatter',
           mode: 'lines',
-          name: 'Observed test domain (descriptive)',
+          name: OBSERVED_DOMAIN_DISCLAIMER,
           x: [...hull.map((point) => point.x), first.x],
           y: [...hull.map((point) => point.y), first.y],
           fill: 'toself',

@@ -69,15 +69,17 @@
 
 ## B5. Observed Flammability Map
 
-- [ ] Plot only API-returned measured observations.
-- [ ] Encode outcome and material/fuel class clearly and accessibly.
-- [ ] Add optional translucent observed-domain hull.
-- [ ] Display exactly: “Observed test domain; not a validated flammability boundary.”
-- [ ] Add no fitted curve, probability, confidence interval, risk tier, or extrapolation.
-- [ ] Prove FM2, LUCI, PSI-47, PSI-117, and every program-context or anticipated record are absent.
-- [ ] Add a source/visual regression test for the forbidden chart elements.
+- [x] Plot only API-returned measured observations.
+- [x] Encode outcome and material/fuel class clearly and accessibly.
+- [x] Add optional translucent observed-domain hull.
+- [x] Display exactly: “Observed test domain; not a validated flammability boundary.”
+- [x] Add no fitted curve, probability, confidence interval, risk tier, or extrapolation.
+- [x] Prove FM2, LUCI, PSI-47, PSI-117, and every program-context or anticipated record are absent.
+- [x] Add a source/visual regression test for the forbidden chart elements.
 
 **Done when:** observed-map tests pass and a reviewer cannot mistake the hull for a boundary.
+
+**Verification (2026-11-14):** `npm run check` passes — typecheck, lint, 65/65 Vitest (observed-map suite in `frontend/src/features/observed-map/ObservedMapPanel.test.tsx`: exact disclaimer, API-points-only table, excluded-ID panel, outcome/phase encoding, hull toggle, hull-trace construction and source regression scan, convex hull, mock adapter coverage of FM2/LUCI/PSI-47/PSI-117/SoFIE/FLARE), production build; `python scripts/check_docs.py` reports 0 failures. The hull trace carries exactly the required disclaimer label (spec §10.2). Fixture-backed under H1 and unverified against real tables. Evidence in `docs/03_CHANGELOG.md`.
 
 **Dependencies:** B1, H2.
 
