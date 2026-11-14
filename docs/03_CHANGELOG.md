@@ -2,6 +2,28 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-14 — Milestone H4: Offline Two-Service Containerization & Hardening (A6 / B9)
+
+### Added
+
+- **A6 (Backend packaging & hardening)**:
+  - `backend/Dockerfile`: Minimal production container using `python:3.12-slim`, non-root user `appuser` (UID 10001), healthcheck on `/api/health`, CMD `uvicorn`. Includes all canonical data, generated SQLite/FTS5 database, and text embeddings. Pinned runtime dependencies without torch or transformers.
+  - `backend/app/catalog.py`: Added `verify_system_integrity()` and `get_health_response()` checking snapshot presence, SHA-256 digest match, SQLite database presence, and embeddings presence.
+- **B9 (Frontend packaging & reverse proxy)**:
+  - `frontend/Dockerfile`: Multi-stage production container (`node:22-alpine` builder with `npm ci` and `npm run build` -> `nginx:alpine` runner).
+  - `docker/nginx.conf`: Nginx configuration supporting IPv4 (`listen 80;`) and IPv6 (`listen [::]:80;`), gzip compression, static SPA routing, and reverse proxying `/api/` to `http://backend:8000/api/`.
+  - `.dockerignore`: Optimized build context ignoring `.venv`, `node_modules`, `frontend/dist`, and raw scratch data.
+- **H4 (Offline multi-service orchestration)**:
+  - `compose.yaml` & `docker-compose.yml`: Multi-service orchestration mapping backend to port 8000 and frontend to port 3000, with dependency ordering ensuring frontend waits for healthy backend.
+
+### Verified
+
+- Container build and execution: both `firesight-backend` and `firesight-frontend` containers start cleanly and achieve `(healthy)` status.
+- Reverse proxy integration: `curl http://localhost:3000/api/health` returns status `ok`, verified snapshot digest (`596f50c6...`), index, and embeddings.
+- Endpoints verified through proxy: `/api/health`, `/api/catalog`, `/api/scenarios`, `/api/rank`, `/api/compare`, `/api/observations`, `/api/context`, and `/api/ask` (including rocket/propellant scope guard refusal).
+- Test suites: 148 backend pytest tests passed; 49 frontend Vitest tests, typecheck, lint, and build passed (`npm run check`).
+- Data and docs integrity: `check_data.py` reports 0 failures (7 source_cited); `check_docs.py` reports 0 failures (17 required documents).
+
 ## 2026-11-14 — Person A A3, A4, A5 delivery and H2 handoff package
 
 ### Added

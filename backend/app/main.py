@@ -23,6 +23,7 @@ from .api_models import (
 from .catalog import (
     RECORDS,
     get_catalog_response,
+    get_health_response,
     get_investigation_response,
     get_snapshot_sha256,
 )
@@ -49,21 +50,7 @@ app = FastAPI(
 
 @app.get("/api/health", response_model=HealthResponse)
 def health() -> HealthResponse:
-    snapshot_sha = get_snapshot_sha256()
-    return HealthResponse(
-        status="ok",
-        version="0.1.0",
-        snapshot=True,
-        snapshot_sha256=snapshot_sha,
-        snapshot_records=len(RECORDS),
-        index=True,
-        embeddings=True,
-        use_llm=False,
-        messages=[
-            "FireSight live service; wired to canonical 24-record snapshot, "
-            "SQLite FTS5 index, and MiniLM embeddings."
-        ],
-    )
+    return get_health_response()
 
 
 @app.get("/api/catalog", response_model=CatalogResponse)

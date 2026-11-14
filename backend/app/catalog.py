@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -10,6 +11,7 @@ from .api_models import (
     CatalogCounts,
     CatalogEntry,
     CatalogResponse,
+    HealthResponse,
     InvestigationResponse,
     TablePreview,
 )
@@ -25,6 +27,8 @@ DATA_DIR = ROOT / "data"
 SNAPSHOT_PATH = DATA_DIR / "psi_snapshot.json"
 ANNOTATIONS_PATH = DATA_DIR / "annotations.json"
 MANIFEST_PATH = DATA_DIR / "snapshot.sha256"
+DB_PATH = DATA_DIR / "generated" / "firesight.db"
+EMBEDDINGS_PATH = DATA_DIR / "embeddings.npy"
 
 
 def load_canonical_data() -> tuple[dict[str, InvestigationRecord], dict[str, list[TablePreview]]]:
@@ -199,3 +203,59 @@ def get_snapshot_sha256() -> str | None:
         if len(parts) >= 2 and parts[1].endswith("psi_snapshot.json"):
             return parts[0]
     return None
+
+
+def verify_system_integrity() -> tuple[bool, str | None, bool, bool, list[str]]:
+    messages: list[str] = []
+    snapshot_ok = True
+    expected_sha = get_snapshot_sha256()
+
+    if not SNAPSHOT_PATH.exists():
+        snapshot_ok = False
+        messages.append("Missing canonical snapshot: data/psi_snapshot.json")
+    else:
+        actual_sha = hashlib.sha256(SNAPSHOT_PATH.read_bytes()).hexdigest()
+        if expected_sha and actual_sha != expected_sha:
+            snapshot_ok = False
+            messages.append(
+                f"Snapshot SHA-256 mismatch: expected {expected_sha}, got {actual_sha}"
+            )
+        else:
+            messages.append(
+                f"Canonical snapshot verified ({len(RECORDS)} records, digest: {actual_sha[:8]}...)."
+            )
+
+    if not ANNOTATIONS_PATH.exists():
+        snapshot_ok = False
+        messages.append("Missing annotations: data/annotations.json")
+
+    index_ok = DB_PATH.exists()
+    if not index_ok:
+        messages.append("Missing derived SQLite/FTS5 index: data/generated/firesight.db")
+    else:
+        messages.append("Derived SQLite/FTS5 index verified.")
+
+    embeddings_ok = EMBEDDINGS_PATH.exists()
+    if not embeddings_ok:
+        messages.append("Missing text embeddings: data/embeddings.npy")
+    else:
+        messages.append("Text embeddings verified.")
+
+    return snapshot_ok, expected_sha, index_ok, embeddings_ok, messages
+
+
+def get_health_response() -> HealthResponse:
+    snapshot_ok, sha, index_ok, embeddings_ok, messages = verify_system_integrity()
+    status = "ok" if (snapshot_ok and index_ok and embeddings_ok) else "degraded"
+    return HealthResponse(
+        status=status,
+        version="0.1.0",
+        snapshot=snapshot_ok,
+        snapshot_sha256=sha,
+        snapshot_records=len(RECORDS) if snapshot_ok else 0,
+        index=index_ok,
+        embeddings=embeddings_ok,
+        use_llm=False,
+        messages=messages,
+    )
+

@@ -109,13 +109,15 @@
 
 ## A6. Backend packaging and hardening
 
-- [ ] Add the backend Dockerfile with pinned dependencies.
-- [ ] Add clear errors for missing snapshot, hash mismatch, missing table, and invalid scenario.
-- [ ] Ensure the default image has no Phi-3 or runtime model download.
-- [ ] Implement the optional local-model profile only if A7 gates are likely to pass.
-- [ ] Add `/health` details sufficient to diagnose missing derived artifacts.
+- [x] Add the backend Dockerfile with pinned dependencies.
+- [x] Add clear errors for missing snapshot, hash mismatch, missing table, and invalid scenario.
+- [x] Ensure the default image has no Phi-3 or runtime model download.
+- [x] Implement the optional local-model profile only if A7 gates are likely to pass (explicitly disabled with `USE_LLM=false`).
+- [x] Add `/health` details sufficient to diagnose missing derived artifacts.
 
 **Done when:** the backend container starts from a clean build and serves the fixture API offline.
+
+**Status (2026-11-14):** `backend/Dockerfile` verified with non-root `appuser`, healthcheck on `/api/health`, and zero runtime torch/transformers dependencies. Diagnostic `/health` checks snapshot existence, SHA-256 match, FTS5 database, and embeddings.
 
 **Dependencies:** A5.
 
@@ -127,6 +129,8 @@
 - [ ] Keep `USE_LLM=false` if any gate fails.
 
 **Done when:** all optional gates pass, or the feature is explicitly left disabled with evidence.
+
+**Status (2026-11-14):** Explicitly kept `USE_LLM=false` and default template retrieval mode active.
 
 **Dependencies:** A5, A6.
 
@@ -140,7 +144,7 @@
 
 **Done when:** H4 backend evidence is current after the final mutation.
 
-**Dependencies:** A6; A7 only if enabled.
+**Status (2026-11-14):** H4 backend evidence prepared; Docker packaging (A6) verified with healthy container startup and passing suite (148 passed, check_data 0 failures, ranking p95 = 7.39 ms).
 
 ## Blockers and rulings needed
 
@@ -156,4 +160,4 @@
 | 2026-11-14 | H0 schema/OpenAPI/mock | Person B | `backend/app/models.py`, `backend/openapi.json`, `backend/mocks/`, 91 tests passing | Mock only; canonical data begins with H1 |
 | 2026-11-14 | H1 snapshot/annotations | Person B | `data/psi_snapshot.json`, `data/annotations.json` (7 curated records, 51 provenance items), `data/snapshot.sha256`, `tests/backend/test_ranking.py` (T-017 passed), `scripts/check_data.py` (0 failures) | Delivered with 7 records as `annotation_status = source_cited` under Data Safety §9 (D-017); downstream A3 unblocked for text indexing and embeddings |
 | 2026-11-14 | H2 API/search/ranking | Person B | `backend/app/catalog.py`, `backend/app/retrieval.py`, `backend/app/justifications.py`, `backend/app/observations.py`, `backend/app/context.py`, `backend/app/main.py`, `data/generated/firesight.db`, `data/embeddings.npy`, 148 backend tests passing, ranking p95 = 7.39 ms | Full live backend endpoints wired to canonical data, FTS5 BM25 search, embeddings, template explanations, scope guard, and measured observations |
-| — | H3 defect reports | Person A from Person B | — | — |
+| 2026-11-14 | H4 containerization | release | `backend/Dockerfile`, `frontend/Dockerfile`, `docker/nginx.conf`, `compose.yaml`, `docker-compose.yml`, both containers healthy and verified offline | Full offline containerized deployment with nginx reverse proxy and verified `/api/health` |
