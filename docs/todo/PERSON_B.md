@@ -85,24 +85,28 @@
 
 ## B6. Historical and Earth Applications
 
-- [ ] Build Apollo 1, Mir, and Apollo 13 context cards from official NASA sources.
-- [ ] Build NASA Spinoff cards from official URLs.
-- [ ] Label thematic links as thematic unless direct lineage is explicit.
-- [ ] Keep every context card outside numerical ranking and measured plots.
+- [x] Build Apollo 1, Mir, and Apollo 13 context cards from official NASA sources.
+- [x] Build NASA Spinoff cards from official URLs.
+- [x] Label thematic links as thematic unless direct lineage is explicit.
+- [x] Keep every context card outside numerical ranking and measured plots.
 
 **Done when:** no historical/spinoff value can enter a ranking payload or observed observation.
+
+**Verification (2026-11-14):** `ContextPanel.test.tsx` (6 cases): official NASA SMA/history URLs and `noopener` links for the three incidents; official `spinoff.nasa.gov` URLs for three Spinoff cards; every card carries `thematic` and `Context only` with no direct-lineage claim; FM2 `Anticipated in PSI` + SoFIE/FLARE `Active program`; PSI-47 instrument context. Live backend confirms the same inventory (3 incidents, 3 spinoffs, FM2/SoFIE/FLARE, PSI-47). `mockAdapter.test.ts` asserts no context-only id (FM2/LUCI/SoFIE/FLARE/PSI-47/PSI-117) appears in any ranked result for the four canonical scenarios. Backend (H2) independently excludes context from measured observations. `python scripts/check_docs.py` reports 0 failures.
 
 **Dependencies:** B0, H1.
 
 ## B7. Bounded Q&A and scope guard
 
-- [ ] Build question input with preset examples.
-- [ ] Render template answers, matched records, fields, and linked PSI citations.
-- [ ] Display out-of-scope rocket/propellant refusals clearly.
-- [ ] Do not inject answer HTML.
-- [ ] Confirm `USE_LLM=false` is invisible in the normal experience.
+- [x] Build question input with preset examples.
+- [x] Render template answers, matched records, fields, and linked PSI citations.
+- [x] Display out-of-scope rocket/propellant refusals clearly.
+- [x] Do not inject answer HTML.
+- [x] Confirm `USE_LLM=false` is invisible in the normal experience.
 
 **Done when:** valid questions are cited and scope violations are refused.
+
+**Verification (2026-11-14):** `QaPanel.test.tsx` (6 cases): four preset questions render (incl. scope guard); preset answer renders with citations, `Answered`/`In scope` badges, matched records and linked PSI citations (rel `noopener`); scope-guard answer renders `Refused`/`Out of scope` with no HTTP citations; typed-question submission; no `img`/`script`/`iframe` injection path. Grep confirms no `USE_LLM`/LLM/Phi-3 copy appears anywhere in the UI; `use_llm` exists only in the typed health surface. Live backend (`/api/ask`) returns template answers with citations and a `rocket_propellant` scope refusal; the live adapter maps both faithfully (see H2 integration). `python scripts/check_docs.py` reports 0 failures.
 
 **Dependencies:** B1, H2.
 

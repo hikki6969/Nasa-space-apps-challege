@@ -146,4 +146,34 @@ describe('H0 mock adapter', () => {
     expect(detection.matched_psi_ids).toContain('PSI-101')
     expect(detection.citations[0]?.psi_id).toBe('PSI-101')
   })
+
+  it('keeps historical, spinoff, program-context and instrument-context IDs out of ranked results and compare', async () => {
+    const contextOnly = ['FM2', 'LUCI', 'SoFIE', 'FLARE', 'PSI-47', 'PSI-117']
+
+    for (const scenario of [
+      { oxygen_fraction: 0.3, pressure_psia: 8.2, gravity_g: 0.16, flow_velocity_cms: null, fuel_phase: 'solid', safety_theme: 'prevention' },
+      { oxygen_fraction: null, pressure_psia: null, gravity_g: null, flow_velocity_cms: null, fuel_phase: null, safety_theme: 'detection' },
+      { oxygen_fraction: null, pressure_psia: null, gravity_g: null, flow_velocity_cms: null, fuel_phase: 'liquid_droplet', safety_theme: 'suppression' },
+      { oxygen_fraction: null, pressure_psia: null, gravity_g: null, flow_velocity_cms: null, fuel_phase: null, safety_theme: 'prevention' },
+    ] as const) {
+      const rank = await api().rank({ scenario })
+      expect(rank.results.length).toBeGreaterThan(0)
+      for (const result of rank.results) {
+        expect(contextOnly).not.toContain(result.psi_id)
+      }
+    }
+
+    // Historical/program/instrument ids cannot be forced into a comparison.
+    await expect(
+      api().compare({ psi_ids: ['FM2', 'PSI-25'] }),
+    ).rejects.toThrow(/Unknown PSI record/)
+    await expect(
+      api().compare({ psi_ids: ['PSI-47', 'PSI-25'] }),
+    ).resolves.toBeDefined() // PSI-47 is a catalog record; UI keeps it out of the matrix via catalog_role
+
+    const compare = await api().compare({ psi_ids: ['PSI-25', 'PSI-69', 'PSI-68', 'PSI-10'] })
+    for (const psiId of contextOnly) {
+      expect(compare.psi_ids).not.toContain(psiId)
+    }
+  })
 })

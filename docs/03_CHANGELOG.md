@@ -32,6 +32,25 @@ All notable changes to the specification and implementation baseline are recorde
 - The live observed-points endpoint reports 2 BASS-II oxygen bounds only — the map shows them as measured table bounds; no flow axis, no outcome encoding (not fabricated).
 - Hydration is 25 HTTP calls per catalog load; acceptable against the in-memory backend, worth revisiting if the corpus grows.
 
+## 2026-11-14 — Person B B6 and B7 completion (Historical & Earth Applications; Bounded Q&A)
+
+### Added
+
+- `frontend/src/features/context/ContextPanel.test.tsx` — 6 cases: Apollo 1/Mir/Apollo 13 cards with official NASA SMA/history links (`noopener`); Spinoff cards with official `spinoff.nasa.gov` URLs; every card carries a `thematic` badge and `Context only` — none claims direct lineage; FM2 `Anticipated in PSI`; SoFIE/FLARE `Active program`; PSI-47 instrument context.
+- `frontend/src/features/qa/QaPanel.test.tsx` — 6 cases: preset set renders (incl. scope guard); preset answer carries matched records and linked PSI citations; scope-guard refusal renders `Refused`/`Out of scope` with zero HTTP citations; typed-question submission; no `img`/`script`/`iframe` injection; limitations render as list items.
+- Boundary proof in `src/api/mock/mockAdapter.test.ts`: no context-only or program-context id (FM2, LUCI, SoFIE, FLARE, PSI-47, PSI-117) can appear in any ranked result for the four canonical scenarios.
+- Live H2 cross-checks: `/api/context` serves exactly 3 incidents, 3 spinoffs, programs (FM2 anticipated, SoFIE/FLARE active) and PSI-47 instrument context — identical to the mock fixture inventory, confirmed over the running backend.
+
+### Verified
+
+- `npm run check` → typecheck, lint (0 warnings), **83/83** tests (was 70; +13), production build clean. Live integration suite unchanged (12/12 with `FIRESIGHT_LIVE_API=1`; skipped by default).
+- `python scripts/check_docs.py` → 0 failures (17 required documents).
+
+### Known limits
+
+- Context and Q&A surfaces remain fixture-backed in offline development; the live path serves the same inventory. H2's `/api/ask` citations carry no `field`/`value` today, so those render only when present; answers are limited to the four canonical scenarios in the mock and to the committed corpus on the live backend.
+- No analytics dashboard, CSV/JSON export, or session persistence was added — those features do not exist in `docs/00_PRODUCT_SPEC.md` or the Person B TODO; adding them would expand scope beyond the documented contract.
+
 ## 2026-11-14 — Person B B5 implementation (Observed Flammability Map)
 
 ### Added
