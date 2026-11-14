@@ -1,0 +1,243 @@
+{
+  "gap_statement": "No completed PSI record is a direct Apollo 1 reconstruction. High-O2 gas-phase context and solid-fuel context remain separated, and Apollo 1 is explanatory context only, never a scoring input.",
+  "requested_dimensions": [
+    "safety_theme"
+  ],
+  "results": [
+    {
+      "acronym": "ACME CFI-G",
+      "coverage": 1.0,
+      "data_status": "complete",
+      "dimensions": [
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "oxygen",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.3
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "pressure",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "gravity",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "flow",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.1
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "material_phase",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.1
+        },
+        {
+          "limitation": null,
+          "name": "safety_theme",
+          "present": true,
+          "provenance": {
+            "excerpt": "Determine the conditions for which cool diffusion flames occur.",
+            "note": "Primary safety theme curated as prevention for flame-physics context.",
+            "source_kind": "psi_narrative",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-159",
+            "value_kind": "safely_derived"
+          },
+          "record_value": "prevention",
+          "requested": true,
+          "scenario_value": "prevention",
+          "similarity": 1.0,
+          "weight": 0.1
+        }
+      ],
+      "evidence_class": "flame_physics",
+      "justification": "CFI-G matches the prevention theme as high-O2 gas-phase microgravity context. It is not a solid-fuel Apollo 1 reconstruction.",
+      "limitations": [
+        "High-O2 gas-phase microgravity context is not solid-fuel Apollo 1 evidence.",
+        "No numeric physical inputs are specified."
+      ],
+      "match_class": "partial_match",
+      "matched_conditions": [
+        "prevention theme"
+      ],
+      "missing_dimensions": [],
+      "provenance": {
+        "fuel": {
+          "excerpt": "Determine the conditions for which cool diffusion flames occur for propane, n-butane, and n-pentane.",
+          "note": "Gaseous fuel and gas phase taken from the stated CFI-G objective.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-159",
+          "value_kind": "reported"
+        },
+        "fuel_phases": {
+          "excerpt": "Determine the conditions for which cool diffusion flames occur for propane, n-butane, and n-pentane.",
+          "note": "Gaseous fuel and gas phase taken from the stated CFI-G objective.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-159",
+          "value_kind": "reported"
+        },
+        "safety_theme": {
+          "excerpt": "Determine the conditions for which cool diffusion flames occur.",
+          "note": "Primary safety theme curated as prevention for flame-physics context.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-159",
+          "value_kind": "safely_derived"
+        }
+      },
+      "psi_id": "PSI-159",
+      "score": 1.0,
+      "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-159",
+      "title": "Advanced Combustion via Microgravity Experiments / Cool Flames Investigation with Gases"
+    },
+    {
+      "acronym": "BASS-II",
+      "coverage": 1.0,
+      "data_status": "complete",
+      "dimensions": [
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "oxygen",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.3
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "pressure",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "gravity",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.2
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "flow",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.1
+        },
+        {
+          "limitation": "Scenario numeric input is not specified; dimension is outside Q(S).",
+          "name": "material_phase",
+          "present": false,
+          "provenance": null,
+          "record_value": null,
+          "requested": false,
+          "scenario_value": null,
+          "similarity": null,
+          "weight": 0.1
+        },
+        {
+          "limitation": null,
+          "name": "safety_theme",
+          "present": true,
+          "provenance": {
+            "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+            "note": "Primary safety theme curated as prevention; suppression is secondary.",
+            "source_kind": "psi_narrative",
+            "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+            "value_kind": "safely_derived"
+          },
+          "record_value": "prevention",
+          "requested": true,
+          "scenario_value": "prevention",
+          "similarity": 1.0,
+          "weight": 0.1
+        }
+      ],
+      "evidence_class": "bench_flammability",
+      "justification": "BASS-II matches the prevention theme as solid-fuel context, but it is not at 100% O2 and is not an Apollo 1 reconstruction.",
+      "limitations": [
+        "BASS-II is solid-fuel context but not at 100% O2.",
+        "No numeric physical inputs are specified."
+      ],
+      "match_class": "partial_match",
+      "matched_conditions": [
+        "prevention theme"
+      ],
+      "missing_dimensions": [],
+      "provenance": {
+        "fuel_phases": {
+          "excerpt": "Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity.",
+          "note": "Solid fuel phase taken from the stated BASS-II objective.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+          "value_kind": "reported"
+        },
+        "oxygen_fraction": {
+          "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+          "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
+          "source_kind": "psi_table",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+          "value_kind": "reported"
+        },
+        "safety_theme": {
+          "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+          "note": "Primary safety theme curated as prevention; suppression is secondary.",
+          "source_kind": "psi_narrative",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+          "value_kind": "safely_derived"
+        }
+      },
+      "psi_id": "PSI-25",
+      "score": 1.0,
+      "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+      "title": "Burning and Suppression of Solids - II"
+    }
+  ],
+  "scenario_id": "D"
+}

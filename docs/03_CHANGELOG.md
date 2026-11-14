@@ -2,50 +2,30 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
-## 2026-11-14 — B2 overview
+## 2026-11-14 — Person A A0/A1 implementation and H0 handoff
 
 ### Added
 
-- Overview count tiles for catalog total, completed, curated, metadata-only, instrument-context, and anticipated records, with a note that these status axes overlap and that anticipated FM2 is outside the measured catalog.
-- A corpus-boundary panel that counts PSI evidence separately from historical incidents, NASA Spinoff applications, program context, and anticipated program status.
-- Active-scenario selection (A–D) in the Overview, with each scenario's gap statement, top completed evidence, per-result coverage, and derived coverage warnings for missing requested dimensions.
-- `OverviewPanel.test.tsx` coverage for fixture counts, evidence-class/theme/hardware/data-status distributions, separated context counts, active-scenario switching, and coverage warnings.
+- Frozen Pydantic schema in `backend/app/models.py` with strict models, field-specific units, provenance checks, nested-table linkage, and rank eligibility.
+- Versioned API contract in `backend/app/api_models.py`, `backend/openapi.json` (v0.1.0), and 15 representative H0 mock payloads in `backend/mocks/`.
+- H0 FastAPI mock surface in `backend/app/main.py` for all nine specified endpoints.
+- Schema, contract, API, and snapshot tests under `tests/backend/`.
+- Deterministic `scripts/build_snapshot.py`, the canonical `data/psi_snapshot.json`, and `data/snapshot.sha256`.
+- Offline `scripts/check_data.py` validator for membership, licenses, stable URLs, and digest.
+- Shared corpus constants in `backend/app/corpus.py`.
 
 ### Changed
 
-- Overview distributions now use the same fixture-backed counts as the API, and instrumentation context is excluded from the ranked-evidence candidate count.
-- B2 checkboxes marked complete in `docs/todo/PERSON_B.md` after `npm run check` passed (typecheck, lint, 18 tests, production build).
+- `docs/VERIFIED_FACTS.md` now records the generated snapshot digest and manifest.
+- `scripts/check_docs.py` validates a real 64-hex snapshot digest instead of the placeholder text.
+- PSI-10 is retained with `license.status = unknown` and `redistribution = blocked`; table rows for it must not be redistributed (Decision D-016, Problem P-016).
 
-## 2026-11-14 — B1 scenario controls and results
+### Evidence
 
-### Added
-
-- Editable Investigations scenario controls for oxygen, pressure, gravity, flow, material phase, and safety theme, with A–D canonical presets, per-field clear actions, range validation, and a draft requested-set `Q(S)` preview.
-- Explicit unspecified handling: blank numeric fields and “Not specified” selects remain `null` and are excluded from the draft requested set instead of defaulting to zero.
-- Ranked-result cards with score, coverage, match class, evidence class, always-visible six-slot dimension breakdown, limitations, justification, and provenance pointers.
-- Dimension-status legend that distinguishes not requested, missing (no record value), zero similarity (record value exists), partial, and match states.
-- `InvestigationsPanel.test.tsx` coverage for all four canonical scenarios, explicit unspecified inputs, missing-versus-zero rendering, and out-of-range validation.
-
-### Changed
-
-- Submitting or loading a preset now re-ranks immediately; draft edits show a dirty-state badge and preserve the previous results until ranked or discarded.
-- Cards state the score formula (`weighted similarity × √coverage`) and the requested/present dimension counts.
-- A result title no longer repeats an acronym when it equals the title.
-- B1 checkboxes marked complete in `docs/todo/PERSON_B.md` after `npm run check` passed (typecheck, lint, 15 tests, production build).
-
-## 2026-11-14 — B0 frontend foundation
-
-### Added
-
-- React 19 + Vite 8 + TypeScript frontend with Tailwind CSS 4 dark-space visual tokens and a responsive WAI-ARIA tab shell.
-- Typed H0 API client with a mock adapter, shared `FireSightApi` surface, and persistent `H0 mock · not canonical` disclosure.
-- Six lazy-mounted tabs: Overview, Investigations, Compare, Observed Map, Historical & Earth Applications, and Q&A.
-- Lazy-loaded Plotly parallel coordinates and observed flammability map with data-table fallbacks.
-- Vitest coverage for the mock H0 contract, tab keyboard semantics, and the scenario/result, compare/map, context, and Q&A render paths.
-
-### Changed
-
-- B0 checkboxes marked complete in `docs/todo/PERSON_B.md` after `npm run check` passed (typecheck, lint, 10 tests, production build).
+- `.venv/bin/python -m pytest -q` → 91 passed.
+- `.venv/bin/python scripts/check_data.py` → `Data check: 0 failures (24 records, 22 tables)`.
+- Two consecutive snapshot builds were byte-identical with SHA-256 `596f50c614478bdc08a578fbde6ac6f27d87a30acfb9220e6d401b6e99be146a`.
+- `.venv/bin/python scripts/check_docs.py` → 0 failures.
 
 ## 2026-11-14 — Documentation baseline and implementation handoff
 

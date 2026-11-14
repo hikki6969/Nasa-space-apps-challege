@@ -19,6 +19,7 @@ Contested product and engineering rulings live here. Detailed rationale is in th
 | D-013 | 2026-11-14 | Store FM2/SoFIE/FLARE in the separate `ProgramContext` model outside the measured catalog; never plot them as measured | Accepted | VF-11 | [Product Spec §3](00_PRODUCT_SPEC.md#3-evidence-corpus-and-status-model) |
 | D-014 | 2026-11-14 | Use two Docker services: FastAPI backend and nginx-served React frontend | Accepted | Clear runtime boundary and local reproducibility | [Product Spec §11](00_PRODUCT_SPEC.md#11-runtime-and-deployment) |
 | D-015 | 2026-11-14 | Exclude unspecified scenario dimensions from the requested set; retain the no-redistribution rule for missing record fields; require all six inputs for `direct_match` | Accepted | Makes partial scenario fixtures deterministic without inventing values | [Product Spec §6.2](00_PRODUCT_SPEC.md#62-ranking-formula) |
+| D-016 | 2026-11-14 | Keep PSI-10 in the exact 24-record corpus with `license.status = unknown` and `redistribution = blocked` | Accepted | PSI-10 exposes no license metadata; Data Safety §7 forbids assuming public domain, while VF-01 forbids dropping the record | A2 table ingestion; PSI-10 remains metadata/narrative context |
 
 ## Deferred, not rejected
 

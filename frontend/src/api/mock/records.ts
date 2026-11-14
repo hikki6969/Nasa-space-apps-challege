@@ -1,6 +1,7 @@
 import type {
   DataStatus,
   EvidenceClass,
+  ExperimentalTable,
   FuelPhase,
   InvestigationDetail,
   InvestigationSummary,
@@ -265,6 +266,41 @@ function provenanceFor(record: InvestigationSummary, field: string) {
   }
 }
 
+const MOCK_TABLES: Record<string, ExperimentalTable[]> = {
+  'PSI-25': [
+    {
+      psi_id: 'PSI-25',
+      file_name: 'psi25_bass2_ignition_limits.csv',
+      version: 1,
+      s3_version_id: 'h0-mock-not-canonical',
+      download_url: 'https://psi.nasa.gov/data/PSI-25/table-download',
+      columns: ['sample', 'oxygen_fraction', 'pressure_psia', 'ignition_observed'],
+      rows: [
+        {
+          sample: 'SAMPLE-A',
+          oxygen_fraction: 0.18,
+          pressure_psia: 14.7,
+          ignition_observed: true,
+        },
+        {
+          sample: 'SAMPLE-B',
+          oxygen_fraction: 0.21,
+          pressure_psia: 14.7,
+          ignition_observed: false,
+        },
+      ],
+      provenance: {
+        source_url: 'https://psi.nasa.gov/data/PSI-25',
+        source_kind: 'psi_table',
+        excerpt:
+          'H0 representative table fixture; the verified H1 table reference replaces this excerpt.',
+        note: 'Mock adapter only. Do not treat as a canonical annotation.',
+        value_kind: 'reported',
+      },
+    },
+  ],
+}
+
 export function buildDetail(record: InvestigationSummary): InvestigationDetail {
   const physicalFields = [
     'oxygen_fraction',
@@ -290,7 +326,7 @@ export function buildDetail(record: InvestigationSummary): InvestigationDetail {
       record.annotation_status === 'verified'
         ? 'Representative H0 finding. The backend template justification remains authoritative for wording and scope.'
         : null,
-    experimental_tables: [],
+    experimental_tables: MOCK_TABLES[record.psi_id] ?? [],
     provenance,
   }
 }

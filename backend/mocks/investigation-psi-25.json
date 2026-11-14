@@ -1,0 +1,98 @@
+{
+  "record": {
+    "acronym": "BASS-II",
+    "annotation_status": "verified",
+    "approach_text": "Microgravity combustion tests aboard the International Space Station used a small wind tunnel with airflow speeds up to 40 cm/s and oxygen varied by adding diluent.",
+    "catalog_role": "evidence",
+    "data_status": "complete",
+    "doi": "10.60555/4qc4-de67",
+    "evidence_class": "bench_flammability",
+    "experimental_tables": [
+      {
+        "columns": [],
+        "download_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+        "file_name": "PSI-25_Experimental table_BASS-II.csv",
+        "provenance": {
+          "excerpt": "PSI-25_Experimental table_BASS-II.csv, version 1, S3 version ID ..Z_cQ7ymWFmdISmAvT7c5Gcs7ZHo4N_.",
+          "note": "H0 mock keeps rows empty; curated rows arrive in H1.",
+          "source_kind": "psi_table",
+          "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+          "value_kind": "reported"
+        },
+        "psi_id": "PSI-25",
+        "rows": [],
+        "s3_version_id": "..Z_cQ7ymWFmdISmAvT7c5Gcs7ZHo4N_",
+        "version": 1
+      }
+    ],
+    "flow_velocity": null,
+    "fuel": null,
+    "fuel_phases": [
+      "solid"
+    ],
+    "gravity": null,
+    "hardware": [],
+    "key_findings_text": null,
+    "license": "CC0-1.0",
+    "objectives_text": "Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity, and help bridge ground-based material flammability screening to microgravity behavior.",
+    "orientation": [],
+    "oxygen_fraction": {
+      "max": 0.222,
+      "min": 0.136,
+      "notes": "Calibrated initial O2; final outliers are excluded.",
+      "unit": "fraction"
+    },
+    "pressure": null,
+    "project_type": "microgravity",
+    "provenance": {
+      "fuel_phases": {
+        "excerpt": "Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity.",
+        "note": "Solid fuel phase taken from the stated BASS-II objective.",
+        "source_kind": "psi_narrative",
+        "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+        "value_kind": "reported"
+      },
+      "oxygen_fraction": {
+        "excerpt": "Calibrated initial O2 minimum 13.6% by volume (test O12); maximum 22.2%.",
+        "note": "Initial conditions only; final O2 outliers 0.6%, 0.9%, 39.1%, and 40.4% remain separate.",
+        "source_kind": "psi_table",
+        "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+        "value_kind": "reported"
+      },
+      "safety_theme": {
+        "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+        "note": "Primary safety theme curated as prevention; suppression is secondary.",
+        "source_kind": "psi_narrative",
+        "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+        "value_kind": "safely_derived"
+      }
+    },
+    "psi_id": "PSI-25",
+    "recorded_flow_values": [],
+    "recorded_gravity_values": [],
+    "research_area": "Combustion Science",
+    "safety_theme": "prevention",
+    "secondary_safety_themes": [
+      "suppression"
+    ],
+    "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+    "title": "Burning and Suppression of Solids - II"
+  },
+  "table_previews": [
+    {
+      "columns": [],
+      "download_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+      "file_name": "PSI-25_Experimental table_BASS-II.csv",
+      "provenance": {
+        "excerpt": "PSI-25_Experimental table_BASS-II.csv, version 1, S3 version ID ..Z_cQ7ymWFmdISmAvT7c5Gcs7ZHo4N_.",
+        "note": "H0 mock keeps rows empty; curated rows arrive in H1.",
+        "source_kind": "psi_table",
+        "source_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-25/download?file=PSI-25_Experimental%20table_BASS-II.csv&version=1&redirect=false",
+        "value_kind": "reported"
+      },
+      "row_count": 0,
+      "rows": [],
+      "version": 1
+    }
+  ]
+}

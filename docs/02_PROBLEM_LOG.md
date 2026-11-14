@@ -136,3 +136,12 @@ Each entry uses the fixed shape: **Symptom → Reproduction → Root Cause → R
 - **Resolution:** use strict models, forbid extra fields, validate the unit for each physical range, and reject incompatible recorded-level/range combinations.
 - **Verification:** T-006 plus schema unit tests.
 - **Lesson:** a documented strictness claim must be visible in the normative model.
+
+## P-016 — PSI-10 has no license metadata
+
+- **Symptom:** a strict missing-license check either fails the 24-record build or risks treating PSI-10 as public domain.
+- **Reproduction:** request the PSI-10 detail endpoint; `licenseName`, `licenseIdentifier`, and `licenseLink` are empty, and the search source exposes no license fields.
+- **Root cause:** the source record is incomplete; corpus membership and redistribution rights are independent facts.
+- **Resolution:** retain PSI-10 as a metadata/narrative citation with `license.status = unknown` and `redistribution = blocked`; do not commit its table rows. The other 23 records are CC0-1.0.
+- **Verification:** `scripts/check_data.py` requires an explicit ruling for any unknown license and rejects unknown licenses without blocked redistribution.
+- **Lesson:** a missing license is a redistribution constraint, not a reason to silently shrink the canonical corpus.

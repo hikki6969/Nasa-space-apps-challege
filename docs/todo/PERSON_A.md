@@ -6,29 +6,33 @@
 
 ## A0. Schema and contract freeze
 
-- [ ] Create `backend/app/models.py` with the frozen Pydantic models.
-- [ ] Enable strict Pydantic configuration and `extra = forbid`; reject string-to-number coercion.
-- [ ] Implement `Range` bounds validation and expected-unit validation.
-- [ ] Implement status/catalog-role/provenance validators.
-- [ ] Add tests for reversed bounds, missing provenance on any populated physical field including metadata-only records, nested table ID mismatch, anticipated status, and metadata-only ranking exclusion.
-- [ ] Export a versioned OpenAPI document and representative mock responses.
-- [ ] Provide H0 to Person B: schema, OpenAPI, and mock payloads.
+- [x] Create `backend/app/models.py` with the frozen Pydantic models.
+- [x] Enable strict Pydantic configuration and `extra = forbid`; reject string-to-number coercion.
+- [x] Implement `Range` bounds validation and expected-unit validation.
+- [x] Implement status/catalog-role/provenance validators.
+- [x] Add tests for reversed bounds, missing provenance on any populated physical field including metadata-only records, nested table ID mismatch, anticipated status, and metadata-only ranking exclusion.
+- [x] Export a versioned OpenAPI document and representative mock responses.
+- [x] Provide H0 to Person B: schema, OpenAPI, and mock payloads.
 
 **Done when:** targeted schema tests pass; Person B can type its client without asking for an undocumented field.
+
+**Evidence (2026-11-14):** `backend/app/models.py`, `backend/app/api_models.py`, `backend/openapi.json` (v0.1.0), `backend/mocks/*.json` (15 payloads), and `tests/backend/test_models.py`, `tests/backend/test_contract.py`, `tests/backend/test_api.py`. `python -m pytest -q` passes 91 tests. Regenerate the contract with `python scripts/export_contract.py`.
 
 **Dependencies:** none.
 
 ## A1. Canonical snapshot builder
 
-- [ ] Implement `scripts/build_snapshot.py` against PSI JSON/detail endpoints.
-- [ ] Select records using the exact VF-01 research-area filter and assert the exact 24-ID set.
-- [ ] Assert PSI-181 and PSI-108 are absent.
-- [ ] Preserve PSI-47 with `catalog_role = instrument_context`.
-- [ ] Store stable detail/table URLs, file names, versions, S3 version IDs, DOI, license, and source metadata.
-- [ ] Reject duplicate IDs, missing licenses, partial downloads, and unexpected counts.
-- [ ] Generate `data/snapshot.sha256` and update the `Snapshot SHA-256` field under Verification metadata.
+- [x] Implement `scripts/build_snapshot.py` against PSI JSON/detail endpoints.
+- [x] Select records using the exact VF-01 research-area filter and assert the exact 24-ID set.
+- [x] Assert PSI-181 and PSI-108 are absent.
+- [x] Preserve PSI-47 with `catalog_role = instrument_context`.
+- [x] Store stable detail/table URLs, file names, versions, S3 version IDs, DOI, license, and source metadata.
+- [x] Reject duplicate IDs, unruled missing licenses, partial downloads, and unexpected counts.
+- [x] Generate `data/snapshot.sha256` and update the `Snapshot SHA-256` field under Verification metadata.
 
 **Done when:** two clean builds produce byte-identical canonical JSON and the same digest.
+
+**Evidence (2026-11-14):** `scripts/build_snapshot.py`, `data/psi_snapshot.json` (24 records, 22 tables), `data/snapshot.sha256` (`596f50c6…`), and `scripts/check_data.py` (`Data check: 0 failures`). Two consecutive clean builds produced byte-identical JSON and the same digest. PSI-10 is the only missing-license record; Decision D-016 records it as `unknown` with redistribution blocked, and `scripts/check_data.py` enforces that ruling.
 
 **Dependencies:** A0.
 
@@ -139,7 +143,7 @@
 
 | Date | Handoff | Recipient | Evidence | Notes |
 |---|---|---|---|---|
-| — | H0 schema/OpenAPI/mock | Person B | — | — |
-| — | H1 snapshot/annotations | Person B | — | — |
+| 2026-11-14 | H0 schema/OpenAPI/mock | Person B | `backend/app/models.py`, `backend/openapi.json`, `backend/mocks/`, 91 tests passing | Mock only; canonical data begins with H1 |
+| — | H1 snapshot/annotations | Person B | Snapshot built; seven annotations pending A2 | — |
 | — | H2 API/search/ranking | Person B | — | — |
 | — | H3 defect reports | Person A from Person B | — | — |

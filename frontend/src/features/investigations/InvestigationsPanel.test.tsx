@@ -47,7 +47,8 @@ describe('InvestigationsPanel scenario controls and results', () => {
     renderInvestigations()
 
     // Scenario A — lunar habitat.
-    expect(await screen.findByText('SAFFIRE-I')).toBeInTheDocument()
+    const ranked = await screen.findByRole('list', { name: 'Ranked results' })
+    expect(within(ranked).getByText('SAFFIRE-I')).toBeInTheDocument()
     expect(screen.getAllByRole('article')).toHaveLength(4)
     expect(
       screen.getByText(/Flow is unspecified, so a six-dimension direct match/i),
@@ -60,7 +61,8 @@ describe('InvestigationsPanel scenario controls and results', () => {
     await user.click(
       screen.getByRole('radio', { name: /Cabin detection/i }),
     )
-    expect(await screen.findByText('SAME-R')).toBeInTheDocument()
+    const rankedB = await screen.findByRole('list', { name: 'Ranked results' })
+    expect(await within(rankedB).findByText('SAME-R')).toBeInTheDocument()
     expect(screen.getAllByRole('article')).toHaveLength(1)
     expect(
       within(
@@ -71,7 +73,7 @@ describe('InvestigationsPanel scenario controls and results', () => {
       screen.getByText(/requested set Q\(S\): Theme/i),
     ).toBeInTheDocument()
     expect(screen.getByText(/Theme: Detection/)).toBeInTheDocument()
-    expect(screen.queryByText('BASS-II')).not.toBeInTheDocument()
+    expect(within(rankedB).queryByText('BASS-II')).not.toBeInTheDocument()
 
     // Scenario C — droplet suppression.
     await user.click(
@@ -95,13 +97,14 @@ describe('InvestigationsPanel scenario controls and results', () => {
     expect(
       await screen.findByText(/Apollo 1 remains explanatory context/i),
     ).toBeInTheDocument()
+    const rankedD = await screen.findByRole('list', { name: 'Ranked results' })
     expect(screen.getAllByRole('article')).toHaveLength(4)
-    expect(screen.getByText('CFI-G')).toBeInTheDocument()
+    expect(within(rankedD).getByText('CFI-G')).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: 'Flame Design' }),
     ).toBeInTheDocument()
-    expect(screen.getByText('SAFFIRE-I')).toBeInTheDocument()
-    expect(screen.getByText('BASS-II')).toBeInTheDocument()
+    expect(within(rankedD).getByText('SAFFIRE-I')).toBeInTheDocument()
+    expect(within(rankedD).getByText('BASS-II')).toBeInTheDocument()
     expect(screen.getByText(/Theme: Prevention/)).toBeInTheDocument()
   })
 
@@ -124,7 +127,8 @@ describe('InvestigationsPanel scenario controls and results', () => {
     const user = userEvent.setup()
     renderInvestigations()
 
-    await screen.findByText('SAFFIRE-I')
+    const ranked = await screen.findByRole('list', { name: 'Ranked results' })
+    expect(within(ranked).getByText('SAFFIRE-I')).toBeInTheDocument()
 
     await user.click(
       screen.getByRole('button', { name: /Mark Oxygen unspecified/i }),
@@ -166,6 +170,10 @@ describe('InvestigationsPanel scenario controls and results', () => {
       /Fix the highlighted field/i,
     )
     // The invalid draft is not ranked; the previous results remain visible.
-    expect(screen.getByText('SAFFIRE-I')).toBeInTheDocument()
+    expect(
+      within(screen.getByRole('list', { name: 'Ranked results' })).getByText(
+        'SAFFIRE-I',
+      ),
+    ).toBeInTheDocument()
   })
 })

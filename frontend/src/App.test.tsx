@@ -98,7 +98,10 @@ describe('FireSight app shell', () => {
     expect(
       within(panel).getByRole('radio', { name: /Lunar habitat/i }),
     ).toBeChecked()
-    expect(await within(panel).findByText('SAFFIRE-I')).toBeInTheDocument()
+    const ranked = await within(panel).findByRole('list', {
+      name: 'Ranked results',
+    })
+    expect(within(ranked).getByText('SAFFIRE-I')).toBeInTheDocument()
 
     expect(window.location.hash).toBe('#investigations')
   })

@@ -1,0 +1,13 @@
+{
+  "answer": "BASS-II is the nearest solid-fuel evidence, but its curated initial oxygen range is 0.136–0.222, so it does not cover 30% O2. No completed PSI record covers the solid-fuel, 30% O2, 8.2 psia, partial-gravity combination; the scenario flow value is also unspecified.",
+  "citations": [
+    {
+      "psi_id": "PSI-25",
+      "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-25",
+      "title": "Burning and Suppression of Solids - II"
+    }
+  ],
+  "refusal_reason": null,
+  "refused": false,
+  "scope": "fire_safety"
+}

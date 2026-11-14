@@ -10,6 +10,7 @@ import {
   LoadingBlock,
 } from '../../components/ui/States'
 import { DimensionStatusLegend } from '../../components/investigations/DimensionBreakdown'
+import { CatalogExplorer } from '../../components/investigations/CatalogExplorer'
 import { GapBanner } from '../../components/investigations/GapBanner'
 import { RankedResultCard } from '../../components/investigations/RankedResultCard'
 import { ScenarioControls } from '../../components/investigations/ScenarioControls'
@@ -63,6 +64,9 @@ function ScenarioWorkbench({ scenarios }: { scenarios: Scenario[] }) {
 
   const rank = rankQuery.data
   const rankLoading = rankQuery.status === 'loading'
+  const rankedScenario = rank?.scenario_id
+    ? (scenarios.find((scenario) => scenario.id === rank.scenario_id) ?? null)
+    : null
 
   return (
     <div className="space-y-5">
@@ -124,7 +128,7 @@ function ScenarioWorkbench({ scenarios }: { scenarios: Scenario[] }) {
           <DimensionStatusLegend />
 
           {rank.results.length > 0 ? (
-            <ol className="space-y-4">
+            <ol aria-label="Ranked results" className="space-y-4">
               {rank.results.map((result, index) => (
                 <li key={result.psi_id}>
                   <RankedResultCard result={result} rank={index + 1} />
@@ -141,6 +145,11 @@ function ScenarioWorkbench({ scenarios }: { scenarios: Scenario[] }) {
           <MockNotice notice={rank.mock_notice} />
         </section>
       ) : null}
+
+      <CatalogExplorer
+        rankedResults={rank?.results ?? []}
+        scenarioName={rankedScenario?.name ?? null}
+      />
     </div>
   )
 }

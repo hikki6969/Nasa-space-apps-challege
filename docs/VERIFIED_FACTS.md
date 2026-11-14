@@ -9,7 +9,7 @@ This file is the evidence ledger for FireSight. It records observations made dir
 - **Search URL:** <https://psi.nasa.gov/geode-py/ws/repo/search?ffield=Research%20Area&fvalue=Combustion%20Science>
 - **Detail URL pattern:** <https://psi.nasa.gov/geode-py/ws/repo/investigations/{PSI-ID}>
 - **Table download URL pattern:** <https://psi.nasa.gov/geode-py/ws/studies/{PSI-ID}/download?file={FILE}&version={VERSION}&redirect=false>
-- **Snapshot SHA-256:** not yet applicable; the canonical snapshot does not exist in this repository yet. Person A must add the digest here when `data/psi_snapshot.json` is generated.
+- **Snapshot SHA-256:** `596f50c614478bdc08a578fbde6ac6f27d87a30acfb9220e6d401b6e99be146a` for `data/psi_snapshot.json` (24 records, 22 verified table downloads). The authoritative manifest is `data/snapshot.sha256`; regenerate both with `python scripts/build_snapshot.py`. Annotation and program-context inputs join the manifest in A2.
 - **Evidence rule:** a value without a source observation is `null`; it is not estimated from memory or inferred silently.
 
 ## VF-01 — Exact combustion corpus has 24 records
