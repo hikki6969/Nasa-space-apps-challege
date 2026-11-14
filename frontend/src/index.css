@@ -1,0 +1,223 @@
+@import 'tailwindcss';
+
+/* --------------------------------------------------------------------------
+   FireSight design tokens — NASA-inspired dark space
+   Blue = metadata/navigation, amber = flame/hazard, cyan = comparison/coverage,
+   red = evidence gap/mismatch, green = verified/direct.
+   -------------------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+
+  --space-950: #03050b;
+  --space-900: #060b16;
+  --space-850: #08101e;
+  --space-800: #0c1526;
+  --space-750: #101c33;
+  --space-700: #16233d;
+
+  --edge: #1e2c48;
+  --edge-strong: #33476d;
+
+  --ink: #f2f6ff;
+  --ink-muted: #a8b7d4;
+  --ink-dim: #7b8dae;
+
+  --accent-blue: #6db4ff;
+  --accent-blue-deep: #1d5fd1;
+  --accent-amber: #ffb224;
+  --accent-amber-deep: #b35c00;
+  --accent-cyan: #45e0d0;
+  --accent-red: #ff7373;
+  --accent-green: #5be49b;
+
+  --focus: #a8d4ff;
+
+  --fs-radius-tile: 0.625rem;
+  --fs-radius-panel: 0.9rem;
+}
+
+@theme inline {
+  --color-space-950: var(--space-950);
+  --color-space-900: var(--space-900);
+  --color-space-850: var(--space-850);
+  --color-space-800: var(--space-800);
+  --color-space-750: var(--space-750);
+  --color-space-700: var(--space-700);
+
+  --color-edge: var(--edge);
+  --color-edge-strong: var(--edge-strong);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-dim: var(--ink-dim);
+
+  --color-nav: var(--accent-blue);
+  --color-flame: var(--accent-amber);
+  --color-compare: var(--accent-cyan);
+  --color-danger: var(--accent-red);
+  --color-safe: var(--accent-green);
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  --font-mono:
+    ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono',
+    monospace;
+
+  --radius-tile: var(--fs-radius-tile);
+  --radius-panel: var(--fs-radius-panel);
+}
+
+@utility surface {
+  border: 1px solid var(--edge);
+  border-radius: var(--fs-radius-panel);
+  background:
+    linear-gradient(180deg, rgb(13 24 43 / 0.88), rgb(6 12 24 / 0.92));
+  box-shadow:
+    0 24px 60px -38px rgb(0 0 0 / 0.95),
+    inset 0 1px 0 rgb(255 255 255 / 0.035);
+}
+
+@utility surface-raised {
+  border: 1px solid var(--edge-strong);
+  border-radius: var(--fs-radius-panel);
+  background:
+    linear-gradient(180deg, rgb(19 34 59 / 0.92), rgb(9 17 32 / 0.95));
+  box-shadow:
+    0 30px 70px -42px rgb(0 0 0 / 0.98),
+    inset 0 1px 0 rgb(255 255 255 / 0.05);
+}
+
+@utility skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  transform: translateY(-180%);
+  border-radius: 0.5rem;
+  border: 1px solid var(--edge-strong);
+  background: var(--space-800);
+  padding: 0.65rem 1rem;
+  color: var(--ink);
+  font-weight: 650;
+  transition: transform 150ms ease;
+
+  &:focus {
+    transform: translateY(0);
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--edge);
+  }
+
+  html {
+    min-width: 320px;
+    background-color: var(--space-950);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: var(--space-950);
+    background-image:
+      radial-gradient(
+        ellipse 90% 55% at 50% -18%,
+        rgb(36 92 190 / 0.24),
+        transparent 62%
+      ),
+      radial-gradient(
+        ellipse 40% 35% at 92% 14%,
+        rgb(255 178 36 / 0.07),
+        transparent 70%
+      );
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    line-height: 1.55;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* A restrained, CSS-only star field. No remote assets. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      radial-gradient(circle, rgb(255 255 255 / 0.7) 0 0.7px, transparent 1px),
+      radial-gradient(circle, rgb(168 212 255 / 0.55) 0 0.6px, transparent 1px),
+      radial-gradient(circle, rgb(255 255 255 / 0.35) 0 0.5px, transparent 1px);
+    background-position:
+      0 0,
+      41px 67px,
+      113px 19px;
+    background-size:
+      191px 191px,
+      241px 241px,
+      307px 307px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: rgb(109 180 255 / 0.35);
+    color: var(--ink);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--edge-strong) transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

@@ -6,11 +6,11 @@
 
 ## B0. Frontend foundation
 
-- [ ] Create React + Vite + TypeScript + Tailwind frontend.
-- [ ] Add Plotly for parallel coordinates and the observed map; add no second component library.
-- [ ] Create a typed API client and mock adapter.
-- [ ] Implement the NASA-inspired dark-space visual tokens and responsive shell.
-- [ ] Implement keyboard-accessible navigation and tab semantics.
+- [x] Create React + Vite + TypeScript + Tailwind frontend.
+- [x] Add Plotly for parallel coordinates and the observed map; add no second component library.
+- [x] Create a typed API client and mock adapter.
+- [x] Implement the NASA-inspired dark-space visual tokens and responsive shell.
+- [x] Implement keyboard-accessible navigation and tab semantics.
 
 **Done when:** production build passes and the typed mock client renders one scenario and one result.
 
@@ -18,11 +18,11 @@
 
 ## B1. Scenario controls and results
 
-- [ ] Build scenario panel controls for oxygen, pressure, gravity, flow, phase, and theme.
-- [ ] Represent explicitly unspecified scenario values without silently defaulting them.
-- [ ] Build result cards with score, coverage, match class, six-slot dimension breakdown (requested, present or missing, or not requested), limitations, and justification.
-- [ ] Build the evidence-gap banner from the API gap statement.
-- [ ] Ensure missing dimensions visibly differ from zero-similarity dimensions.
+- [x] Build scenario panel controls for oxygen, pressure, gravity, flow, phase, and theme.
+- [x] Represent explicitly unspecified scenario values without silently defaulting them.
+- [x] Build result cards with score, coverage, match class, six-slot dimension breakdown (requested, present or missing, or not requested), limitations, and justification.
+- [x] Build the evidence-gap banner from the API gap statement.
+- [x] Ensure missing dimensions visibly differ from zero-similarity dimensions.
 
 **Done when:** four mock scenarios produce visibly different, explainable results.
 
@@ -30,11 +30,11 @@
 
 ## B2. Overview
 
-- [ ] Show total, completed, curated, metadata-only, instrument-context, and anticipated counts.
-- [ ] Show evidence-class and safety-theme distributions.
-- [ ] Show hardware/facility distribution.
-- [ ] Show top completed evidence and coverage warnings for the active scenario.
-- [ ] Keep historical/Spinoff counts visibly separate from PSI evidence counts.
+- [x] Show total, completed, curated, metadata-only, instrument-context, and anticipated counts.
+- [x] Show evidence-class and safety-theme distributions.
+- [x] Show hardware/facility distribution.
+- [x] Show top completed evidence and coverage warnings for the active scenario.
+- [x] Keep historical/Spinoff counts visibly separate from PSI evidence counts.
 
 **Done when:** counts match API fixtures and no anticipated record is counted as measured.
 
