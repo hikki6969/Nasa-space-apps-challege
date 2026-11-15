@@ -199,5 +199,6 @@
     "annotation_status",
     "fuel_phases",
     "safety_theme"
-  ]
+  ],
+  "similarities": {}
 }

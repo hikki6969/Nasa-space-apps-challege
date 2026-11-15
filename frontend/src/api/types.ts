@@ -294,8 +294,10 @@ export interface ObservationPoint {
    * reports none today; the offline mock fixture carries representative values.
    */
   outcome?: ObservationOutcome | null
-  /** Provenance of the measured row. Never fabricated. */
+  /** Provenance of the measured oxygen value. Never fabricated. */
   provenance: Provenance
+  /** Field-level provenance keyed by the measured field name. */
+  field_provenance?: Record<string, Provenance>
 }
 
 export interface ObservationsResponse {

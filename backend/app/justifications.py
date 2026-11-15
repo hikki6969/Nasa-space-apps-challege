@@ -13,6 +13,7 @@ from .api_models import (
     RankedResult,
 )
 from .models import InvestigationRecord, Scenario
+from .mock_data import MOCK_SCENARIOS
 from .ranking import WEIGHTS, RankScore
 from .retrieval import fts_search
 from .catalog import RECORDS
@@ -30,6 +31,18 @@ REFUSAL_ANSWER = (
     "This bounded assistant covers NASA PSI spacecraft fire-safety evidence. "
     "Rocket-engine and propellant-combustion questions are outside its scope."
 )
+
+
+def canonical_scenario_id(scenario: Scenario) -> str | None:
+    """Return the canonical fixture id for an exact scenario body."""
+    return next(
+        (
+            fixture.id
+            for fixture in MOCK_SCENARIOS.scenarios
+            if fixture.scenario == scenario
+        ),
+        None,
+    )
 
 
 def format_value(name: DimensionName, record: InvestigationRecord) -> str | None:
@@ -92,7 +105,10 @@ def build_dimension_scores(
             limitation = f"No {name} is curated for {record.acronym or record.psi_id}."
         elif similarity == 0.0:
             if name == "oxygen" and record.psi_id == "PSI-25":
-                limitation = "BASS-II initial O2 is 0.136–0.222; the 0.30 scenario lies outside tolerance."
+                limitation = (
+                    "BASS-II initial O2 is 0.136–0.222; it does not cover the "
+                    f"requested {scen_val}."
+                )
             else:
                 limitation = f"{record.acronym or record.psi_id} value lies outside scenario tolerance."
 
@@ -117,6 +133,7 @@ def build_justification(
     scenario: Scenario,
     score: RankScore,
     match_class: MatchClass,
+    canonical_id: str | None = None,
 ) -> tuple[str, list[str], list[str], list[str]]:
     matched: list[str] = []
     missing: list[str] = []
@@ -131,9 +148,9 @@ def build_justification(
         elif score.similarities.get(name, 0.0) == 0.0:
             limitations.append(f"{name} lies outside tolerance")
 
-    # Special case rules from Product Spec
+    # Canonical wording applies only to the exact canonical scenario body.
     acronym = record.acronym or record.psi_id
-    if record.psi_id == "PSI-25":
+    if canonical_id == "A" and record.psi_id == "PSI-25":
         limitations.append(
             "No completed PSI record directly covers the solid-fuel, 30% O2, 8.2 psia, partial-gravity combination."
         )
@@ -148,7 +165,7 @@ def build_justification(
             "pressure or explicit gravity level is curated. It does not cover "
             "the lunar-habitat condition."
         )
-    elif record.psi_id == "PSI-101":
+    elif canonical_id == "B" and record.psi_id == "PSI-101":
         justification = (
             "SAME-R matches the requested detection theme. Only the safety "
             "theme is specified, so this is a partial match and detector "
@@ -156,13 +173,13 @@ def build_justification(
         )
         limitations.append("Only the safety theme is specified; no numeric physical inputs are ruled.")
         limitations.append("DAFT/DAFT-2 remains instrument context and is not a ranked candidate.")
-    elif record.psi_id == "PSI-69":
+    elif canonical_id == "C" and record.psi_id == "PSI-69":
         justification = (
             "FLEX matches the liquid-droplet phase and suppression theme. "
             "Numeric physical inputs are not specified, so this is a partial match."
         )
         limitations.append("Only phase and theme are specified; no numeric physical inputs are ruled.")
-    elif record.psi_id == "PSI-68":
+    elif canonical_id == "C" and record.psi_id == "PSI-68":
         justification = (
             "FLEX-2 matches the liquid-droplet phase and suppression theme as "
             "bi-component droplet-combustion evidence."

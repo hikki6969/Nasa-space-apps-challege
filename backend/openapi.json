@@ -319,6 +319,13 @@
             },
             "title": "Shared Fields",
             "type": "array"
+          },
+          "similarities": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Similarities",
+            "type": "object"
           }
         },
         "required": [
@@ -979,6 +986,13 @@
       "ObservationPoint": {
         "additionalProperties": false,
         "properties": {
+          "field_provenance": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Provenance"
+            },
+            "title": "Field Provenance",
+            "type": "object"
+          },
           "file_name": {
             "title": "File Name",
             "type": "string"

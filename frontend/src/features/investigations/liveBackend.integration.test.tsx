@@ -91,11 +91,11 @@ describeLive('H2 live backend integration', () => {
     const rank = await api.rank({
       scenario: {
         oxygen_fraction: 0.3,
-        pressure_psia: 14.7,
+        pressure_psia: 8.2,
         gravity_g: 0.16,
         flow_velocity_cms: null,
         fuel_phase: 'solid',
-        safety_theme: 'suppression',
+        safety_theme: 'prevention',
       },
       scenario_id: 'A',
     })
@@ -112,6 +112,11 @@ describeLive('H2 live backend integration', () => {
     expect(observations.points).toHaveLength(2)
     for (const point of observations.points) {
       expect(point.psi_id).toBe('PSI-25')
+      expect(point.fuel_phase).toBe('solid')
+      expect(point.field_provenance?.fuel_phases?.excerpt_or_table_ref).toMatch(
+        /solid/i,
+      )
+      expect(point.field_provenance?.oxygen_fraction).toEqual(point.provenance)
     }
     expect(observations.excluded_psi_ids).toEqual(
       expect.arrayContaining(['PSI-47', 'PSI-117']),

@@ -157,6 +157,7 @@ class CompareResponse(StrictModel):
     shared_fields: list[str]
     differing_fields: list[str]
     rows: list[CompareRow]
+    similarities: dict[str, float] = Field(default_factory=dict)
 
 
 class ObservationPoint(StrictModel):
@@ -169,6 +170,7 @@ class ObservationPoint(StrictModel):
     gravity_g: float | None = None
     fuel_phase: FuelPhase | None = None
     provenance: Provenance
+    field_provenance: dict[str, Provenance] = Field(default_factory=dict)
 
 
 class ObservationsResponse(StrictModel):

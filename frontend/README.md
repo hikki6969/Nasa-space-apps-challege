@@ -6,21 +6,21 @@ the observed flammability map; no second component library is used.
 
 ## Status
 
-This is the **B0 frontend foundation**. It runs against the typed H0 mock
-adapter, which serves representative fixture data shaped like the frozen
-contract — not the canonical NASA PSI snapshot. The UI keeps an `H0 mock`
-label visible on every data surface.
+This is the FireSight production frontend. It supports both the typed mock
+adapter for hermetic local development and the live FastAPI contract through
+HTTP. The container build serves the production React bundle from nginx and
+uses the live `/api` path; mock data is never presented as canonical evidence.
 
 ## Commands
 
 ```bash
-npm install
+npm ci
 npm run dev        # Vite dev server
 npm run typecheck  # tsc -b
 npm run lint       # oxlint src
 npm test           # vitest run
 npm run build      # tsc -b && vite build
-npm run check      # typecheck + lint + test + build
+npm run check      # typecheck + lint + test + build + dist smoke
 ```
 
 ## API modes
@@ -38,7 +38,7 @@ Feature panels never import mock fixtures directly.
 ## Layout
 
 ```text
-src/api/            H0 types, HTTP client, mock adapter, provider
+src/api/            typed contract, HTTP/live client, mock adapter, provider
 src/components/     charts, layout, shared UI, investigation primitives
 src/features/       one lazy panel per tab
 src/hooks/          useAsyncData request lifecycle

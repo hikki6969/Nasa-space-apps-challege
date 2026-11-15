@@ -33,10 +33,12 @@ from .justifications import (
     build_dimension_scores,
     build_gap_statement,
     build_justification,
+    canonical_scenario_id,
 )
-from .mock_data import MOCK_COMPARE, MOCK_RANKS, MOCK_SCENARIOS
+from .mock_data import MOCK_SCENARIOS
 from .observations import get_observations_response
 from .ranking import classify_match, score_record
+from .retrieval import compare_similarities, retrieve_candidates
 
 app = FastAPI(
     title="FireSight API",
@@ -79,22 +81,19 @@ def rank(request: RankRequest) -> RankResponse:
     if scenario_id is not None and scenario_id not in {"A", "B", "C", "D"}:
         raise HTTPException(status_code=404, detail=f"Unknown scenario {scenario_id}")
 
-    # Canonical validation fixtures
-    if scenario_id in MOCK_RANKS:
-        return MOCK_RANKS[scenario_id]
-
     # Dynamic physical ranking over canonical source-cited records
     scenario = request.scenario
+    body_scenario_id = canonical_scenario_id(scenario)
     scored_candidates: list[tuple[float, float, RankedResult]] = []
 
-    for record in RECORDS.values():
+    for record in retrieve_candidates(scenario, limit=10):
         score = score_record(record, scenario)
-        if score is None:
+        if score is None or score.score <= 0.0:
             continue
         match_class = classify_match(record, score)
         dims = build_dimension_scores(record, scenario, score)
         just, matched, missing, limits = build_justification(
-            record, scenario, score, match_class
+            record, scenario, score, match_class, body_scenario_id
         )
         res = RankedResult(
             psi_id=record.psi_id,
@@ -118,7 +117,7 @@ def rank(request: RankRequest) -> RankResponse:
 
     scored_candidates.sort(key=lambda item: (item[0], item[1]), reverse=True)
     results = [item[2] for item in scored_candidates[: request.limit]]
-    gap = build_gap_statement(scenario_id, results)
+    gap = build_gap_statement(body_scenario_id, results)
 
     # Determine requested dimensions
     requested_dims = []
@@ -145,9 +144,6 @@ def rank(request: RankRequest) -> RankResponse:
 
 @app.post("/api/compare", response_model=CompareResponse)
 def compare(request: CompareRequest) -> CompareResponse:
-    if set(request.psi_ids) == set(MOCK_COMPARE.psi_ids):
-        return MOCK_COMPARE
-
     for psi_id in request.psi_ids:
         if psi_id not in RECORDS:
             raise HTTPException(
@@ -192,6 +188,7 @@ def compare(request: CompareRequest) -> CompareResponse:
         shared_fields=shared,
         differing_fields=differing,
         rows=rows,
+        similarities=compare_similarities(request.psi_ids),
     )
 
 

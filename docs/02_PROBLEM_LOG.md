@@ -61,7 +61,7 @@ Each entry uses the fixed shape: **Symptom → Reproduction → Root Cause → R
 - **Symptom:** the primary extraction/Q&A path depended on an API key and network access; one referenced model ID was not a real served model.
 - **Reproduction:** disable network and API credentials in a fresh environment.
 - **Root cause:** convenience was prioritized over the judged operating constraint.
-- **Resolution:** human-verified annotations and template retrieval are primary; optional local Phi-3 is flag-gated; no hosted client exists.
+- **Resolution:** provenance-first deterministic annotations and template retrieval are primary (this wording supersedes the original human-verification gate under P-024 and Decision D-017); optional local Phi-3 is flag-gated; no hosted client exists.
 - **Verification:** offline Docker rehearsal and source scan for hosted model clients/API keys.
 - **Lesson:** a fallback is not a fallback if the primary path still depends on it.
 
@@ -217,6 +217,51 @@ Each entry uses the fixed shape: **Symptom → Reproduction → Root Cause → R
 - **Resolution:** Person A updated `backend/app/main.py` to format list-typed attributes via `", ".join(str(item) for item in val)` into clean display strings (`"solid"`, `"gas"`), eliminating Python single-quoted reprs and brackets. Added regression test in `tests/backend/test_api.py`.
 - **Verification:** `tests/backend/test_api.py::test_compare_route` passes asserting clean strings without single quotes or brackets; live rehearsal with Docker containers passes.
 - **Lesson:** never let repr-shaped payloads cross a JSON boundary; if the contract needs a display string, format it explicitly as clean prose.
+
+## P-026 — Canonical rank requests were replaced by canned fixtures
+
+- **Symptom:** the same scenario could produce different rankings in Overview and Investigations, and submitted scenario inputs could be ignored.
+- **Reproduction:** `POST /api/rank` with Scenario A and `scenario_id = "A"` returned only `PSI-25`; omitting `scenario_id` returned the formula-ranked IDs `PSI-10`, `PSI-159`, `PSI-68`, `PSI-69`, `PSI-25`, `PSI-98`, and `PSI-101`.
+- **Root cause:** the canonical-id branch returned `MOCK_RANKS` before the deterministic scorer, so a request-body field could not affect the result.
+- **Resolution:** all rank requests use the submitted body and the frozen deterministic scoring formula; `scenario_id` is descriptive metadata and never substitutes for the body.
+- **Verification:** `tests/backend/test_final_audit_regressions.py::test_rank_uses_formula_for_the_requested_body_not_canned_canonical_results` sends materially different bodies with the same canonical id and requires different, formula-derived responses.
+- **Lesson:** a canonical fixture id must not shadow an explicit API request body.
+
+## P-027 — Zero-similarity records were labelled partial matches
+
+- **Symptom:** Scenario B listed records with score `0.0`, no matched conditions, and `match_class = "partial_match"`.
+- **Reproduction:** `POST /api/rank` with Scenario B returned six zero-score `partial_match` records alongside the valid SAME-R result.
+- **Root cause:** the dynamic branch retained records with no present, meaningful matching dimension instead of applying the Product Spec §6.2 and §6.4 eligibility rules.
+- **Resolution:** records with no meaningful requested-dimension match are excluded; retained partial matches have a positive score and meaningful matched conditions.
+- **Verification:** `tests/backend/test_final_audit_regressions.py::test_zero_similarity_records_are_not_ranked_as_partial_matches` requires Scenario B to rank only SAME-R and rejects zero-score partial matches and context records.
+- **Lesson:** a classification label must not imply a match when every requested dimension is absent or zero.
+
+## P-028 — Observation fuel phase reused oxygen provenance
+
+- **Symptom:** BASS-II observation points reported `fuel_phase = "solid"` while exposing the oxygen-column excerpt as the point's provenance.
+- **Reproduction:** `GET /api/observations` returned the same oxygen provenance excerpt for both BASS-II points, including the source for `fuel_phase`.
+- **Root cause:** the observation serializer selected the `oxygen_fraction` provenance object and reused it for the separately sourced phase value.
+- **Resolution:** the existing oxygen provenance remains attached to the measured oxygen value, and the new field-level `field_provenance` map carries a distinct `fuel_phases` entry for the phase evidence.
+- **Verification:** `tests/backend/test_final_audit_regressions.py::test_observation_phase_has_its_own_provenance` requires distinct, non-empty oxygen and phase excerpts; `frontend/src/api/live.observations.test.ts` verifies the live adapter preserves both without collapsing them.
+- **Lesson:** field-level provenance is not interchangeable between values, even when both come from the same investigation.
+
+## P-029 — Active documentation retained a superseded human-review gate
+
+- **Symptom:** the Product Spec, ADR-0004, and P-007 still required or prioritized human-verified annotations although D-017 and Data Safety §9 require provenance without reviewer attestation.
+- **Reproduction:** search the active documents for `reviewer must confirm`, `Human-verified annotations are required`, and `human-verified annotations ... primary`; each conflicts with the accepted provenance-first decision.
+- **Root cause:** the D-017/P-024 supersession was applied to data and safety rules but not propagated to every active specification and decision context.
+- **Resolution:** align the active Product Spec, ADR-0004, and P-007 resolution with D-017; mark the P-007 wording as superseded rather than silently rewriting the dated changelog or archive history.
+- **Verification:** `tests/backend/test_final_audit_regressions.py::test_active_docs_do_not_claim_a_human_review_gate` rejects the three superseded active claims and requires the provenance-first wording.
+- **Lesson:** a superseding decision must be propagated to every active contract, while historical records remain visibly historical.
+
+## P-030 — Compare omitted the committed record similarity
+
+- **Symptom:** `POST /api/compare` returned records, rows, and shared/different fields but no investigation-to-investigation similarity even though Product Spec §6.1 requires NumPy cosine over the committed MiniLM embeddings.
+- **Reproduction:** compare `PSI-25` with `PSI-10` before remediation and inspect the response keys; `similarities` was absent.
+- **Root cause:** the retrieval module defined vector similarity and RRF, but the Compare path did not call the similarity helper.
+- **Resolution:** Compare returns a deterministic `similarities` map keyed by ordered accession pairs, computed with the committed embedding matrix and NumPy cosine.
+- **Verification:** `tests/backend/test_final_audit_regressions.py::test_compare_exposes_committed_embedding_similarity` requires the pair value to be a finite similarity in `[0, 1]`.
+- **Lesson:** a defined retrieval primitive is not integrated behavior; the observable API contract must exercise it.
 
 ## P-016 — PSI-10 has no license metadata
 

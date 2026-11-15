@@ -4,6 +4,15 @@ FireSight is an explainable, local evidence synthesizer that ranks NASA Physical
 
 ---
 
+## 🚀 Live Demo & Project Links
+
+- **Live Web Application (Vercel)**: [https://nasa-space-apps-challege-a7j9nfy66-hikkis-projects-a360a3a9.vercel.app/](https://nasa-space-apps-challege-a7j9nfy66-hikkis-projects-a360a3a9.vercel.app/)
+- **Project Demonstration Slides (Google Slides)**: [Google Slides Presentation (7 Slides)](https://docs.google.com/presentation/d/1gHM81qLoq8V1xAZGa5ZKiwkltZ_KxIdeUsOa__GXAxY/edit?slide=id.h11aeec637cf99686_5_85#slide=id.h11aeec637cf99686_5_85)
+- **Local Demonstration Deck (PPTX)**: [FireSight_Demonstration.pptx](file:///mnt/Code/visualstudio/ZERO_GRAVITY_FLAME/FireSight_Demonstration.pptx) (Strictly 7 slides, 16:9 widescreen, dark aerospace theme)
+- **Source Code Repository**: [https://github.com/hikki6969/Nasa-space-apps-challege](https://github.com/hikki6969/Nasa-space-apps-challege)
+
+---
+
 ## Key Capabilities
 
 1. **Deterministic Physical Ranking**: Evaluates 6 physical and taxonomic dimensions (Oxygen, Pressure, Gravity, Flow Velocity, Fuel Phase, and Safety Theme) with strict tolerance-overlap formulas, coverage penalties, and no score redistribution.
@@ -99,16 +108,18 @@ npm run dev
 
 ## Verification Gates
 
-All machine-checked verification gates pass cleanly:
+The final release verdict, including container/offline and browser evidence, is
+recorded in `.teamwork/artifacts/final/final-report.md`. The local gates below
+are a compact snapshot, not a substitute for that report:
 
 | Gate | Command | Status |
 |---|---|---|
 | **Data Integrity** | `python scripts/check_data.py` | 0 failures (24 records, 22 tables, 7 source_cited) |
 | **Doc Contract** | `python scripts/check_docs.py` | 0 failures (17 required documents) |
-| **Backend Tests** | `pytest` | 148 passed |
-| **Frontend Tests** | `npm --prefix frontend run check` | 49 passed, 0 lint errors, build clean |
-| **Latency Benchmark**| `pytest tests/backend/test_benchmark_ranking.py` | p95 = 7.39 ms (< 500 ms target) |
-| **Container Health** | `docker compose up --build` | Both containers start and report `(healthy)` |
+| **Backend Tests** | `python -m pytest` | 155 passed |
+| **Frontend Tests** | `npm --prefix frontend run check` | 96 passed, 12 skipped, 0 lint errors, build clean |
+| **Latency Benchmark** | `python -m pytest tests/backend/test_benchmark_ranking.py` | p95 below the 500 ms target |
+| **Container / Offline** | `docker compose up --build` plus the documented offline rehearsal | See the final report for the environment-specific verdict |
 
 ---
 

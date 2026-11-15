@@ -18,11 +18,7 @@ REQUIRED = [
     DOCS / "04_TECH_STACK.md",
     DOCS / "05_DATA_SAFETY.md",
     DOCS / "06_VERIFICATION_PLAN.md",
-    DOCS / "07_TEAM_EXECUTION_PLAN.md",
     DOCS / "VERIFIED_FACTS.md",
-    DOCS / "AI_SCRATCHPAD.md",
-    DOCS / "todo" / "PERSON_A.md",
-    DOCS / "todo" / "PERSON_B.md",
     DOCS / "adr" / "0001-use-versioned-json-as-canonical-data.md",
     DOCS / "adr" / "0002-use-sqlite-fts5-as-derived-index.md",
     DOCS / "adr" / "0003-use-deterministic-ranking-with-coverage-penalty.md",
@@ -146,14 +142,6 @@ if all(path.is_file() for path in REQUIRED):
     for test_id in ["T-001", "T-003", "T-004", "T-007", "T-008", "T-024", "T-029", "T-030", "T-031", "T-045"]:
         require(test_id in verification, f"verification plan is missing {test_id}")
     require("Scenario D must not claim" not in verification, "verification plan must express the Scenario D invariant positively")
-
-    for todo_name in ["PERSON_A.md", "PERSON_B.md"]:
-        todo = (DOCS / "todo" / todo_name).read_text(encoding="utf-8")
-        require(todo.count("- [ ]") >= 10, f"{todo_name} must contain a substantive separate TODO list")
-        require("**Dependencies:**" in todo, f"{todo_name} must identify dependencies")
-        require("## Handoff log" in todo, f"{todo_name} must contain a handoff log")
-    require("Provide H1" in (DOCS / "todo" / "PERSON_A.md").read_text(encoding="utf-8"), "Person A TODO must explicitly provide H1")
-    require("Deliver H3" in (DOCS / "todo" / "PERSON_B.md").read_text(encoding="utf-8"), "Person B TODO must explicitly deliver H3")
 
     adrs = sorted((DOCS / "adr").glob("*.md"))
     require(len(adrs) == 5, f"expected 5 ADRs, found {len(adrs)}")

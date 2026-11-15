@@ -129,7 +129,10 @@ def retrieve_candidates(
 
     Spec §6.1: forwards at most 10 candidates; scores only rank_eligible evidence records.
     """
-    eligible = [r for r in RECORDS.values() if r.rank_eligible and r.evidence_class != "modeling"]
+    eligible = filter_records(
+        list(RECORDS.values()), only_rank_eligible=True
+    )
+    eligible = [record for record in eligible if record.evidence_class != "modeling"]
 
     if free_text:
         fts_hits = fts_search(free_text, limit=limit)
@@ -143,3 +146,13 @@ def retrieve_candidates(
         return (matched + remaining)[:limit]
 
     return eligible[:limit]
+
+
+def compare_similarities(psi_ids: list[str]) -> dict[str, float]:
+    """Return pairwise cosine similarity for a two-to-four-record comparison."""
+    return {
+        f"{left}|{right}": similarity
+        for left_index, left in enumerate(psi_ids)
+        for right in psi_ids[left_index + 1 :]
+        if (similarity := investigation_similarity(left, right)) is not None
+    }

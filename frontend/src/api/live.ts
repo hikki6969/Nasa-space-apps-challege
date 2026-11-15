@@ -37,8 +37,8 @@ import {
 } from './derived'
 
 /**
- * Live H2 adapter. Maps Person A's wire format (validated by 148 backend
- * tests and backend/openapi.json) onto the shapes the UI consumes.
+ * Live H2 adapter. Maps the backend wire format (exercised by the backend
+ * contract suite and backend/openapi.json) onto the shapes the UI consumes.
  *
  * Derivation rules worth knowing:
  * - `/api/catalog` returns slim records; the UI needs rich fields (fuels,
@@ -181,6 +181,7 @@ interface RawObservationPoint {
   gravity_g?: number | null
   fuel_phase?: InvestigationSummary['fuel_phases'][number] | null
   provenance: Provenance
+  field_provenance?: Record<string, Provenance>
 }
 
 interface RawObservations {
@@ -448,6 +449,7 @@ export function createLiveApi(options: HttpApiOptions = {}): FireSightApi {
         gravity_g: point.gravity_g ?? null,
         fuel_phase: point.fuel_phase ?? null,
         provenance: point.provenance,
+        field_provenance: point.field_provenance ?? {},
       }))
       return {
         points,

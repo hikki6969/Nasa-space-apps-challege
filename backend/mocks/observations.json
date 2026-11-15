@@ -6,6 +6,7 @@
   ],
   "points": [
     {
+      "field_provenance": {},
       "file_name": "PSI-25_Experimental table_BASS-II.csv",
       "flow_velocity_cms": null,
       "fuel_phase": null,
@@ -24,6 +25,7 @@
       "row_index": 0
     },
     {
+      "field_provenance": {},
       "file_name": "PSI-25_Experimental table_BASS-II.csv",
       "flow_velocity_cms": null,
       "fuel_phase": null,

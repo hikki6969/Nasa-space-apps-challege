@@ -21,7 +21,8 @@ def get_observations_response() -> ObservationsResponse:
     # BASS-II (PSI-25) measured boundary points
     bass = RECORDS.get("PSI-25")
     if bass and bass.oxygen_fraction and "oxygen_fraction" in bass.provenance:
-        prov = bass.provenance["oxygen_fraction"]
+        oxygen_prov = bass.provenance["oxygen_fraction"]
+        phase_prov = bass.provenance.get("fuel_phases")
         file_name = "PSI-25_Experimental table_BASS-II.csv"
         points.append(
             ObservationPoint(
@@ -30,7 +31,11 @@ def get_observations_response() -> ObservationsResponse:
                 row_index=0,
                 oxygen_fraction=bass.oxygen_fraction.min,
                 fuel_phase=bass.fuel_phases[0] if bass.fuel_phases else "solid",
-                provenance=prov,
+                provenance=oxygen_prov,
+                field_provenance={
+                    "oxygen_fraction": oxygen_prov,
+                    **({"fuel_phases": phase_prov} if phase_prov else {}),
+                },
             )
         )
         points.append(
@@ -40,7 +45,11 @@ def get_observations_response() -> ObservationsResponse:
                 row_index=1,
                 oxygen_fraction=bass.oxygen_fraction.max,
                 fuel_phase=bass.fuel_phases[0] if bass.fuel_phases else "solid",
-                provenance=prov,
+                provenance=oxygen_prov,
+                field_provenance={
+                    "oxygen_fraction": oxygen_prov,
+                    **({"fuel_phases": phase_prov} if phase_prov else {}),
+                },
             )
         )
 

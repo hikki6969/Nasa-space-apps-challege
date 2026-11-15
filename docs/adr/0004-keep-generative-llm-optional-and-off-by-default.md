@@ -6,7 +6,7 @@
 
 ## Context
 
-The demo must work offline without API keys or rate limits. Explanations must preserve citations and numeric fidelity. Human-verified annotations are required to prevent numeric hallucination from entering the canonical catalog.
+The demo must work offline without API keys or rate limits. Explanations must preserve citations and numeric fidelity. Deterministic extraction plus field-level provenance prevents unsupported numeric values from entering the canonical catalog; no human-reviewer attestation is claimed (Decision D-017, Data Safety §9).
 
 ## Options considered
 

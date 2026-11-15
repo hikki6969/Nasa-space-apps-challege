@@ -2,6 +2,28 @@
 
 All notable changes to the specification and implementation baseline are recorded here.
 
+## 2026-11-15 — Final-audit remediation and provenance clarification
+
+### Added
+
+- `tests/backend/test_final_audit_regressions.py`: focused regressions for canonical body-derived ranking, exclusion of zero-similarity partial matches, distinct observation phase provenance, Compare embedding similarity, and the provenance-first active-doc contract.
+- `frontend/src/api/live.observations.test.ts`: focused live-adapter regression proving oxygen and fuel-phase provenance remain separate.
+
+### Changed
+
+- `backend/app/main.py`: canonical rank requests no longer return canned fixtures; the submitted scenario body is scored with the frozen deterministic formula.
+- `backend/app/observations.py`: BASS-II fuel-phase provenance is attached separately from the measured oxygen provenance.
+- `backend/app/retrieval.py` and `backend/app/main.py`: Compare now exposes committed-embedding NumPy similarity, and rank candidate generation enforces the documented source-cited/evidence/candidate-cap constraints.
+- `frontend/src/api/live.ts` and `frontend/src/api/types.ts`: preserve the field-level `field_provenance` map, including its distinct `fuel_phases` entry.
+- `frontend/src/features/investigations/liveBackend.integration.test.tsx`: correct the Scenario A fixture to the authoritative 8.2 psia / prevention inputs.
+- `docs/00_PRODUCT_SPEC.md`, `docs/adr/0004-keep-generative-llm-optional-and-off-by-default.md`, and `docs/02_PROBLEM_LOG.md`: align active text with the provenance-first model (D-017, P-024); no human-reviewer attestation is claimed.
+- `docs/H3_UI_API_DEFECTS.md`: record the final-audit correction to the original D-002 provenance resolution.
+- `README.md` and `frontend/README.md`: replace stale test counts, latency, unconditional gate claims, and the obsolete “B0 foundation” description with the current production-capable frontend and verification snapshot.
+
+### Verification
+
+Fresh command results are recorded in `.teamwork/artifacts/final/fix-log.md` after the final affected-gate run.
+
 ## 2026-11-14 — Person A H3 resolution & offline Docker demo rehearsals (B10 / H4 closure)
 
 ### Added

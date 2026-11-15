@@ -45,3 +45,6 @@ data/raw_csv/
 *.swo
 *~
 .DS_Store
+
+# Local agent & teamwork scratch
+.teamwork/

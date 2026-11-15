@@ -186,6 +186,8 @@ def classify_match(record: InvestigationRecord, score: RankScore | None) -> Matc
     # Anticipated program context uses ProgramContext and never reaches scoring.
     if score is None or not record.rank_eligible or record.evidence_class == "modeling":
         return "contextual_only"
+    if score.score <= 0.0:
+        return "contextual_only"
     if len(score.requested) == 6 and all(
         score.similarities[name] == 1.0 for name in score.requested
     ):

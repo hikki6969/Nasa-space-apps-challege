@@ -4,7 +4,7 @@
 - **Product:** NASA PSI Fire Safety Evidence Synthesizer
 - **Audience:** NASA fire-safety engineers, researchers, reviewers, and demo evaluators
 - **Evidence authority:** [Verified Facts](VERIFIED_FACTS.md), then field-level annotation provenance, then other official NASA sources
-- **Related documents:** [Decision Log](01_DECISION_LOG.md), [Verification Plan](06_VERIFICATION_PLAN.md), [Team Execution Plan](07_TEAM_EXECUTION_PLAN.md), [Person A TODO](todo/PERSON_A.md), [Person B TODO](todo/PERSON_B.md)
+- **Related documents:** [Decision Log](01_DECISION_LOG.md), [Verification Plan](06_VERIFICATION_PLAN.md)
 
 ## 1. Purpose
 
@@ -263,7 +263,7 @@ Every non-null physical value, observed-level list, and experimental table must 
 - annotation note when interpretation was required;
 - `reported` or `safely_derived` value kind.
 
-A derived value must preserve the source values and transformation. A value without provenance is `null`. The annotation reviewer must confirm every numeric value before it enters the catalog.
+A derived value must preserve the source values and transformation. A value without provenance is `null`. No human-reviewer attestation is required or recorded; auditability rests on the source URL and excerpt/table reference (Decision D-017, Data Safety §9).
 
 ## 6. Retrieval
 
@@ -539,4 +539,4 @@ The default backend does not load PyTorch or an embedding model. It loads the co
 
 ## 13. Implementation sequence
 
-See [Team Execution Plan](07_TEAM_EXECUTION_PLAN.md). Phase gates are evidence-based; a prose assertion is not a completed gate.
+Phase gates are evidence-based; a prose assertion is not a completed gate. See [Verification Plan](06_VERIFICATION_PLAN.md).
