@@ -22,16 +22,21 @@ function SourceIcon({ provenance }: { provenance: Provenance }) {
         onClick={() => setIsOpen((prev) => !prev)}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
+        onFocus={() => setIsOpen(true)}
+        onBlur={() => setIsOpen(false)}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') setIsOpen(false)
+        }}
         aria-label="View source and provenance"
         aria-expanded={isOpen}
         title={`Source: ${provenance.source_url}\n${excerpt}`}
-        className="inline-flex size-5 items-center justify-center rounded text-compare hover:bg-space-800 hover:text-ink focus:outline-none focus:ring-1 focus:ring-nav"
+        className="inline-flex size-7 items-center justify-center rounded-[2px] text-compare hover:bg-space-800 hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          className="size-3.5"
+          className="size-4"
           aria-hidden="true"
         >
           <path
@@ -139,7 +144,7 @@ export function InvestigationDetailContent({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border border-edge-strong bg-space-800 px-3 py-1.5 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
+            className="rounded-[2px] border border-edge-strong bg-space-800 px-3 py-1.5 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
           >
             Close detail
           </button>

@@ -52,7 +52,7 @@ type SortKey =
   | 'coverage_asc'
 
 const SELECT_CLASS =
-  'mt-1 w-full rounded-md border border-edge-strong bg-space-950 px-2 py-1.5 text-xs text-ink focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]'
+  'mt-1 w-full rounded-[2px] border border-edge-strong bg-space-950 px-2 py-1.5 text-xs text-ink focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]'
 
 function optionsFromLabels<Key extends string>(
   labels: Record<Key, string>,
@@ -338,7 +338,7 @@ export function CatalogExplorer({
           <div>
             <label
               htmlFor={`${baseId}-search`}
-              className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase"
+              className="fs-label text-ink-dim"
             >
               Search catalog
             </label>
@@ -348,14 +348,14 @@ export function CatalogExplorer({
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Title, PSI ID, acronym, fuel, hardware…"
-              className="mt-1 w-full rounded-md border border-edge-strong bg-space-950 px-2.5 py-1.5 text-sm text-ink placeholder:text-ink-dim focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
+              className="mt-1 w-full rounded-[2px] border border-edge-strong bg-space-950 px-2.5 py-1.5 text-sm text-ink placeholder:text-ink-dim focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
             />
           </div>
 
           <div>
             <label
               htmlFor={`${baseId}-theme`}
-              className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase"
+              className="fs-label text-ink-dim"
             >
               Safety theme
             </label>
@@ -378,7 +378,7 @@ export function CatalogExplorer({
           <div>
             <label
               htmlFor={`${baseId}-phase`}
-              className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase"
+              className="fs-label text-ink-dim"
             >
               Fuel phase
             </label>
@@ -401,7 +401,7 @@ export function CatalogExplorer({
           <div>
             <label
               htmlFor={`${baseId}-project`}
-              className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase"
+              className="fs-label text-ink-dim"
             >
               Project type
             </label>
@@ -427,7 +427,7 @@ export function CatalogExplorer({
           <div>
             <label
               htmlFor={`${baseId}-evidence`}
-              className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase"
+              className="fs-label text-ink-dim"
             >
               Evidence class
             </label>
@@ -453,7 +453,7 @@ export function CatalogExplorer({
           <div>
             <label
               htmlFor={`${baseId}-data-status`}
-              className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase"
+              className="fs-label text-ink-dim"
             >
               Data status
             </label>
@@ -479,7 +479,7 @@ export function CatalogExplorer({
           <div>
             <label
               htmlFor={`${baseId}-annotation`}
-              className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase"
+              className="fs-label text-ink-dim"
             >
               Annotation status
             </label>
@@ -505,7 +505,7 @@ export function CatalogExplorer({
           <div>
             <label
               htmlFor={`${baseId}-role`}
-              className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase"
+              className="fs-label text-ink-dim"
             >
               Catalog role
             </label>
@@ -531,7 +531,7 @@ export function CatalogExplorer({
           <div>
             <label
               htmlFor={`${baseId}-sort`}
-              className="text-[11px] font-bold tracking-[0.08em] text-ink-dim uppercase"
+              className="fs-label text-ink-dim"
             >
               Sort by
             </label>
@@ -563,7 +563,7 @@ export function CatalogExplorer({
             <button
               type="button"
               onClick={clearFilters}
-              className="rounded-md border border-edge-strong bg-space-800 px-2.5 py-1 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
+              className="rounded-[2px] border border-edge-strong bg-space-800 px-2.5 py-1 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
             >
               Clear search and filters
             </button>
@@ -585,7 +585,7 @@ export function CatalogExplorer({
                 ? 'Select at least two records to compare'
                 : `Compare ${compareIds.length} selected records`
             }
-            className="rounded-md border border-compare/50 bg-compare/10 px-3 py-1.5 text-xs font-semibold text-compare hover:bg-compare/20 disabled:cursor-not-allowed disabled:border-edge disabled:bg-space-900/40 disabled:text-ink-dim"
+            className="rounded-[2px] border border-compare/50 bg-compare/10 px-3 py-1.5 text-xs font-semibold text-compare hover:bg-compare/20 disabled:cursor-not-allowed disabled:border-edge disabled:bg-space-900/40 disabled:text-ink-dim"
           >
             Compare selected ({compareIds.length})
           </button>
@@ -593,7 +593,7 @@ export function CatalogExplorer({
       </div>
 
       {visibleRecords.length > 0 ? (
-        <div className="mt-4 overflow-x-auto">
+        <div className="mt-4 overflow-x-auto border border-edge">
           <table
             aria-label="Catalog records"
             className="w-full border-collapse text-left text-sm"
@@ -613,7 +613,7 @@ export function CatalogExplorer({
                   <th
                     key={heading}
                     scope="col"
-                    className="border-b border-edge-strong px-2 py-2 text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase"
+                    className="border-b border-edge-strong px-2 py-2 fs-micro text-ink-dim"
                   >
                     {heading}
                   </th>
@@ -734,7 +734,7 @@ export function CatalogExplorer({
                         }
                         onChange={() => onToggleCompare(record.psi_id)}
                         aria-label={`Mark ${record.psi_id} for comparison`}
-                        className="size-4 accent-[var(--accent-cyan)]"
+                        className="size-5 accent-[var(--accent-cyan)]"
                       />
                     </td>
                   </tr>

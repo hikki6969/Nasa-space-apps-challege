@@ -137,7 +137,7 @@ export default function ContextPanel() {
               key={title}
               className="rounded-tile border border-edge bg-space-900/55 p-3"
             >
-              <p className="text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase">
+              <p className="fs-micro text-ink-dim">
                 {title}
               </p>
               <p className="mt-1 text-xs leading-relaxed text-ink-muted">

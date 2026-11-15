@@ -16,16 +16,29 @@ const TONE_TEXT = {
   safe: 'text-safe',
 } as const
 
+const TONE_BAR = {
+  default: 'bg-edge-strong',
+  nav: 'bg-nav',
+  flame: 'bg-flame',
+  compare: 'bg-compare',
+  danger: 'bg-danger',
+  safe: 'bg-safe',
+} as const
+
 export function StatTile({ label, value, hint, tone = 'default' }: StatTileProps) {
   return (
-    <div className="rounded-tile border border-edge bg-space-900/70 px-4 py-3">
-      <dt className="text-[11px] font-semibold tracking-[0.08em] text-ink-dim uppercase">
-        {label}
+    <div className="flex h-full min-w-0 flex-col gap-1 bg-space-850 px-3 py-3 transition-colors duration-150 hover:bg-space-800/60 sm:px-4">
+      <dt className="flex items-center gap-1.5 font-mono text-[9px] leading-snug font-bold tracking-[0.14em] text-ink-dim uppercase">
+        <span
+          aria-hidden="true"
+          className={cn('h-2.5 w-0.5 shrink-0', TONE_BAR[tone])}
+        />
+        <span className="min-w-0">{label}</span>
       </dt>
-      <dd className={cn('font-mono text-2xl leading-tight font-semibold', TONE_TEXT[tone])}>
+      <dd className={cn('font-mono text-2xl leading-none font-semibold tracking-tight tabular-nums', TONE_TEXT[tone])}>
         {value}
       </dd>
-      {hint && <p className="mt-1 text-xs leading-snug text-ink-dim">{hint}</p>}
+      {hint && <p className="text-[11px] leading-snug text-ink-dim">{hint}</p>}
     </div>
   )
 }

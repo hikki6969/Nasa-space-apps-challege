@@ -67,13 +67,19 @@ export function TabNav({ activeTab, onSelect }: TabNavProps) {
               onClick={() => onSelect(tab.id)}
               onKeyDown={(event) => handleKeyDown(event, index)}
               className={cn(
-                'relative shrink-0 rounded-t-lg border border-b-0 px-3 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors sm:px-4',
+                'relative shrink-0 rounded-t-[2px] border border-b-0 px-3 py-3 text-sm font-semibold whitespace-nowrap transition-colors sm:px-4',
                 selected
                   ? 'border-edge-strong bg-space-800 text-ink'
-                  : 'border-transparent text-ink-muted hover:bg-space-800/55 hover:text-ink',
+                  : 'border-transparent text-ink-muted hover:bg-space-800/60 hover:text-ink',
               )}
             >
-              <span aria-hidden="true" className="mr-1.5 font-mono text-[10px] text-nav">
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'mr-1.5 font-mono text-[10px] tabular-nums',
+                  selected ? 'text-flame' : 'text-ink-dim',
+                )}
+              >
                 {String(index + 1).padStart(2, '0')}
               </span>
               <span className="sm:hidden">{tab.shortLabel}</span>
@@ -81,7 +87,7 @@ export function TabNav({ activeTab, onSelect }: TabNavProps) {
               {selected && (
                 <span
                   aria-hidden="true"
-                  className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-nav"
+                  className="absolute inset-x-2 -bottom-px h-0.5 bg-flame"
                 />
               )}
             </button>
