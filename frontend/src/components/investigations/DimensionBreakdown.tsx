@@ -124,12 +124,12 @@ export function DimensionBreakdown({
               <>
                 <div className="mt-2 flex items-center gap-2">
                   <div
-                    className="h-1.5 flex-1 overflow-hidden rounded-full bg-space-700"
+                    className="h-1.5 flex-1 overflow-hidden rounded-[2px] bg-space-700"
                     aria-hidden="true"
                   >
                     <div
                       className={cn(
-                        'h-full rounded-full',
+                        'h-full rounded-[2px]',
                         status === 'match' && 'bg-safe',
                         status === 'partial' && 'bg-compare',
                         status === 'zero' && 'bg-flame',

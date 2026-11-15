@@ -1,39 +1,45 @@
 @import 'tailwindcss';
 
 /* --------------------------------------------------------------------------
-   FireSight design tokens — NASA-inspired dark space
-   Blue = metadata/navigation, amber = flame/hazard, cyan = comparison/coverage,
-   red = evidence gap/mismatch, green = direct match.
+   FIRESIGHT design tokens — aerospace control-room / mission-engineering
+   Obsidian backgrounds. Crisp white and muted slate text.
+   Tactical amber = warnings / evidence gaps. Emerald = nominal status.
+   Steel blue = navigation / data links. Platinum = comparison / coverage.
    -------------------------------------------------------------------------- */
 :root {
   color-scheme: dark;
 
-  --space-950: #03050b;
-  --space-900: #060b16;
-  --space-850: #08101e;
-  --space-800: #0c1526;
-  --space-750: #101c33;
-  --space-700: #16233d;
+  --space-950: #0a0c10;
+  --space-900: #10131a;
+  --space-850: #151a22;
+  --space-800: #1b212b;
+  --space-750: #212834;
+  --space-700: #28303e;
 
-  --edge: #1e2c48;
-  --edge-strong: #33476d;
+  --edge: #2c3442;
+  --edge-strong: #424c5e;
 
-  --ink: #f2f6ff;
-  --ink-muted: #a8b7d4;
-  --ink-dim: #7b8dae;
+  --ink: #edf1f7;
+  --ink-muted: #a3adbc;
+  --ink-dim: #97a2b0;
 
-  --accent-blue: #6db4ff;
-  --accent-blue-deep: #1d5fd1;
-  --accent-amber: #ffb224;
-  --accent-amber-deep: #b35c00;
-  --accent-cyan: #45e0d0;
-  --accent-red: #ff7373;
-  --accent-green: #5be49b;
+  --accent-blue: #8ab4e6;
+  --accent-blue-deep: #2f4a66;
+  --accent-amber: #f59e0b;
+  --accent-amber-deep: #92610a;
+  /* Comparison / coverage accent (platinum, not cyan). */
+  --accent-cyan: #c3ccd9;
+  /* Nominal-status emerald. */
+  --accent-green: #34d399;
+  --accent-red: #f87171;
 
-  --focus: #a8d4ff;
+  --focus: #a9c7e8;
 
-  --fs-radius-tile: 0.625rem;
-  --fs-radius-panel: 0.9rem;
+  --frame-tick: rgb(138 180 230 / 0.72);
+  --frame-tick-strong: #f59e0b;
+
+  --fs-radius-tile: 2px;
+  --fs-radius-panel: 2px;
 }
 
 @theme inline {
@@ -61,8 +67,8 @@
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif;
   --font-mono:
-    ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono',
-    monospace;
+    'JetBrains Mono', ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas,
+    'Liberation Mono', monospace;
 
   --radius-tile: var(--fs-radius-tile);
   --radius-panel: var(--fs-radius-panel);
@@ -71,21 +77,56 @@
 @utility surface {
   border: 1px solid var(--edge);
   border-radius: var(--fs-radius-panel);
-  background:
-    linear-gradient(180deg, rgb(13 24 43 / 0.88), rgb(6 12 24 / 0.92));
-  box-shadow:
-    0 24px 60px -38px rgb(0 0 0 / 0.95),
-    inset 0 1px 0 rgb(255 255 255 / 0.035);
+  background: var(--space-850);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.03);
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
 }
 
 @utility surface-raised {
   border: 1px solid var(--edge-strong);
   border-radius: var(--fs-radius-panel);
-  background:
-    linear-gradient(180deg, rgb(19 34 59 / 0.92), rgb(9 17 32 / 0.95));
-  box-shadow:
-    0 30px 70px -42px rgb(0 0 0 / 0.98),
-    inset 0 1px 0 rgb(255 255 255 / 0.05);
+  background: linear-gradient(180deg, var(--space-800), var(--space-850));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+/* Technical enclosure: diagonal corner ticks, mission-HUD style. */
+@utility frame {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    transition: border-color 200ms ease;
+  }
+
+  &::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid var(--frame-tick);
+    border-left: 2px solid var(--frame-tick);
+  }
+
+  &::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid var(--frame-tick);
+    border-right: 2px solid var(--frame-tick);
+  }
+
+  &:hover::before,
+  &:hover::after {
+    border-color: var(--frame-tick-strong);
+  }
 }
 
 @utility skip-link {
@@ -94,7 +135,7 @@
   top: 1rem;
   z-index: 100;
   transform: translateY(-180%);
-  border-radius: 0.5rem;
+  border-radius: 2px;
   border: 1px solid var(--edge-strong);
   background: var(--space-800);
   padding: 0.65rem 1rem;
@@ -117,6 +158,31 @@
   }
 }
 
+/* Shared micro-label typography: one voice for dense data labels. */
+@utility fs-micro {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@utility fs-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* 2px hazard bar — caution striping along enclosure edges. */
+@utility hazard {
+  height: 3px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--accent-amber) 0 10px,
+    var(--space-950) 10px 20px
+  );
+}
+
 @layer base {
   *,
   ::before,
@@ -137,16 +203,15 @@
     min-height: 100dvh;
     background-color: var(--space-950);
     background-image:
-      radial-gradient(
-        ellipse 90% 55% at 50% -18%,
-        rgb(36 92 190 / 0.24),
-        transparent 62%
-      ),
-      radial-gradient(
-        ellipse 40% 35% at 92% 14%,
-        rgb(255 178 36 / 0.07),
-        transparent 70%
-      );
+      linear-gradient(rgb(163 173 188 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(163 173 188 / 0.05) 1px, transparent 1px),
+      linear-gradient(rgb(163 173 188 / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(163 173 188 / 0.03) 1px, transparent 1px);
+    background-size:
+      96px 96px,
+      96px 96px,
+      24px 24px,
+      24px 24px;
     background-attachment: fixed;
     color: var(--ink);
     font-family: var(--font-sans);
@@ -157,33 +222,12 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* A restrained, CSS-only star field. No remote assets. */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.5;
-    background-image:
-      radial-gradient(circle, rgb(255 255 255 / 0.7) 0 0.7px, transparent 1px),
-      radial-gradient(circle, rgb(168 212 255 / 0.55) 0 0.6px, transparent 1px),
-      radial-gradient(circle, rgb(255 255 255 / 0.35) 0 0.5px, transparent 1px);
-    background-position:
-      0 0,
-      41px 67px,
-      113px 19px;
-    background-size:
-      191px 191px,
-      241px 241px,
-      307px 307px;
-  }
-
   h1,
   h2,
   h3,
   h4 {
     color: var(--ink);
+    line-height: 1.25;
     text-wrap: balance;
   }
 
@@ -197,7 +241,7 @@
   }
 
   ::selection {
-    background: rgb(109 180 255 / 0.35);
+    background: rgb(138 180 230 / 0.3);
     color: var(--ink);
   }
 

@@ -18,20 +18,20 @@ export interface ChartPalette {
 }
 
 const FALLBACK_PALETTE: ChartPalette = {
-  space950: '#03050b',
-  space900: '#060b16',
-  space800: '#0c1526',
-  space700: '#16233d',
-  edge: '#1e2c48',
-  edgeStrong: '#33476d',
-  ink: '#f2f6ff',
-  inkMuted: '#a8b7d4',
-  inkDim: '#7b8dae',
-  blue: '#6db4ff',
-  amber: '#ffb224',
-  cyan: '#45e0d0',
-  green: '#5be49b',
-  red: '#ff7373',
+  space950: '#0a0c10',
+  space900: '#10131a',
+  space800: '#1b212b',
+  space700: '#28303e',
+  edge: '#2c3442',
+  edgeStrong: '#424c5e',
+  ink: '#edf1f7',
+  inkMuted: '#a3adbc',
+  inkDim: '#97a2b0',
+  blue: '#8ab4e6',
+  amber: '#f59e0b',
+  cyan: '#c3ccd9',
+  green: '#34d399',
+  red: '#f87171',
 }
 
 export const SERIES_COLORS = [
@@ -75,14 +75,19 @@ export function chartPalette(): ChartPalette {
   }
 }
 
+const MONO_STACK =
+  "'JetBrains Mono', ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace"
+
 function axisStyle(palette: ChartPalette): Record<string, unknown> {
   return {
     gridcolor: palette.edge,
     zerolinecolor: palette.edge,
     linecolor: palette.edgeStrong,
     tickcolor: palette.edgeStrong,
-    tickfont: { color: palette.inkMuted, size: 11 },
-    title: { font: { color: palette.inkMuted, size: 12 } },
+    tickfont: { family: MONO_STACK, color: palette.inkMuted, size: 10 },
+    title: {
+      font: { family: MONO_STACK, color: palette.inkMuted, size: 11 },
+    },
     automargin: true,
   }
 }
@@ -93,19 +98,19 @@ export function baseLayout(overrides: PlotlyLayout = {}): PlotlyLayout {
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
     font: {
-      family: 'ui-sans-serif, system-ui, sans-serif',
+      family: MONO_STACK,
       color: palette.ink,
-      size: 12,
+      size: 11,
     },
     margin: { l: 58, r: 24, t: 28, b: 56 },
     hoverlabel: {
       bgcolor: palette.space800,
       bordercolor: palette.edgeStrong,
-      font: { color: palette.ink, size: 12 },
+      font: { family: MONO_STACK, color: palette.ink, size: 11 },
     },
     legend: {
       bgcolor: 'rgba(0,0,0,0)',
-      font: { color: palette.inkMuted, size: 11 },
+      font: { family: MONO_STACK, color: palette.inkMuted, size: 10 },
       orientation: 'h',
       y: -0.22,
       x: 0,

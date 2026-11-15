@@ -298,8 +298,8 @@ export function ScenarioControls({
                       }
                       className={
                         error
-                          ? 'min-w-0 flex-1 rounded-md border border-danger/60 bg-space-950 px-2.5 py-1.5 font-mono text-sm text-ink focus:border-danger focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]'
-                          : 'min-w-0 flex-1 rounded-md border border-edge-strong bg-space-950 px-2.5 py-1.5 font-mono text-sm text-ink focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]'
+                          ? 'min-w-0 flex-1 rounded-[2px] border border-danger/60 bg-space-950 px-2.5 py-1.5 font-mono text-sm text-ink focus:border-danger focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]'
+                          : 'min-w-0 flex-1 rounded-[2px] border border-edge-strong bg-space-950 px-2.5 py-1.5 font-mono text-sm text-ink focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]'
                       }
                     />
                     <span className="shrink-0 font-mono text-[10px] text-ink-dim">
@@ -350,7 +350,7 @@ export function ScenarioControls({
                         : (event.target.value as FuelPhase),
                   })
                 }
-                className="mt-1.5 w-full rounded-md border border-edge-strong bg-space-950 px-2.5 py-1.5 text-sm text-ink focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
+                className="mt-1.5 w-full rounded-[2px] border border-edge-strong bg-space-950 px-2.5 py-1.5 text-sm text-ink focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
               >
                 {PHASE_OPTIONS.map((option) => (
                   <option key={option.value || 'unspecified'} value={option.value}>
@@ -383,7 +383,7 @@ export function ScenarioControls({
                         : (event.target.value as SafetyTheme),
                   })
                 }
-                className="mt-1.5 w-full rounded-md border border-edge-strong bg-space-950 px-2.5 py-1.5 text-sm text-ink focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
+                className="mt-1.5 w-full rounded-[2px] border border-edge-strong bg-space-950 px-2.5 py-1.5 text-sm text-ink focus:border-nav/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
               >
                 {THEME_OPTIONS.map((option) => (
                   <option key={option.value || 'unspecified'} value={option.value}>
@@ -403,7 +403,7 @@ export function ScenarioControls({
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <button
             type="submit"
-            className="rounded-md border border-nav/60 bg-nav/15 px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-nav/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-space-950"
+            className="rounded-[2px] border border-nav/60 bg-nav/15 px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-nav/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] focus-visible:ring-offset-2 focus-visible:ring-offset-space-950"
           >
             Rank scenario
           </button>
@@ -414,7 +414,7 @@ export function ScenarioControls({
                 setDraft(rankedInputs)
                 setErrors({})
               }}
-              className="rounded-md border border-edge-strong bg-space-800 px-3 py-2 text-sm font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
+              className="rounded-[2px] border border-edge-strong bg-space-800 px-3 py-2 text-sm font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
             >
               Discard edits
             </button>

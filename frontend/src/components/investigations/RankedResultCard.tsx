@@ -23,7 +23,7 @@ function Meter({
   return (
     <div>
       <div className="flex items-baseline justify-between gap-2">
-        <span className="text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase">
+        <span className="fs-micro text-ink-dim">
           {label}
         </span>
         <span className="font-mono text-sm font-semibold text-ink">
@@ -31,11 +31,11 @@ function Meter({
         </span>
       </div>
       <div
-        className="mt-1 h-1.5 overflow-hidden rounded-full bg-space-700"
+        className="mt-1 h-1.5 overflow-hidden rounded-[2px] bg-space-700"
         aria-hidden="true"
       >
         <div
-          className="h-full rounded-full bg-nav"
+          className="h-full rounded-[2px] bg-nav"
           style={{ width: `${Math.max(percent, value > 0 ? 2 : 0)}%` }}
         />
       </div>
@@ -54,13 +54,13 @@ export function RankedResultCard({ result, rank }: RankedResultCardProps) {
 
   return (
     <article
-      className="surface-raised p-4 sm:p-5"
+      className="group surface frame p-4 transition-colors duration-200 hover:border-flame/45 sm:p-5"
       aria-labelledby={`result-${result.psi_id}-title`}
     >
       <header className="flex flex-wrap items-start gap-3">
         <span
           aria-hidden="true"
-          className="grid size-9 shrink-0 place-items-center rounded-full border border-edge-strong bg-space-800 font-mono text-sm font-bold text-nav"
+          className="grid size-9 shrink-0 place-items-center rounded-[2px] border border-edge-strong bg-space-800 font-mono text-sm font-bold text-nav"
         >
           {String(rank).padStart(2, '0')}
         </span>
@@ -92,11 +92,11 @@ export function RankedResultCard({ result, rank }: RankedResultCardProps) {
             )}
           </h3>
         </div>
-        <div className="text-right">
-          <p className="text-[10px] font-bold tracking-[0.12em] text-ink-dim uppercase">
+        <div className="rounded-tile border border-edge bg-space-900/60 px-4 py-2.5 text-right shadow-[inset_0_1px_0_rgb(255_255_255/0.04)] transition-colors duration-200 group-hover:border-edge-strong">
+          <p className="fs-micro text-ink-dim">
             Proximity score
           </p>
-          <p className="font-mono text-2xl leading-none font-semibold text-nav">
+          <p className="mt-1 font-mono text-2xl leading-none font-semibold tracking-tight text-nav tabular-nums">
             {formatScore(result.score)}
           </p>
         </div>

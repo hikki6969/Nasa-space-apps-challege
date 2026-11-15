@@ -30,7 +30,7 @@ export function Badge({ tone = 'neutral', children, className }: BadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-[0.09em] uppercase',
+        'inline-flex items-center gap-1 rounded-[2px] border px-2 py-0.5 font-mono text-[10px] font-bold tracking-[0.1em] whitespace-nowrap uppercase tabular-nums',
         TONES[tone],
         className,
       )}
