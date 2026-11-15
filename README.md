@@ -7,8 +7,8 @@ FireSight is an explainable, local evidence synthesizer that ranks NASA Physical
 ## 🚀 Live Demo & Project Links
 
 - **Live Web Application (Vercel)**: [https://nasa-space-apps-challege-a7j9nfy66-hikkis-projects-a360a3a9.vercel.app/](https://nasa-space-apps-challege-a7j9nfy66-hikkis-projects-a360a3a9.vercel.app/)
-- **Project Demonstration Slides (Google Slides)**: [Google Slides Presentation (7 Slides)](https://docs.google.com/presentation/d/1gHM81qLoq8V1xAZGa5ZKiwkltZ_KxIdeUsOa__GXAxY/edit?slide=id.h11aeec637cf99686_5_85#slide=id.h11aeec637cf99686_5_85)
-- **Local Demonstration Deck (PPTX)**: [FireSight_Demonstration.pptx](file:///mnt/Code/visualstudio/ZERO_GRAVITY_FLAME/FireSight_Demonstration.pptx) (Strictly 7 slides, 16:9 widescreen, dark aerospace theme)
+- **Project Demonstration Slides (Google Slides)**: [Google Slides Presentation](https://docs.google.com/presentation/d/1gHM81qLoq8V1xAZGa5ZKiwkltZ_KxIdeUsOa__GXAxY/edit?slide=id.h11aeec637cf99686_5_85#slide=id.h11aeec637cf99686_5_85)
+
 - **Source Code Repository**: [https://github.com/hikki6969/Nasa-space-apps-challege](https://github.com/hikki6969/Nasa-space-apps-challege)
 
 ---
