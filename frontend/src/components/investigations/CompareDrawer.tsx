@@ -30,7 +30,7 @@ interface CuratedField extends FieldDefinition {
 
 const CELL = 'border-b border-edge/70 px-3 py-2 align-top'
 const FIELD_HEAD =
-  'sticky left-0 z-10 bg-space-900 px-3 py-2 text-left text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase'
+  'sticky left-0 z-10 bg-space-900 px-3 py-2 text-left fs-micro text-ink-dim'
 
 function RankedCell({
   eligible,
@@ -124,14 +124,14 @@ export function CompareDrawer({
           <button
             type="button"
             onClick={onClear}
-            className="rounded-md border border-edge-strong bg-space-800 px-3 py-1.5 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
+            className="rounded-[2px] border border-edge-strong bg-space-800 px-3 py-1.5 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
           >
             Clear comparison
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border border-edge-strong bg-space-800 px-3 py-1.5 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
+            className="rounded-[2px] border border-edge-strong bg-space-800 px-3 py-1.5 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink"
           >
             Close comparison
           </button>
@@ -166,7 +166,7 @@ export function CompareDrawer({
           />
         </div>
       ) : details ? (
-        <div className="mt-4 overflow-x-auto">
+        <div className="mt-4 overflow-x-auto border border-edge">
           <table
             className="w-full min-w-[880px] border-collapse text-left text-sm"
           >

@@ -91,7 +91,7 @@ export default function QaPanel() {
             <button
               type="submit"
               disabled={draft.trim().length === 0 || loading}
-              className="shrink-0 rounded-md border border-nav/60 bg-nav/15 px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-nav/25 disabled:cursor-not-allowed disabled:opacity-50"
+              className="shrink-0 rounded-[2px] border border-nav/60 bg-nav/15 px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-nav/25 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? 'Retrieving…' : 'Ask FireSight'}
             </button>
@@ -99,7 +99,7 @@ export default function QaPanel() {
         </form>
 
         <div className="mt-4">
-          <p className="text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase">
+          <p className="fs-micro text-ink-dim">
             Preset questions
           </p>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -109,7 +109,7 @@ export default function QaPanel() {
                 type="button"
                 onClick={() => ask(preset.question)}
                 disabled={loading}
-                className="rounded-full border border-edge-strong bg-space-800 px-2.5 py-1 text-xs font-semibold text-ink-muted hover:border-compare/50 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-[2px] border border-edge-strong bg-space-800 px-3 py-1.5 text-xs font-semibold text-ink-muted hover:border-compare/50 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {preset.label}
               </button>
@@ -158,7 +158,7 @@ export default function QaPanel() {
           <p className="text-sm leading-relaxed text-ink">{answer.answer}</p>
 
           <div className="mt-4">
-            <h3 className="text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase">
+            <h3 className="fs-micro text-ink-dim">
               Citations
             </h3>
             {answer.citations.length > 0 ? (
@@ -203,7 +203,7 @@ export default function QaPanel() {
 
           {answer.matched_psi_ids.length > 0 && (
             <p className="mt-3 flex flex-wrap items-center gap-1.5">
-              <span className="text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase">
+              <span className="fs-micro text-ink-dim">
                 Matched records
               </span>
               {answer.matched_psi_ids.map((psiId) => (

@@ -12,25 +12,30 @@ function BrandMark() {
       aria-hidden="true"
       focusable="false"
     >
-      <rect width="48" height="48" rx="12" fill="#060b16" />
-      <circle
-        cx="24"
-        cy="24"
-        r="16"
+      <rect width="48" height="48" rx="4" fill="#151a22" />
+      <rect
+        x="0.5"
+        y="0.5"
+        width="47"
+        height="47"
+        rx="3.5"
         fill="none"
-        stroke="#6db4ff"
-        strokeOpacity="0.45"
-        strokeWidth="1.5"
+        stroke="#424c5e"
       />
       <path
-        d="M24 9c4.8 5.6 8 9.6 8 15.2A8 8 0 0 1 16 24.2C16 18.6 19.2 14.6 24 9Z"
-        fill="#ffb224"
+        d="M5 13V5h8M43 13V5h-8M5 35v8h8M43 35v8h-8"
+        stroke="#f59e0b"
+        strokeWidth="1.8"
+        strokeLinecap="square"
       />
       <path
-        d="M24 20c2 2.4 3.2 4 3.2 6.4a3.2 3.2 0 0 1-6.4 0c0-2.4 1.2-4 3.2-6.4Z"
+        d="M24 12c4.4 5.2 7.4 8.9 7.4 14.1A7.4 7.4 0 0 1 16.6 26.1C16.6 20.9 19.6 17.2 24 12Z"
+        fill="#f59e0b"
+      />
+      <path
+        d="M24 20.5c1.9 2.2 3 3.8 3 6a3 3 0 0 1-6 0c0-2.2 1.1-3.8 3-6Z"
         fill="#fff4d6"
       />
-      <circle cx="38" cy="15" r="2" fill="#45e0d0" />
     </svg>
   )
 }
@@ -46,11 +51,12 @@ export function AppShell({ activeTab, onSelectTab, children }: AppShellProps) {
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <div className="hazard" aria-hidden="true" />
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>
 
-      <header className="sticky top-0 z-40 border-b border-edge/80 bg-space-950/90 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-edge bg-space-950/92 backdrop-blur-md">
         <div className="mx-auto w-full max-w-[1500px] px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-3 py-3">
             <a
@@ -59,7 +65,7 @@ export function AppShell({ activeTab, onSelectTab, children }: AppShellProps) {
                 event.preventDefault()
                 onSelectTab('overview')
               }}
-              className="group flex min-w-0 items-center gap-3 rounded-lg"
+              className="group flex min-w-0 items-center gap-3 rounded-[2px]"
               aria-label="FireSight — go to Overview"
             >
               <BrandMark />
@@ -68,11 +74,11 @@ export function AppShell({ activeTab, onSelectTab, children }: AppShellProps) {
                   <span className="text-lg font-black tracking-[0.18em] text-ink uppercase">
                     FireSight
                   </span>
-                  <span className="hidden text-[10px] font-bold tracking-[0.18em] text-flame uppercase sm:inline">
+                  <span className="hidden font-mono text-[10px] font-bold tracking-[0.2em] text-flame uppercase sm:inline">
                     NASA PSI
                   </span>
                 </span>
-                <span className="hidden truncate text-xs text-ink-muted sm:block">
+                <span className="hidden truncate font-mono text-[10px] tracking-[0.14em] text-ink-muted uppercase sm:block">
                   Fire Safety Evidence Synthesizer
                 </span>
               </span>
@@ -112,15 +118,16 @@ export function AppShell({ activeTab, onSelectTab, children }: AppShellProps) {
         {children}
       </main>
 
-      <footer className="border-t border-edge/70 bg-space-950/70">
-        <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-2 px-4 py-5 text-xs text-ink-dim sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+      <footer className="border-t border-edge bg-space-950/70">
+        <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-2 px-4 py-5 font-mono text-[10px] leading-relaxed tracking-wide text-ink-dim sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>
-            FireSight · deterministic evidence synthesis · scores indicate
-            physical proximity, not applicability.
+            <span className="text-flame/80">FIRESIGHT</span> · DETERMINISTIC
+            EVIDENCE SYNTHESIS · SCORES INDICATE PHYSICAL PROXIMITY, NOT
+            APPLICABILITY.
           </p>
           <p>
-            No fitted flammability model, probability, or validated boundary is
-            presented.
+            NO FITTED FLAMMABILITY MODEL, PROBABILITY, OR VALIDATED BOUNDARY
+            IS PRESENTED.
           </p>
         </div>
       </footer>

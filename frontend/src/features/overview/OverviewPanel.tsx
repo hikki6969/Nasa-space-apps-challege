@@ -154,7 +154,7 @@ export default function OverviewPanel() {
           </div>
         }
       >
-        <dl className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+        <dl className="grid grid-cols-2 gap-px border border-edge bg-edge sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
           <StatTile
             label="Catalog records"
             value={counts.total}
@@ -208,9 +208,9 @@ export default function OverviewPanel() {
         </p>
 
         <div className="mt-5 grid gap-3 md:grid-cols-2">
-          <div className="rounded-tile border border-edge bg-space-900/55 p-4">
-            <h3 className="text-sm font-semibold text-ink">
-              Evidence-class distribution
+          <div className="border border-edge bg-space-850 p-4 transition-colors duration-150 hover:border-edge-strong">
+            <h3 className="font-mono text-[10px] font-bold tracking-[0.16em] text-ink-muted uppercase">
+              <span className="mr-1.5 text-flame">01</span>Evidence-class distribution
             </h3>
             <div className="mt-3">
               <BarList
@@ -221,9 +221,9 @@ export default function OverviewPanel() {
               />
             </div>
           </div>
-          <div className="rounded-tile border border-edge bg-space-900/55 p-4">
-            <h3 className="text-sm font-semibold text-ink">
-              Primary safety-theme distribution
+          <div className="border border-edge bg-space-850 p-4 transition-colors duration-150 hover:border-edge-strong">
+            <h3 className="font-mono text-[10px] font-bold tracking-[0.16em] text-ink-muted uppercase">
+              <span className="mr-1.5 text-flame">02</span>Primary safety-theme distribution
             </h3>
             <div className="mt-3">
               <BarList
@@ -234,9 +234,9 @@ export default function OverviewPanel() {
               />
             </div>
           </div>
-          <div className="rounded-tile border border-edge bg-space-900/55 p-4">
-            <h3 className="text-sm font-semibold text-ink">
-              Hardware / facility distribution
+          <div className="border border-edge bg-space-850 p-4 transition-colors duration-150 hover:border-edge-strong">
+            <h3 className="font-mono text-[10px] font-bold tracking-[0.16em] text-ink-muted uppercase">
+              <span className="mr-1.5 text-flame">03</span>Hardware / facility distribution
             </h3>
             <div className="mt-3">
               <BarList
@@ -247,9 +247,9 @@ export default function OverviewPanel() {
               />
             </div>
           </div>
-          <div className="rounded-tile border border-edge bg-space-900/55 p-4">
-            <h3 className="text-sm font-semibold text-ink">
-              Data-availability distribution
+          <div className="border border-edge bg-space-850 p-4 transition-colors duration-150 hover:border-edge-strong">
+            <h3 className="font-mono text-[10px] font-bold tracking-[0.16em] text-ink-muted uppercase">
+              <span className="mr-1.5 text-flame">04</span>Data-availability distribution
             </h3>
             <div className="mt-3">
               <BarList
@@ -282,7 +282,7 @@ export default function OverviewPanel() {
           <div
             role="group"
             aria-label="PSI evidence counts"
-            className="rounded-tile border border-nav/40 bg-nav/5 p-4"
+            className="flex h-full flex-col rounded-tile border border-nav/40 bg-nav/5 p-4"
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h3 className="text-sm font-semibold text-ink">
@@ -326,7 +326,7 @@ export default function OverviewPanel() {
           <div
             role="group"
             aria-label="Historical and Spinoff context counts"
-            className="rounded-tile border border-compare/40 bg-compare/5 p-4"
+            className="flex h-full flex-col rounded-tile border border-compare/40 bg-compare/5 p-4"
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h3 className="text-sm font-semibold text-ink">
@@ -410,8 +410,8 @@ export default function OverviewPanel() {
                 onClick={() => setActiveScenarioId(scenario.id)}
                 className={
                   active
-                    ? 'rounded-md border border-nav/70 bg-nav/20 px-3 py-1.5 text-xs font-semibold text-ink'
-                    : 'rounded-md border border-edge-strong bg-space-800 px-3 py-1.5 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink'
+                    ? 'rounded-[2px] border border-nav/70 bg-nav/20 px-3 py-1.5 text-xs font-semibold text-ink'
+                    : 'rounded-[2px] border border-edge-strong bg-space-800 px-3 py-1.5 text-xs font-semibold text-ink-muted hover:border-nav/60 hover:text-ink'
                 }
               >
                 {scenario.short_name} · {scenario.name}

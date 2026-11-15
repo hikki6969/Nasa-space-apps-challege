@@ -20,6 +20,7 @@ import {
 import { baseLayout } from '../../lib/chartTheme'
 import { formatNumber, humanize } from '../../lib/format'
 import { EVIDENCE_CLASS_LABELS } from '../../lib/labels'
+import { cn } from '../../lib/cn'
 
 const HUMANIZED_FIELDS = new Set([
   'evidence_class',
@@ -73,20 +74,21 @@ function RecordPicker({ candidates, selected, onToggle }: RecordPickerProps) {
             <label
               key={record.psi_id}
               aria-describedby="compare-selection-help"
-              className={
+              className={cn(
+                'flex cursor-pointer gap-2.5 rounded-tile border px-3 py-2.5 transition-[border-color,background-color,box-shadow,transform] duration-200 focus-within:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[var(--focus)]',
                 checked
-                  ? 'flex cursor-pointer gap-2.5 rounded-tile border border-compare/60 bg-compare/10 px-3 py-2.5'
+                  ? 'border-compare/60 bg-compare/10 shadow-[0_10px_30px_-18px_rgb(69_224_208/0.35)]'
                   : disabled
-                    ? 'flex cursor-not-allowed gap-2.5 rounded-tile border border-edge bg-space-900/40 px-3 py-2.5 opacity-55'
-                    : 'flex cursor-pointer gap-2.5 rounded-tile border border-edge bg-space-900/55 px-3 py-2.5 hover:border-edge-strong hover:bg-space-800/60'
-              }
+                    ? 'cursor-not-allowed border-edge bg-space-900/40 opacity-55'
+                    : 'border-edge bg-space-900/55 hover:-translate-y-0.5 hover:border-edge-strong hover:bg-space-800/60',
+              )}
             >
               <input
                 type="checkbox"
                 checked={checked}
                 disabled={disabled}
                 onChange={() => onToggle(record.psi_id)}
-                className="mt-1 size-4 shrink-0 accent-[var(--accent-cyan)]"
+                className="mt-1 size-5 shrink-0 accent-[var(--accent-cyan)]"
               />
               <span className="min-w-0">
                 <span className="flex flex-wrap items-center gap-1.5">
@@ -245,7 +247,7 @@ export default function ComparePanel() {
             title="Field-by-field evidence"
             description="A dash means the record carries no curated value for that field. Missing values are never estimated."
           >
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto border border-edge">
               <table className="w-full min-w-[720px] border-collapse text-left text-sm">
                 <caption className="sr-only">
                   Comparison matrix for the selected PSI records
@@ -278,7 +280,7 @@ export default function ComparePanel() {
                   {compare.fields.map((field) => (
                     <tr
                       key={field.key}
-                      className="border-b border-edge/70 align-top last:border-b-0"
+                      className="border-b border-edge/70 align-top transition-colors duration-150 last:border-b-0 hover:bg-space-800/40"
                     >
                       <th
                         scope="row"
@@ -319,10 +321,10 @@ export default function ComparePanel() {
               title="Common ground"
               description="Values every selected record has in common."
             >
-              <dl className="space-y-2.5">
+              <dl className="divide-y divide-edge/60">
                 {sharedItems.map((item) => (
-                  <div key={item.label}>
-                    <dt className="text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase">
+                  <div key={item.label} className="py-2.5 first:pt-0 last:pb-0">
+                    <dt className="fs-micro text-ink-dim">
                       {item.label}
                     </dt>
                     <dd className="mt-0.5 text-sm text-ink-muted">
@@ -340,10 +342,10 @@ export default function ComparePanel() {
               title="Where the records diverge"
               description="Values that are not held by every selected record."
             >
-              <dl className="space-y-2.5">
+              <dl className="divide-y divide-edge/60">
                 {differenceItems.map((item) => (
-                  <div key={item.label}>
-                    <dt className="text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase">
+                  <div key={item.label} className="py-2.5 first:pt-0 last:pb-0">
+                    <dt className="fs-micro text-ink-dim">
                       {item.label}
                     </dt>
                     <dd className="mt-0.5 text-sm text-ink-muted">

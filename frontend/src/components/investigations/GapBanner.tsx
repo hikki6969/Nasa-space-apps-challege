@@ -12,7 +12,7 @@ export function GapBanner({ statement }: GapBannerProps) {
       <div className="flex gap-3">
         <span
           aria-hidden="true"
-          className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-flame/50 bg-flame/15 font-mono text-xs font-bold text-flame"
+          className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-[2px] border border-flame/50 bg-flame/15 font-mono text-xs font-bold text-flame"
         >
           !
         </span>

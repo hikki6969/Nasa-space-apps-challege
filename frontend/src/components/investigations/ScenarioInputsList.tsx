@@ -38,7 +38,7 @@ export function ScenarioInputsList({ inputs }: ScenarioInputsListProps) {
             key={field.key}
             className="rounded-tile border border-edge bg-space-900/65 px-3 py-2"
           >
-            <dt className="text-[10px] font-bold tracking-[0.1em] text-ink-dim uppercase">
+            <dt className="fs-micro text-ink-dim">
               {field.label}
             </dt>
             <dd className="mt-0.5 flex flex-wrap items-center gap-1.5">

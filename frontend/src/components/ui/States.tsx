@@ -23,7 +23,7 @@ export function LoadingBlock({
       {Array.from({ length: rows }, (_, index) => (
         <div
           key={index}
-          className="h-16 animate-pulse rounded-tile border border-edge bg-space-800/70"
+          className="h-16 animate-pulse rounded-tile border border-edge bg-space-800/70 motion-reduce:animate-none"
           aria-hidden="true"
         />
       ))}
@@ -58,7 +58,7 @@ export function ErrorBlock({
         <button
           type="button"
           onClick={onRetry}
-          className="mt-3 rounded-md border border-edge-strong bg-space-700 px-3 py-1.5 text-sm font-semibold text-ink hover:border-nav/60 hover:text-nav"
+          className="mt-3 rounded-[2px] border border-edge-strong bg-space-700 px-3 py-1.5 text-sm font-semibold text-ink hover:border-nav/60 hover:text-nav"
         >
           Retry request
         </button>

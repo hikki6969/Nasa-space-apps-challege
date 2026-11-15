@@ -138,7 +138,7 @@ export default function ObservedMapPanel() {
                 type="checkbox"
                 checked={showHull}
                 onChange={(event) => setShowHull(event.target.checked)}
-                className="size-4 accent-[var(--accent-cyan)]"
+                className="size-5 accent-[var(--accent-cyan)]"
               />
               Show translucent observed-domain hull
             </label>
@@ -174,7 +174,7 @@ export default function ObservedMapPanel() {
                         <li key={key} className="flex items-center gap-1.5">
                           <span
                             aria-hidden="true"
-                            className="inline-block size-2.5 rounded-full"
+                            className="inline-block size-2.5 rounded-[2px]"
                             style={{ backgroundColor: color }}
                           />
                           {OUTCOME_LABELS[key]}
@@ -227,7 +227,7 @@ export default function ObservedMapPanel() {
                 </thead>
                 <tbody>
                   {points.map((point) => (
-                    <tr key={`${point.file_name}-${point.row_index}`} className="border-b border-edge/60">
+                    <tr key={`${point.file_name}-${point.row_index}`} className="border-b border-edge/60 transition-colors duration-150 hover:bg-space-800/40">
                       <th scope="row" className="px-2 py-1.5 text-ink-muted">
                         {point.file_name}#{point.row_index}
                       </th>
@@ -276,7 +276,7 @@ export default function ObservedMapPanel() {
           {data.excluded_psi_ids.map((psiId) => (
             <li
               key={psiId}
-              className="rounded-tile border border-edge bg-space-900/55 px-3 py-2"
+              className="rounded-tile border border-edge bg-space-900/55 px-3 py-2 transition-colors duration-200 hover:border-edge-strong hover:bg-space-800/60"
             >
               <p className="font-mono text-xs font-semibold text-ink">
                 {psiId}

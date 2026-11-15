@@ -30,11 +30,11 @@ export function BarList({
               <span className="ml-1 text-ink-dim">({formatPercent(share)})</span>
             </span>
             <div
-              className="col-span-2 h-1.5 overflow-hidden rounded-full bg-space-700"
+              className="col-span-2 h-2 overflow-hidden rounded-[2px] bg-space-700/80"
               aria-hidden="true"
             >
               <div
-                className="h-full rounded-full bg-nav/80"
+                className="h-full rounded-[2px] bg-gradient-to-r from-nav/50 via-nav/80 to-nav"
                 style={{ width: `${Math.max(share * 100, bucket.count > 0 ? 3 : 0)}%` }}
               />
             </div>
